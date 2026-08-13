@@ -1,0 +1,64 @@
+@use "./reset";
+@use "./tokens";
+@use "./typography";
+
+html {
+    overflow-x: clip;
+    scroll-padding-top: 100px;
+}
+
+body {
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    overflow-x: clip;
+}
+
+// === Theme transition =====================================
+
+*,
+*::before,
+*::after {
+    transition:
+        background-color 0.4s ease-in-out,
+        color 0.4s ease-in-out,
+        border-color 0.4s ease-in-out,
+        box-shadow 0.4s ease-in-out;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.4s;
+    animation-timing-function: ease-in-out;
+}
+
+html.vt-running *,
+html.vt-running *::before,
+html.vt-running *::after {
+    transition: none !important;
+}
+
+html.is-theme-changing *,
+html.is-theme-changing *::before,
+html.is-theme-changing *::after {
+    transition:
+        background-color 0.4s ease-in-out,
+        color 0.4s ease-in-out,
+        border-color 0.4s ease-in-out,
+        box-shadow 0.4s ease-in-out;
+}
+
+canvas,
+video,
+img,
+svg * {
+    transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}

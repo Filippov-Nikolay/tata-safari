@@ -1,0 +1,29 @@
+{
+    "nav": {
+        "overview": "Overview",
+        "edition": "Edition",
+        "specs": "Specs",
+        "compare": "Compare",
+        "reviews": "Reviews",
+        "price": "Price"
+    },
+    "hero": {
+        "title": "The New <safari>Safari</safari>",
+        "description": "The New Safari carries on the legendary lineage with contemporary and premium updates. The New Safari is a compelling combination of Grand Design, Cutting-edge Technology & Luxurious Comfort",
+        "cta": "Book Now",
+        "safariWord": "Safari"
+    },
+    "contact": {
+        "headlineStart": "Lass uns",
+        "headlineEnd": "Reden",
+        "tagline": "Nehmen Sie Kontakt auf",
+        "github": "GitHub",
+        "telegram": "Telegram",
+        "gmail": "Gmail",
+        "linkedin": "LinkedIn",
+        "instagram": "Instagram"
+    },
+    "footer": {
+        "rights": "Alle Rechte vorbehalten."
+    }
+}

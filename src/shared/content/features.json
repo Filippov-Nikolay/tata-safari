@@ -1,0 +1,110 @@
+{
+    "i18n": {
+        "en": {
+            "intro": "A modern foundation built with **React**, **Next.js** and **TypeScript** — designed for fast, accessible experiences with clean architecture, SSR, performance optimization and SEO built in from the start.",
+            "highlight": "Built for production use",
+            "status": "Actively maintained",
+            "highlightTitle": "Solid",
+            "highlightAccent": "Foundation",
+            "highlightDesc": "A scalable architecture with React, Next.js, Node.js, REST-ready data flow, SQL-friendly structure, Docker and CI/CD — from frontend composition to production deployment."
+        },
+        "ru": {
+            "intro": "Современный фундамент на **React**, **Next.js** и **TypeScript** — создан для быстрых, доступных интерфейсов с чистой архитектурой, SSR, оптимизацией производительности и SEO из коробки.",
+            "highlight": "Готов к production",
+            "status": "Активно поддерживается",
+            "highlightTitle": "Надёжный",
+            "highlightAccent": "Фундамент",
+            "highlightDesc": "Масштабируемая архитектура на React, Next.js, Node.js, REST-ready data flow, SQL-совместимой структуре, Docker и CI/CD — от frontend-композиции до production-деплоя."
+        },
+        "de": {
+            "intro": "Eine moderne Grundlage mit **React**, **Next.js** und **TypeScript** — entwickelt für schnelle, zugängliche Erlebnisse mit sauberer Architektur, SSR, Performance-Optimierung und SEO von Anfang an.",
+            "highlight": "Bereit für den Produktionseinsatz",
+            "status": "Aktiv gepflegt",
+            "highlightTitle": "Solide",
+            "highlightAccent": "Grundlage",
+            "highlightDesc": "Eine skalierbare Architektur mit React, Next.js, Node.js, REST-fähigem Datenfluss, SQL-freundlicher Struktur, Docker und CI/CD — von der Frontend-Komposition bis zum Produktions-Deployment."
+        },
+        "pl": {
+            "intro": "Nowoczesny fundament zbudowany w **React**, **Next.js** i **TypeScript** — zaprojektowany dla szybkich, dostępnych doświadczeń z czystą architekturą, SSR, optymalizacją wydajności i SEO od podstaw.",
+            "highlight": "Gotowy do produkcji",
+            "status": "Aktywnie rozwijany",
+            "highlightTitle": "Solidny",
+            "highlightAccent": "Fundament",
+            "highlightDesc": "Skalowalna architektura z React, Next.js, Node.js, przepływem danych gotowym pod REST, strukturą przyjazną SQL, Dockerem i CI/CD — od kompozycji frontendu po wdrożenie produkcyjne."
+        },
+        "fi": {
+            "intro": "Moderni perusta, joka on rakennettu **Reactilla**, **Next.js:llä** ja **TypeScriptillä** — suunniteltu nopeisiin, saavutettaviin kokemuksiin selkeällä arkkitehtuurilla, SSR:llä, suorituskyvyn optimoinnilla ja SEO:lla alusta asti.",
+            "highlight": "Valmis tuotantokäyttöön",
+            "status": "Aktiivisesti ylläpidetty",
+            "highlightTitle": "Vankka",
+            "highlightAccent": "Perusta",
+            "highlightDesc": "Skaalautuva arkkitehtuuri Reactilla, Next.js:llä, Node.js:llä, REST-valmiilla data flow'lla, SQL-ystävällisellä rakenteella, Dockerilla ja CI/CD:llä — frontendin koostamisesta tuotantojulkaisuun."
+        }
+    },
+    "highlightTags": ["React", "Next.js", "TypeScript", "Node.js", "REST API", "SQL", "Docker", "CI/CD"],
+    "groups": [
+        {
+            "id": "frontend",
+            "prefix": "Front",
+            "suffix": "end",
+            "icon": "monitor",
+            "items": [
+                "React",
+                "Next.js",
+                "JavaScript",
+                "TypeScript",
+                "Redux Toolkit",
+                "React Query",
+                "HTML5",
+                "CSS3",
+                "SCSS",
+                "CSS Modules",
+                "SSR",
+                "SEO"
+            ]
+        },
+        {
+            "id": "backend",
+            "prefix": "Back",
+            "suffix": "end",
+            "icon": "codeV2",
+            "items": [
+                "Node.js",
+                "Express.js",
+                "REST API",
+                "Authentication",
+                "CRUD",
+                "Client-server Architecture"
+            ]
+        },
+        {
+            "id": "database",
+            "prefix": "Data",
+            "suffix": "Base",
+            "icon": "database",
+            "items": [
+                "PostgreSQL",
+                "MySQL",
+                "MongoDB",
+                "SQL",
+                "Database Design",
+                "Data Flows"
+            ]
+        },
+        {
+            "id": "devops",
+            "prefix": "Dev",
+            "suffix": "Ops",
+            "icon": "prompt",
+            "items": [
+                "Docker",
+                "Docker Compose",
+                "Linux",
+                "Nginx",
+                "GitHub Actions",
+                "CI/CD",
+                "Deployment Workflows"
+            ]
+        }
+    ]
+}

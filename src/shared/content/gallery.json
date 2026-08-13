@@ -1,0 +1,289 @@
+{
+    "collectionUrl": "https://github.com/your-username?tab=repositories",
+    "i18n": {
+        "en": {
+            "subtitle": "A flexible showcase for products, case studies or work samples — swap these examples for your own.",
+            "featured": "FEATURED",
+            "primaryAction": "View live",
+            "secondaryAction": "View source",
+            "more": "More",
+            "moreDesc": "Browse the full collection.",
+            "viewSource": "View source"
+        },
+        "ru": {
+            "subtitle": "Гибкая витрина для продуктов, кейсов или примеров работ — замените эти примеры своими.",
+            "featured": "ИЗБРАННОЕ",
+            "primaryAction": "Смотреть",
+            "secondaryAction": "Исходный код",
+            "more": "Ещё",
+            "moreDesc": "Смотреть всю коллекцию.",
+            "viewSource": "Исходный код"
+        },
+        "de": {
+            "subtitle": "Eine flexible Übersicht für Produkte, Case Studies oder Arbeitsproben — ersetzen Sie diese Beispiele durch Ihre eigenen.",
+            "featured": "EMPFOHLEN",
+            "primaryAction": "Live ansehen",
+            "secondaryAction": "Quellcode",
+            "more": "Mehr",
+            "moreDesc": "Die ganze Sammlung durchsuchen.",
+            "viewSource": "Quellcode"
+        },
+        "pl": {
+            "subtitle": "Elastyczna prezentacja produktów, case studies lub przykładowych prac — zastąp te przykłady własnymi.",
+            "featured": "WYRÓŻNIONY",
+            "primaryAction": "Zobacz na żywo",
+            "secondaryAction": "Kod źródłowy",
+            "more": "Więcej",
+            "moreDesc": "Przeglądaj całą kolekcję.",
+            "viewSource": "Kod źródłowy"
+        },
+        "fi": {
+            "subtitle": "Joustava esittelyalusta tuotteille, case-tutkimuksille tai työnäytteille — korvaa nämä esimerkit omillasi.",
+            "featured": "ESITTELYSSÄ",
+            "primaryAction": "Katso live",
+            "secondaryAction": "Lähdekoodi",
+            "more": "Lisää",
+            "moreDesc": "Selaa koko kokoelmaa.",
+            "viewSource": "Lähdekoodi"
+        }
+    },
+    "items": [
+        {
+            "id": 0,
+            "color": "purple",
+            "tags": ["Next.js", "React", "TypeScript", "Node.js", "MongoDB", "Docker"],
+            "href": "https://example.com",
+            "secondaryHref": "https://github.com/your-username/content-platform",
+            "featured": true,
+            "i18n": {
+                "en": {
+                    "title": "Content Platform",
+                    "category": "Full-stack / Publishing",
+                    "description": "A publishing platform with a server-rendered public site and an authenticated editor for drafting and publishing content.",
+                    "highlights": [
+                        "Server-rendered pages with SEO metadata",
+                        "Authenticated editor with a draft/publish workflow",
+                        "REST API with a document database for content storage"
+                    ]
+                },
+                "ru": {
+                    "title": "Content Platform",
+                    "category": "Full-stack / Публикации",
+                    "description": "Платформа для публикаций с server-rendered публичной частью и авторизованным редактором для черновиков и публикации контента.",
+                    "highlights": [
+                        "Server-rendered страницы с SEO-метаданными",
+                        "Авторизованный редактор с workflow черновик/публикация",
+                        "REST API с документной базой данных для хранения контента"
+                    ]
+                },
+                "de": {
+                    "title": "Content Platform",
+                    "category": "Full-stack / Publishing",
+                    "description": "Eine Publishing-Plattform mit serverseitig gerenderter öffentlicher Seite und einem authentifizierten Editor für Entwürfe und Veröffentlichungen.",
+                    "highlights": [
+                        "Serverseitig gerenderte Seiten mit SEO-Metadaten",
+                        "Authentifizierter Editor mit Entwurf/Veröffentlichung-Workflow",
+                        "REST-API mit Dokumentendatenbank für die Inhaltsspeicherung"
+                    ]
+                },
+                "pl": {
+                    "title": "Content Platform",
+                    "category": "Full-stack / Publikacje",
+                    "description": "Platforma wydawnicza z renderowaną po stronie serwera częścią publiczną i uwierzytelnionym edytorem do tworzenia i publikowania treści.",
+                    "highlights": [
+                        "Renderowane po stronie serwera strony z metadanymi SEO",
+                        "Uwierzytelniony edytor z przepływem szkic/publikacja",
+                        "REST API z bazą dokumentową do przechowywania treści"
+                    ]
+                },
+                "fi": {
+                    "title": "Content Platform",
+                    "category": "Full-stack / Julkaisu",
+                    "description": "Julkaisualusta, jossa on palvelimella renderöity julkinen sivusto ja autentikoitu editori sisällön luonnosteluun ja julkaisuun.",
+                    "highlights": [
+                        "Palvelimella renderöidyt sivut SEO-metadatalla",
+                        "Autentikoitu editori luonnos/julkaisu-työnkululla",
+                        "REST API dokumenttitietokannalla sisällön tallennukseen"
+                    ]
+                }
+            }
+        },
+        {
+            "id": 1,
+            "color": "blue",
+            "tags": ["React", "TypeScript", "REST API", "Chart.js"],
+            "secondaryHref": "https://github.com/your-username/forecast-widget",
+            "featured": false,
+            "i18n": {
+                "en": {
+                    "title": "Forecast Widget",
+                    "category": "Frontend / API Integration",
+                    "description": "An embeddable forecast widget that consumes a public data API and visualizes results with interactive charts.",
+                    "highlights": [
+                        "Third-party API integration with error handling and caching",
+                        "Interactive charts and a responsive layout",
+                        "Configurable, embeddable widget component"
+                    ]
+                },
+                "ru": {
+                    "title": "Forecast Widget",
+                    "category": "Frontend / API интеграция",
+                    "description": "Встраиваемый виджет прогноза, использует публичное API и визуализирует данные с помощью интерактивных графиков.",
+                    "highlights": [
+                        "Интеграция стороннего API с обработкой ошибок и кэшированием",
+                        "Интерактивные графики и responsive layout",
+                        "Настраиваемый, встраиваемый компонент-виджет"
+                    ]
+                },
+                "de": {
+                    "title": "Forecast Widget",
+                    "category": "Frontend / API-Integration",
+                    "description": "Ein einbettbares Vorhersage-Widget, das eine öffentliche Daten-API nutzt und Ergebnisse mit interaktiven Diagrammen visualisiert.",
+                    "highlights": [
+                        "Integration einer Drittanbieter-API mit Fehlerbehandlung und Caching",
+                        "Interaktive Diagramme und responsives Layout",
+                        "Konfigurierbare, einbettbare Widget-Komponente"
+                    ]
+                },
+                "pl": {
+                    "title": "Forecast Widget",
+                    "category": "Frontend / Integracja API",
+                    "description": "Osadzalny widget prognozy, korzystający z publicznego API i wizualizujący wyniki za pomocą interaktywnych wykresów.",
+                    "highlights": [
+                        "Integracja zewnętrznego API z obsługą błędów i cache'owaniem",
+                        "Interaktywne wykresy i responsywny layout",
+                        "Konfigurowalny, osadzalny komponent widgetu"
+                    ]
+                },
+                "fi": {
+                    "title": "Forecast Widget",
+                    "category": "Frontend / API-integraatio",
+                    "description": "Upotettava ennustewidget, joka käyttää julkista data-API:a ja visualisoi tulokset interaktiivisilla kaavioilla.",
+                    "highlights": [
+                        "Kolmannen osapuolen API-integraatio virheenkäsittelyllä ja välimuistilla",
+                        "Interaktiiviset kaaviot ja responsiivinen layout",
+                        "Muokattava, upotettava widget-komponentti"
+                    ]
+                }
+            }
+        },
+        {
+            "id": 2,
+            "color": "orange",
+            "tags": ["React", "Node.js", "Express", "PostgreSQL"],
+            "secondaryHref": "https://github.com/your-username/community-hub",
+            "featured": false,
+            "i18n": {
+                "en": {
+                    "title": "Community Hub",
+                    "category": "Full-stack / Community App",
+                    "description": "A community platform for sharing and discovering content, with accounts, ratings and search/filtering.",
+                    "highlights": [
+                        "User authentication and profile-based collections",
+                        "Search and filtering with a relational database schema",
+                        "Rating and comment system for community engagement"
+                    ]
+                },
+                "ru": {
+                    "title": "Community Hub",
+                    "category": "Full-stack / Community приложение",
+                    "description": "Платформа для публикации и поиска контента: аккаунты, рейтинги и поиск/фильтрация.",
+                    "highlights": [
+                        "Аутентификация пользователей и коллекции по профилям",
+                        "Поиск и фильтрация с реляционной схемой базы данных",
+                        "Система рейтингов и комментариев"
+                    ]
+                },
+                "de": {
+                    "title": "Community Hub",
+                    "category": "Full-stack / Community-App",
+                    "description": "Eine Community-Plattform zum Teilen und Entdecken von Inhalten, mit Konten, Bewertungen und Suche/Filterung.",
+                    "highlights": [
+                        "Benutzerauthentifizierung und profilbasierte Sammlungen",
+                        "Suche und Filterung mit einem relationalen Datenbankschema",
+                        "Bewertungs- und Kommentarsystem für Community-Interaktion"
+                    ]
+                },
+                "pl": {
+                    "title": "Community Hub",
+                    "category": "Full-stack / Aplikacja społecznościowa",
+                    "description": "Platforma społecznościowa do udostępniania i odkrywania treści, z kontami, ocenami oraz wyszukiwaniem/filtrowaniem.",
+                    "highlights": [
+                        "Uwierzytelnianie użytkowników i kolekcje oparte na profilach",
+                        "Wyszukiwanie i filtrowanie z relacyjnym schematem bazy danych",
+                        "System ocen i komentarzy dla zaangażowania społeczności"
+                    ]
+                },
+                "fi": {
+                    "title": "Community Hub",
+                    "category": "Full-stack / Yhteisösovellus",
+                    "description": "Yhteisöalusta sisällön jakamiseen ja löytämiseen, käyttäjätileillä, arvosteluilla ja haku-/suodatustoiminnolla.",
+                    "highlights": [
+                        "Käyttäjäautentikointi ja profiilipohjaiset kokoelmat",
+                        "Haku ja suodatus relaatiotietokantaskeemalla",
+                        "Arvostelu- ja kommentointijärjestelmä yhteisön sitouttamiseen"
+                    ]
+                }
+            }
+        },
+        {
+            "id": 3,
+            "color": "purple",
+            "tags": ["Node.js", "Express", "Redis", "REST API"],
+            "secondaryHref": "https://github.com/your-username/link-shortener",
+            "featured": false,
+            "i18n": {
+                "en": {
+                    "title": "Link Shortener",
+                    "category": "Backend / Microservice",
+                    "description": "A lightweight link-shortening microservice with click analytics, built for low-latency redirects.",
+                    "highlights": [
+                        "Fast key generation and lookup for low-latency redirects",
+                        "Click analytics with timestamped event logging",
+                        "Rate limiting and abuse protection on the public API"
+                    ]
+                },
+                "ru": {
+                    "title": "Link Shortener",
+                    "category": "Backend / Микросервис",
+                    "description": "Лёгкий микросервис для сокращения ссылок с аналитикой переходов, оптимизирован под низкую задержку.",
+                    "highlights": [
+                        "Быстрая генерация и поиск ключей для редиректов с низкой задержкой",
+                        "Аналитика переходов с логированием событий по времени",
+                        "Rate limiting и защита от abuse на публичном API"
+                    ]
+                },
+                "de": {
+                    "title": "Link Shortener",
+                    "category": "Backend / Microservice",
+                    "description": "Ein leichtgewichtiger Link-Verkürzungsdienst mit Klick-Analytics, optimiert für latenzarme Weiterleitungen.",
+                    "highlights": [
+                        "Schnelle Schlüsselgenerierung und -suche für latenzarme Weiterleitungen",
+                        "Klick-Analytics mit zeitgestempelter Ereignisprotokollierung",
+                        "Rate Limiting und Missbrauchsschutz auf der öffentlichen API"
+                    ]
+                },
+                "pl": {
+                    "title": "Link Shortener",
+                    "category": "Backend / Mikroserwis",
+                    "description": "Lekki mikroserwis do skracania linków z analityką kliknięć, zoptymalizowany pod kątem niskich opóźnień.",
+                    "highlights": [
+                        "Szybkie generowanie i wyszukiwanie kluczy dla przekierowań o niskim opóźnieniu",
+                        "Analityka kliknięć z rejestrowaniem zdarzeń ze znacznikiem czasu",
+                        "Ograniczanie liczby żądań i ochrona przed nadużyciami"
+                    ]
+                },
+                "fi": {
+                    "title": "Link Shortener",
+                    "category": "Backend / Mikropalvelu",
+                    "description": "Kevyt linkinlyhennysmikropalvelu klikkausanalytiikalla, optimoitu pienelle viiveelle.",
+                    "highlights": [
+                        "Nopea avainten luonti ja haku pienen viiveen uudelleenohjauksiin",
+                        "Klikkausanalytiikka aikaleimatulla tapahtumalokilla",
+                        "Pyyntöjen rajoitus ja väärinkäytön esto"
+                    ]
+                }
+            }
+        }
+    ]
+}

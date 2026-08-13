@@ -1,0 +1,33 @@
+// src/shared/styles/typography.scss
+
+:root {
+    // Swap these three to change the whole site's typography — every
+    // component reads its font through these variables, never a raw
+    // font-family name.
+    --font-display: var(--font-sora);
+    --font-body: var(--font-sora);
+    --font-mono: var(--font-geist-mono);
+
+    // === Type scale =====================================
+    // Reference scale for new sections/components, derived from the
+    // sizes already in use across the demo sections. Existing sections
+    // keep their own fine-tuned fluid clamp() values.
+    --text-xs: 13px;
+    --text-sm: 15px;
+    --text-base: 17px;
+    --text-lg: 19px;
+    --text-xl: 22px;
+    --text-2xl: clamp(26px, 3.5vw, 38px);
+    --text-3xl: clamp(32px, 5vw, 56px);
+    --text-display: clamp(40px, 9vw, 130px);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1;
+    font-weight: 600;
+}
