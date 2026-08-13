@@ -1,0 +1,212 @@
+@use "@/shared/styles/mixins" as *;
+
+// =============================================
+// Wrapper — transparent bar over the hero image
+// =============================================
+
+.wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 10px 0;
+    background: rgba(20, 18, 24, 0.32);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.22);
+}
+
+.main {
+    @include flex-between;
+
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding-inline: clamp(20px, 6vw, 64px);
+}
+
+// =============================================
+// Logo
+// =============================================
+
+.logo {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    @include focus-ring;
+}
+
+.logoIcon {
+    width: 64px;
+    height: auto;
+
+    @include respond-to("tablet") {
+        width: 52px;
+    }
+}
+
+// =============================================
+// Navigation
+// =============================================
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    @include respond-to("tablet") {
+        display: none;
+    }
+}
+
+.link {
+    position: relative;
+    isolation: isolate;
+    display: block;
+    padding: 8px 14px;
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.78);
+    text-decoration: none;
+    @include transition(color);
+    @include focus-ring;
+
+    @include can-hover {
+        &:hover {
+            color: #fff;
+        }
+    }
+}
+
+.activeUnderline {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 2px;
+    height: 2px;
+    background: #fff;
+    pointer-events: none;
+}
+
+.linkActive {
+    color: #fff;
+    font-weight: 600;
+}
+
+// =============================================
+// Mobile menu — hamburger toggle + dropdown panel
+// =============================================
+
+.menuToggle {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    @include focus-ring;
+
+    @include respond-to("tablet") {
+        display: flex;
+    }
+
+    span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        border-radius: 2px;
+        background: #fff;
+        transition:
+            transform 0.35s cubic-bezier(0.65, 0, 0.35, 1),
+            opacity 0.2s ease,
+            width 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    @include can-hover {
+        &:hover span {
+            width: 26px;
+        }
+    }
+}
+
+.menuToggleOpen {
+    span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+
+    span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    @include can-hover {
+        &:hover span {
+            width: 22px;
+        }
+    }
+}
+
+.mobileMenu {
+    display: none;
+
+    @include respond-to("tablet") {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        background: rgba(9, 8, 12, 0.96);
+        backdrop-filter: blur(28px) saturate(140%);
+        -webkit-backdrop-filter: blur(28px) saturate(140%);
+        padding: 100px clamp(24px, 8vw, 48px) 48px;
+    }
+}
+
+.mobileNavList {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mobileLink {
+    display: block;
+    padding: 16px 2px;
+    font-family: var(--font-display);
+    font-size: clamp(28px, 8vw, 40px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    @include transition(color);
+    @include focus-ring;
+
+    li:last-child & {
+        border-bottom: none;
+    }
+}
+
+.mobileLinkActive {
+    color: #fff;
+}
