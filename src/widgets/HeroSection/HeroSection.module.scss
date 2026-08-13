@@ -1,0 +1,276 @@
+@use "@/shared/styles/mixins" as *;
+
+// =============================================
+// Section reset — this widget owns its own height/scroll logic
+// =============================================
+
+.sectionReset {
+    --_pad-top: 0px;
+    --_pad-bottom: 0px;
+}
+
+.wrap {
+    position: relative;
+    height: 340vh;
+
+    @include respond-to("tablet") {
+        height: auto;
+        min-height: 100svh;
+    }
+}
+
+// =============================================
+// Stage — sticks to the viewport for the wrap's extra scroll distance
+// =============================================
+
+.stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+    display: flex;
+
+    @include respond-to("tablet") {
+        position: relative;
+        height: auto;
+        min-height: 100svh;
+        overflow: visible;
+    }
+}
+
+// =============================================
+// Background layers — sky (slow) + car/dirt (fast, rises on scroll)
+// =============================================
+
+.background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(180deg, #4b4570 0%, #d99a5c 65%, #8a6a4a 100%);
+}
+
+.skyLayer,
+.carLayer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -12%;
+    height: 124%;
+    will-change: transform;
+}
+
+.layerImage {
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.layerImageLoaded {
+    opacity: 1;
+}
+
+.scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0.12;
+    background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.18) 42%, rgba(0, 0, 0, 0) 62%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 26%),
+        linear-gradient(180deg, transparent 60%, #0b0b11 100%);
+    will-change: opacity;
+}
+
+.solid {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: #0c0c0e;
+    opacity: 0;
+    will-change: opacity;
+}
+
+// =============================================
+// Copy — headline / description / CTA
+// =============================================
+
+.inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding-inline: clamp(20px, 6vw, 64px);
+    display: flex;
+    align-items: flex-start;
+    flex: 1;
+}
+
+.copy {
+    @include flex-column;
+
+    gap: 22px;
+    max-width: clamp(550px, 35vw, 520px);
+    padding-top: clamp(150px, 30vh, 320px);
+    will-change: transform, opacity;
+}
+
+.title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(30px, 4.4vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.ghost {
+    display: inline-block;
+    margin-left: 0.2em;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+
+    @include respond-to("tablet") {
+        margin-left: 0.08em;
+    }
+}
+
+.description {
+    font-weight: 400;
+    font-size: clamp(14px, 1.05vw, 16px);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 49ch;
+}
+
+// =============================================
+// CTA button
+// =============================================
+
+.ctaBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    align-self: flex-start;
+    padding: 10px 25px;
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.04);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    @include transition(background-color, border-color, color, box-shadow, transform);
+    @include focus-ring;
+
+    @include can-hover {
+        &:hover {
+            border-color: #fff;
+            background: #fff;
+            color: #09090b;
+            box-shadow: 0 0 32px rgba(255, 255, 255, 0.3);
+
+            .ctaCircle {
+                background: #09090b;
+            }
+
+            .arrowTrack {
+                transform: translateX(0);
+            }
+
+            .ctaArrow path {
+                fill: #fff;
+            }
+        }
+    }
+
+    &:active {
+        transform: scale(0.96);
+        box-shadow: none;
+    }
+}
+
+.ctaCircle {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #fff;
+    flex-shrink: 0;
+    overflow: hidden;
+    @include transition(background-color);
+}
+
+.arrowTrack {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    transform: translateX(-25px);
+    @include transition(transform);
+}
+
+.arrowSlot {
+    @include flex-center;
+
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
+}
+
+
+.ctaArrow {
+    width: 15px;
+    height: auto;
+
+    & path {
+        fill: #09090b;
+        transition: fill var(--transition-fast);
+    }
+}
+
+// =============================================
+// Safari clone — the word that flies from the headline to here
+// =============================================
+
+.safariClone {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: clamp(64px, 13vw, 200px);
+    line-height: 1;
+    color: #fff;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+
+    @include respond-to("tablet") {
+        display: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        display: none;
+    }
+}
+
+.measureGhost {
+    visibility: hidden;
+}
+
+.safariCloneGradient {
+    background-image: linear-gradient(90deg, #4a3a24 0%, #d9ae73 55%, #f6e2bd 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    opacity: 0;
+}
