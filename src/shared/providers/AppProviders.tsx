@@ -4,6 +4,7 @@ import { useLayoutEffect } from "react";
 import { MotionProvider } from "./MotionProvider";
 import { ThemeProvider } from "./ThemeProvider";
 import { PreloaderProvider } from "./PreloaderProvider";
+import { SmoothScrollProvider } from "./SmoothScrollProvider";
 import { Preloader } from "@/widgets/Preloader";
 
 interface AppProvidersProps {
@@ -52,7 +53,7 @@ export function AppProviders({ children, initialHasSeenPreloader }: AppProviders
             <PreloaderProvider initialHasSeenPreloader={initialHasSeenPreloader}>
                 <MotionProvider>
                     <Preloader />
-                    {children}
+                    <SmoothScrollProvider>{children}</SmoothScrollProvider>
                 </MotionProvider>
             </PreloaderProvider>
         </ThemeProvider>
