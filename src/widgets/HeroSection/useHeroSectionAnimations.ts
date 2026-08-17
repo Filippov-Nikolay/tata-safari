@@ -12,20 +12,20 @@ const SAFARI_FINAL_RISE_RATIO = -0.30;
 const SAFARI_EXIT_RISE_RATIO = -0.62;
 const FEATURE_EXIT_SCALE = 0.88;
 const FEATURE_EXIT_RISE_RATIO = -0.20;
-const GALLERY_FINAL_RISE_RATIO = -0.70;
+const GALLERY_FINAL_RISE_RATIO = -0.65;
 
 const isCompact = () => window.matchMedia("(max-width: 768px)").matches;
 
-const PHASE_MORPH_END = 0.281;
-const PHASE_REST_END = 0.342;
-const PHASE_LIFT_END = 0.419;
+const PHASE_MORPH_END = 0.273;
+const PHASE_REST_END = 0.332;
+const PHASE_LIFT_END = 0.407;
 const PHASE_SHRINK_START = PHASE_LIFT_END;
-const PHASE_SHRINK_END = 0.545;
-const PHASE_FEATURE_REVEAL_START = 0.440;
-const PHASE_FEATURE_REVEAL_END = 0.515;
-const PHASE_HOLD_END = 0.573;
+const PHASE_SHRINK_END = 0.529;
+const PHASE_FEATURE_REVEAL_START = 0.427;
+const PHASE_FEATURE_REVEAL_END = 0.500;
+const PHASE_HOLD_END = 0.555;
 const PHASE_EXIT_START = PHASE_HOLD_END;
-const PHASE_EXIT_END = 0.720;
+const PHASE_EXIT_END = 0.755;
 const PHASE_GALLERY_SLIDE_START = PHASE_EXIT_END;
 const PHASE_GALLERY_SLIDE_END = 1;
 
@@ -112,10 +112,10 @@ export function useHeroSectionAnimations(enabled = true) {
                 return (fontSize - SAFARI_FINAL_SHRINK_PX) / fontSize;
             };
 
-
-
-
-
+            // GrandDesignGallery lives in a separate widget, so it's reached
+            // by id rather than a ref threaded across component boundaries.
+            // Optional: if it's missing for any reason, everything above
+            // still works, this tween is just skipped.
             const gallery = document.getElementById("grand-design");
 
             gsap.set(ghost, { autoAlpha: 0 });
@@ -136,14 +136,14 @@ export function useHeroSectionAnimations(enabled = true) {
                     trigger: wrap,
                     start: "top top",
                     end: "bottom bottom",
-                    scrub: 1.2,
+                    scrub: 0.4,
                     invalidateOnRefresh: true,
                 },
             })
                 .fromTo(
                     car,
                     { yPercent: 0, scale: 1 },
-                    { yPercent: -26, scale: 1.06, duration: PHASE_MORPH_END },
+                    { yPercent: -15, scale: 1.06, duration: PHASE_MORPH_END },
                     0,
                 )
                 .fromTo(sky, { yPercent: 0 }, { yPercent: -9, duration: PHASE_MORPH_END }, 0)
@@ -266,9 +266,6 @@ export function useHeroSectionAnimations(enabled = true) {
                     PHASE_EXIT_START,
                 )
                 .to({}, { duration: 1 }, 0);
-
-
-
 
             if (gallery) {
                 tl.fromTo(

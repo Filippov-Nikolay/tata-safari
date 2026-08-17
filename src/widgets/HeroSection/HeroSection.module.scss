@@ -11,7 +11,7 @@
 
 .wrap {
     position: relative;
-    height: 1217vh;
+    height: 900vh;
 
     @include respond-to("tablet") {
         height: auto;
@@ -54,8 +54,8 @@
     position: absolute;
     left: 0;
     right: 0;
-    top: -12%;
-    height: 124%;
+    top: -25%;
+    height: 150%;
     will-change: transform;
 }
 
