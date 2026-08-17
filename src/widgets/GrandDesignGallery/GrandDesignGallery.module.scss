@@ -1,0 +1,152 @@
+@use "@/shared/styles/mixins" as *;
+
+// =============================================
+// Section — fixed dark background, continuing the
+// hero's landed dark state with no visual seam.
+// =============================================
+
+.section {
+    --_pad-top: 0px;
+
+    background: #0b0b11;
+}
+
+.wrap {
+    width: 100%;
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding-inline: clamp(20px, 6vw, 64px);
+}
+
+// =============================================
+// Bento grid — one full-width tile, then two
+// asymmetric rows (wide+narrow, narrow+wide).
+// =============================================
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: auto clamp(200px, 22vw, 320px) clamp(200px, 22vw, 320px);
+    gap: clamp(12px, 1.4vw, 20px);
+
+    @include respond-to("tablet") {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+        gap: 14px;
+    }
+}
+
+.tile {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background: #0c0c0e;
+    will-change: transform, opacity, filter;
+}
+
+.tile1 {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    aspect-ratio: 1672 / 941;
+
+    @include respond-to("tablet") {
+        grid-column: 1;
+        grid-row: auto;
+    }
+}
+
+.tile2 {
+    grid-column: 1 / 6;
+    grid-row: 2;
+
+    @include respond-to("tablet") {
+        grid-column: 1;
+        grid-row: auto;
+        aspect-ratio: 4 / 3;
+    }
+}
+
+.tile3 {
+    grid-column: 6 / -1;
+    grid-row: 2;
+
+    @include respond-to("tablet") {
+        grid-column: 1;
+        grid-row: auto;
+        aspect-ratio: 4 / 3;
+    }
+}
+
+.tile4 {
+    grid-column: 1 / 4;
+    grid-row: 3;
+
+    @include respond-to("tablet") {
+        grid-column: 1;
+        grid-row: auto;
+        aspect-ratio: 4 / 3;
+    }
+}
+
+.tile5 {
+    grid-column: 4 / -1;
+    grid-row: 3;
+
+    @include respond-to("tablet") {
+        grid-column: 1;
+        grid-row: auto;
+        aspect-ratio: 4 / 3;
+    }
+}
+
+// =============================================
+// Tile contents — photo, bottom scrim, callout
+// =============================================
+
+.tileImage {
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.tileImageLoaded {
+    opacity: 1;
+}
+
+.tileScrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.72) 100%);
+    pointer-events: none;
+}
+
+.tileCallout {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: clamp(16px, 2.2vw, 28px);
+    pointer-events: none;
+}
+
+.tileTitle {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(15px, 1.3vw, 19px);
+    line-height: 1.2;
+    color: #fff;
+    margin: 0 0 6px;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
+}
+
+.tileText {
+    font-size: clamp(11px, 0.85vw, 13px);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.78);
+    max-width: 46ch;
+    margin: 0;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.32);
+}
