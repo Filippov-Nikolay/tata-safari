@@ -12,7 +12,7 @@ const isCompact = () => window.matchMedia("(max-width: 767px)").matches;
 export function useGrandDesignGalleryAnimations() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const gridRef = useRef<HTMLDivElement>(null);
-    const { refs: tileRefs, setRef: setTileRef } = useArrayRefs<HTMLDivElement>();
+    const { refs: tileRefs, setRef: setTileRef } = useArrayRefs<HTMLButtonElement>();
 
     useScrollTriggerAutoRefresh();
 

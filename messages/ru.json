@@ -13,9 +13,35 @@
         "cta": "Book Now",
         "safariWord": "Safari",
         "featureTitle": "The Grand Design",
-        "featureDescription": "The new safari showcases an artistic sensibility that's sophisticated, assertive and way ahead of its time",
-        "detailTitle": "New Parametric Grille",
-        "detailDescription": "First impressions should always leave an indelible mark. The New Safari's Parametric Grille is designed to do just that. It makes the frontal stance bolder and masculine, captivating the onlookers instantly."
+        "featureDescription": "The new safari showcases an artistic sensibility that's sophisticated, assertive and way ahead of its time"
+    },
+    "gallery": {
+        "tile1": {
+            "title": "New Parametric Grille",
+            "short": "A bold parametric grille and signature lighting give the New Safari a commanding road presence from every angle.",
+            "expanded": "The New Safari's front design combines a wide parametric grille with a confident upright stance and distinctive lighting signature. Sculpted surfaces and carefully integrated details create a modern interpretation of Safari's unmistakable road presence."
+        },
+        "tile2": {
+            "title": "Luxurious Comfort",
+            "short": "A spacious, refined cabin designed to make every journey comfortable — whether you're driving or relaxing in the rear.",
+            "expanded": "Step inside a cabin designed around space, comfort and everyday usability. Generous seating, premium finishes and thoughtfully positioned controls create an inviting environment for both short city drives and long-distance journeys."
+        },
+        "tile3": {
+            "title": "Effortless Everyday Access",
+            "short": "Smart and convenient access to the luggage area makes loading and unloading effortless when your hands are full.",
+            "expanded": "Everyday practicality is built into the New Safari. The large luggage area and convenient tailgate access make it easier to load shopping, luggage or travel essentials while keeping the experience simple and intuitive."
+        },
+        "tile4": {
+            "title": "Distinctive From Every Angle",
+            "short": "A distinctive rear light signature and sculpted proportions give the Safari an unmistakable presence even as it drives away.",
+            "expanded": "The rear of the New Safari continues the confident design language of the front. A clean horizontal lighting signature emphasises its width, while strong surfaces and carefully detailed elements create a planted and sophisticated appearance."
+        },
+        "tile5": {
+            "title": "Connected Digital Cockpit",
+            "short": "An intuitive driver-focused cockpit brings information, entertainment and essential controls together in one refined space.",
+            "expanded": "The New Safari places technology at the centre of the driving experience. Digital displays, intuitive controls and an intelligently organised dashboard keep important information within easy reach while maintaining a clean, premium interior design."
+        },
+        "close": "Close"
     },
     "contact": {
         "headlineStart": "Давайте",
