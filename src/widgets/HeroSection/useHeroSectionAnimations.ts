@@ -16,16 +16,16 @@ const GALLERY_FINAL_RISE_RATIO = -0.70;
 
 const isCompact = () => window.matchMedia("(max-width: 768px)").matches;
 
-const PHASE_MORPH_END = 0.370;
-const PHASE_REST_END = 0.452;
-const PHASE_LIFT_END = 0.553;
+const PHASE_MORPH_END = 0.281;
+const PHASE_REST_END = 0.342;
+const PHASE_LIFT_END = 0.419;
 const PHASE_SHRINK_START = PHASE_LIFT_END;
-const PHASE_SHRINK_END = 0.719;
-const PHASE_FEATURE_REVEAL_START = 0.581;
-const PHASE_FEATURE_REVEAL_END = 0.680;
-const PHASE_HOLD_END = 0.756;
+const PHASE_SHRINK_END = 0.545;
+const PHASE_FEATURE_REVEAL_START = 0.440;
+const PHASE_FEATURE_REVEAL_END = 0.515;
+const PHASE_HOLD_END = 0.573;
 const PHASE_EXIT_START = PHASE_HOLD_END;
-const PHASE_EXIT_END = 0.783;
+const PHASE_EXIT_END = 0.720;
 const PHASE_GALLERY_SLIDE_START = PHASE_EXIT_END;
 const PHASE_GALLERY_SLIDE_END = 1;
 
@@ -112,10 +112,10 @@ export function useHeroSectionAnimations(enabled = true) {
                 return (fontSize - SAFARI_FINAL_SHRINK_PX) / fontSize;
             };
 
-        
-        
-        
-        
+
+
+
+
             const gallery = document.getElementById("grand-design");
 
             gsap.set(ghost, { autoAlpha: 0 });
@@ -136,7 +136,7 @@ export function useHeroSectionAnimations(enabled = true) {
                     trigger: wrap,
                     start: "top top",
                     end: "bottom bottom",
-                    scrub: 0.9,
+                    scrub: 1.2,
                     invalidateOnRefresh: true,
                 },
             })
@@ -267,9 +267,9 @@ export function useHeroSectionAnimations(enabled = true) {
                 )
                 .to({}, { duration: 1 }, 0);
 
-        
-        
-        
+
+
+
             if (gallery) {
                 tl.fromTo(
                     gallery,
