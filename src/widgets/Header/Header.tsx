@@ -20,6 +20,7 @@ import type { NavItem } from "@/shared/types";
 const SECTION_IDS = navigation.map((item) => item.key);
 
 const SCROLL_OFFSET = 100;
+const SCROLLED_THRESHOLD_PX = 8;
 
 export function Header() {
     const safeSlideDown = useMotionVariants(slideDown);
@@ -30,6 +31,14 @@ export function Header() {
     // *is* the hero, so top-of-page should still highlight it.
     const activeSection = useActiveSection(SECTION_IDS, isReady) || SECTION_IDS[0];
     const [menuOpen, setMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > SCROLLED_THRESHOLD_PX);
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
 
     // Full-screen takeover — lock the page behind it so it doesn't
     // scroll along with the (still fixed) header while the menu is open.
@@ -50,11 +59,31 @@ export function Header() {
 
     return (
         <m.header
-            className={styles.wrapper}
+            className={cn(styles.wrapper, scrolled && styles.wrapperScrolled)}
             variants={safeSlideDown}
             initial="hidden"
             animate={isReady ? "visible" : "hidden"}
         >
+            <svg aria-hidden="true" focusable="false" className={styles.filterDefs}>
+                <filter id="navbar-liquid-glass" x="-20%" y="-20%" width="140%" height="140%">
+                    <feTurbulence
+                        type="fractalNoise"
+                        baseFrequency="0.008 0.045"
+                        numOctaves={2}
+                        seed={4}
+                        result="noise"
+                    />
+                    <feGaussianBlur in="noise" stdDeviation={3} result="softNoise" />
+                    <feDisplacementMap
+                        in="SourceGraphic"
+                        in2="softNoise"
+                        scale={14}
+                        xChannelSelector="R"
+                        yChannelSelector="G"
+                    />
+                </filter>
+            </svg>
+
             <div className={styles.main}>
                 <Link
                     href="/"
