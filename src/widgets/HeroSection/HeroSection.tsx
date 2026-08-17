@@ -31,6 +31,7 @@ export function HeroSection() {
         cloneRef,
         cloneGradientRef,
         endGhostRef,
+        featureBlockRef,
     } = useHeroSectionAnimations(isReady);
 
     return (
@@ -138,6 +139,11 @@ export function HeroSection() {
                         aria-hidden="true"
                     >
                         {t("safariWord")}
+                    </div>
+
+                    <div className={styles.featureBlock} ref={featureBlockRef}>
+                        <h2 className={styles.featureTitle}>{t("featureTitle")}</h2>
+                        <p className={styles.featureDescription}>{t("featureDescription")}</p>
                     </div>
                 </div>
             </div>

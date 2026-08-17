@@ -11,7 +11,7 @@
 
 .wrap {
     position: relative;
-    height: 340vh;
+    height: 740vh;
 
     @include respond-to("tablet") {
         height: auto;
@@ -273,4 +273,145 @@
     color: transparent;
     -webkit-text-fill-color: transparent;
     opacity: 0;
+}
+
+// =============================================
+// Feature blurb — revealed while SAFARI shrinks, then rises to roughly
+// take SAFARI's place once it exits.
+// =============================================
+
+.featureBlock {
+    position: absolute;
+    z-index: 2;
+    top: 36%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    padding-inline: 20px;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+
+    @include respond-to("tablet") {
+        display: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        display: none;
+    }
+}
+
+.featureTitle {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(23px, 2.35vw, 29px);
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.featureDescription {
+    font-size: clamp(15px, 1.05vw, 17px);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+// =============================================
+// Feature media scaffolding — unused for now.
+// =============================================
+
+.featureMedia {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: clamp(188px, 29vh, 260px);
+    width: min(52vw, 700px);
+    transform: translateX(-50%);
+    pointer-events: none;
+    opacity: 0;
+    will-change: transform, opacity, filter;
+
+    @include respond-to("tablet") {
+        display: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        display: none;
+    }
+}
+
+.featureMediaGlow {
+    position: absolute;
+    inset: auto 14% -10% 14%;
+    height: 34%;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(217, 174, 115, 0.18) 0%,
+        rgba(217, 174, 115, 0.1) 26%,
+        rgba(217, 174, 115, 0) 74%
+    );
+    filter: blur(34px);
+    pointer-events: none;
+}
+
+.featureMediaFrame {
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 1672 / 941;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: #131316;
+    box-shadow:
+        0 24px 64px rgba(0, 0, 0, 0.34),
+        0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(180deg, rgba(0, 0, 0, 0) 58%, rgba(0, 0, 0, 0.08) 100%),
+            radial-gradient(circle at 86% 74%, rgba(0, 0, 0, 0.76) 0%, rgba(0, 0, 0, 0) 34%);
+        pointer-events: none;
+    }
+}
+
+.featureMediaImage {
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transition: opacity 0.55s ease;
+}
+
+.featureMediaImageLoaded {
+    opacity: 1;
+}
+
+.featureMediaCallout {
+    position: absolute;
+    right: clamp(18px, 2.2vw, 30px);
+    bottom: clamp(18px, 2.6vh, 30px);
+    z-index: 2;
+    width: min(34%, 220px);
+    text-align: left;
+    color: #fff;
+}
+
+.featureMediaCalloutTitle {
+    margin: 0 0 6px;
+    font-family: var(--font-display);
+    font-size: clamp(15px, 1.15vw, 18px);
+    font-weight: 700;
+    line-height: 1.2;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.28);
+}
+
+.featureMediaCalloutText {
+    margin: 0;
+    font-size: clamp(10px, 0.8vw, 12px);
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.82);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.32);
 }
