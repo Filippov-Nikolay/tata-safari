@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Section } from "@/shared/ui";
 import { cn } from "@/shared/lib/cn";
-import { usePreloader } from "@/shared/providers";
 import { useGrandDesignGalleryAnimations } from "./useGrandDesignGalleryAnimations";
 import styles from "./GrandDesignGallery.module.scss";
 
@@ -19,8 +18,7 @@ const TILES = [
 
 export function GrandDesignGallery() {
     const t = useTranslations("hero");
-    const { isReady } = usePreloader();
-    const { sectionRef, gridRef, setTileRef } = useGrandDesignGalleryAnimations(isReady);
+    const { sectionRef, gridRef, setTileRef } = useGrandDesignGalleryAnimations();
 
     const [loaded, setLoaded] = useState<boolean[]>(() => TILES.map(() => false));
 

@@ -12,19 +12,22 @@ const SAFARI_FINAL_RISE_RATIO = -0.30;
 const SAFARI_EXIT_RISE_RATIO = -0.62;
 const FEATURE_EXIT_SCALE = 0.88;
 const FEATURE_EXIT_RISE_RATIO = -0.20;
+const GALLERY_FINAL_RISE_RATIO = -0.70;
 
 const isCompact = () => window.matchMedia("(max-width: 768px)").matches;
 
-const PHASE_MORPH_END = 0.460;
-const PHASE_REST_END = 0.563;
-const PHASE_LIFT_END = 0.689;
+const PHASE_MORPH_END = 0.370;
+const PHASE_REST_END = 0.452;
+const PHASE_LIFT_END = 0.553;
 const PHASE_SHRINK_START = PHASE_LIFT_END;
-const PHASE_SHRINK_END = 0.896;
-const PHASE_FEATURE_REVEAL_START = 0.724;
-const PHASE_FEATURE_REVEAL_END = 0.848;
-const PHASE_HOLD_END = 0.942;
+const PHASE_SHRINK_END = 0.719;
+const PHASE_FEATURE_REVEAL_START = 0.581;
+const PHASE_FEATURE_REVEAL_END = 0.680;
+const PHASE_HOLD_END = 0.756;
 const PHASE_EXIT_START = PHASE_HOLD_END;
-const PHASE_EXIT_END = 1;
+const PHASE_EXIT_END = 0.783;
+const PHASE_GALLERY_SLIDE_START = PHASE_EXIT_END;
+const PHASE_GALLERY_SLIDE_END = 1;
 
 export function useHeroSectionAnimations(enabled = true) {
     const reduced = useReducedMotion();
@@ -98,6 +101,7 @@ export function useHeroSectionAnimations(enabled = true) {
             const finalY = () => SAFARI_FINAL_RISE_RATIO * stage.getBoundingClientRect().height;
             const exitY = () => SAFARI_EXIT_RISE_RATIO * stage.getBoundingClientRect().height;
             const featureExitY = () => FEATURE_EXIT_RISE_RATIO * stage.getBoundingClientRect().height;
+            const gallerySlideY = () => GALLERY_FINAL_RISE_RATIO * stage.getBoundingClientRect().height;
             const endScale = () => {
                 const fontSize = Number.parseFloat(window.getComputedStyle(clone).fontSize);
 
@@ -108,6 +112,12 @@ export function useHeroSectionAnimations(enabled = true) {
                 return (fontSize - SAFARI_FINAL_SHRINK_PX) / fontSize;
             };
 
+        
+        
+        
+        
+            const gallery = document.getElementById("grand-design");
+
             gsap.set(ghost, { autoAlpha: 0 });
             gsap.set([clone, cloneGradient], {
                 xPercent: -50,
@@ -116,8 +126,11 @@ export function useHeroSectionAnimations(enabled = true) {
             });
             gsap.set(cloneGradient, { opacity: 0 });
             gsap.set(featureBlock, { autoAlpha: 0, y: 24 });
+            if (gallery) {
+                gsap.set(gallery, { y: 0 });
+            }
 
-            gsap.timeline({
+            const tl = gsap.timeline({
                 defaults: { ease: "none" },
                 scrollTrigger: {
                     trigger: wrap,
@@ -253,6 +266,22 @@ export function useHeroSectionAnimations(enabled = true) {
                     PHASE_EXIT_START,
                 )
                 .to({}, { duration: 1 }, 0);
+
+        
+        
+        
+            if (gallery) {
+                tl.fromTo(
+                    gallery,
+                    { y: 0 },
+                    {
+                        y: gallerySlideY,
+                        duration: PHASE_GALLERY_SLIDE_END - PHASE_GALLERY_SLIDE_START,
+                        immediateRender: false,
+                    },
+                    PHASE_GALLERY_SLIDE_START,
+                );
+            }
         },
         { scope: wrapRef, dependencies: [reduced, enabled], revertOnUpdate: true },
     );
