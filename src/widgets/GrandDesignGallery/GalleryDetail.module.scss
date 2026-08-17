@@ -58,6 +58,11 @@
     overflow: hidden;
 }
 
+.depthLayer {
+    position: absolute;
+    inset: 0;
+}
+
 .image {
     object-fit: cover;
     object-position: center;
@@ -100,4 +105,41 @@
     line-height: 1.7;
     color: rgba(255, 255, 255, 0.82);
     margin: 0;
+}
+
+// =============================================
+// Dots — position within the gallery, doubles as direct navigation
+// =============================================
+
+.dots {
+    position: fixed;
+    left: 50%;
+    bottom: clamp(20px, 4vw, 36px);
+    z-index: 2;
+    display: flex;
+    gap: 10px;
+    transform: translateX(-50%);
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.32);
+    cursor: pointer;
+    @include transition(background-color, transform);
+    @include focus-ring;
+
+    @include can-hover {
+        &:hover {
+            background: rgba(255, 255, 255, 0.55);
+        }
+    }
+}
+
+.dotActive {
+    background: #fff;
+    transform: scale(1.25);
 }

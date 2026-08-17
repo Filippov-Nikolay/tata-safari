@@ -23,7 +23,7 @@ export function GrandDesignGallery() {
     const { sectionRef, gridRef, setTileRef } = useGrandDesignGalleryAnimations();
 
     const [loaded, setLoaded] = useState<boolean[]>(() => TILES.map(() => false));
-    const [activeKey, setActiveKey] = useState<string | null>(null);
+    const [startIndex, setStartIndex] = useState<number | null>(null);
     const [activeRatio, setActiveRatio] = useState(16 / 9);
 
     const markLoaded = (index: number) => {
@@ -34,8 +34,13 @@ export function GrandDesignGallery() {
             return next;
         });
     };
-
-    const activeTile = TILES.find((item) => item.key === activeKey) ?? null;
+    
+    const items = TILES.map((tile) => ({
+        key: tile.key,
+        src: tile.src,
+        title: t(`${tile.key}.title`),
+        text: t(`${tile.key}.expanded`),
+    }));
 
     return (
         <Section id="grand-design" className={styles.section}>
@@ -50,7 +55,7 @@ export function GrandDesignGallery() {
                             onClick={(e) => {
                                 const rect = e.currentTarget.getBoundingClientRect();
                                 setActiveRatio(rect.width / rect.height);
-                                setActiveKey(item.key);
+                                setStartIndex(index);
                             }}
                         >
                             <m.div className={styles.tileImageWrap} layoutId={`gallery-image-${item.key}`}>
@@ -74,17 +79,12 @@ export function GrandDesignGallery() {
             </div>
 
             <GalleryDetail
-                item={
-                    activeTile && {
-                        key: activeTile.key,
-                        src: activeTile.src,
-                        title: t(`${activeTile.key}.title`),
-                        text: t(`${activeTile.key}.expanded`),
-                    }
-                }
-                onClose={() => setActiveKey(null)}
-                closeLabel={t("close")}
+                items={items}
+                startIndex={startIndex}
+                originKey={startIndex !== null ? TILES[startIndex].key : null}
                 imageRatio={activeRatio}
+                onClose={() => setStartIndex(null)}
+                closeLabel={t("close")}
             />
         </Section>
     );
