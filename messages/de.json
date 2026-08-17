@@ -11,7 +11,11 @@
         "title": "The New <safari>Safari</safari>",
         "description": "The New Safari carries on the legendary lineage with contemporary and premium updates. The New Safari is a compelling combination of Grand Design, Cutting-edge Technology & Luxurious Comfort",
         "cta": "Book Now",
-        "safariWord": "Safari"
+        "safariWord": "Safari",
+        "featureTitle": "The Grand Design",
+        "featureDescription": "The new safari showcases an artistic sensibility that's sophisticated, assertive and way ahead of its time",
+        "detailTitle": "New Parametric Grille",
+        "detailDescription": "First impressions should always leave an indelible mark. The New Safari's Parametric Grille is designed to do just that. It makes the frontal stance bolder and masculine, captivating the onlookers instantly."
     },
     "contact": {
         "headlineStart": "Lass uns",
