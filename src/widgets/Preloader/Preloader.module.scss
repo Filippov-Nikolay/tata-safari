@@ -1,5 +1,8 @@
 @use "@/shared/styles/mixins" as *;
 
+$gold: #d9ae73;
+$gold-text: linear-gradient(90deg, #4a3a24 0%, #d9ae73 55%, #f6e2bd 100%);
+
 // =============================================
 // Overlay
 // =============================================
@@ -10,18 +13,40 @@
     background: var(--color-bg);
     @include flex-center;
     flex-direction: column;
+    overflow: hidden;
 
-    // Ambient purple glow — same language as hero section
+    // Ambient gold glow - same language as the hero/footer backdrop glows
     &::before {
         content: "";
         position: absolute;
-        width: 560px;
-        height: 560px;
+        width: 640px;
+        height: 640px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(124, 58, 237, 0.14) 0%, transparent 65%);
+        background: radial-gradient(circle, rgba(217, 174, 115, 0.16) 0%, transparent 65%);
         pointer-events: none;
         filter: blur(var(--blur-lg));
     }
+}
+
+.watermark {
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+    padding-inline: clamp(12px, 2vw, 28px);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14.3vw;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.035);
+    white-space: nowrap;
+    pointer-events: none;
 }
 
 // =============================================
@@ -31,42 +56,79 @@
 .center {
     @include flex-center;
     flex-direction: column;
-    gap: 20px;
+    gap: 22px;
     position: relative;
     z-index: 1;
 }
 
 // =============================================
-// NF logo — scaled-up version of header avatar
+// Mark - logo ringed by a hand-drawn progress stroke
 // =============================================
+
+.mark {
+    position: relative;
+    @include flex-center;
+    width: 88px;
+    height: 88px;
+}
+
+.ring {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+}
+
+.ringTrack {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 1.5;
+}
+
+.ringProgress {
+    fill: none;
+    stroke: $gold;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 6px rgba(217, 174, 115, 0.55));
+}
 
 .logo {
     @include flex-center;
-    width: 80px;
-    height: 80px;
-    border-radius: var(--radius-sm);
-    border: 1px solid rgba(124, 58, 237, 0.5);
-    background: rgba(124, 58, 237, 0.08);
-    color: var(--glow-purple);
-    font-size: 22px;
+    position: relative;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid rgba(217, 174, 115, 0.35);
+    background: rgba(217, 174, 115, 0.06);
+    color: $gold;
+    font-size: 18px;
     font-weight: 700;
     font-family: var(--font-mono);
-    letter-spacing: 0.08em;
-    box-shadow:
-        0 0 48px rgba(124, 58, 237, 0.18),
-        inset 0 0 1px rgba(124, 58, 237, 0.3);
+    letter-spacing: 0.06em;
+    box-shadow: inset 0 0 1px rgba(217, 174, 115, 0.3);
+}
+
+.logoIcon {
+    width: 28px;
+    height: auto;
 }
 
 // =============================================
-// Name
+// Wordmark
 // =============================================
 
 .name {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--color-text-secondary);
-    letter-spacing: 0.06em;
     margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    background-image: $gold-text;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
 }
 
 // =============================================
@@ -83,16 +145,36 @@
 }
 
 .barFill {
+    position: relative;
     height: 100%;
     width: 100%;
-    background: var(--glow-purple);
+    background: $gold;
     border-radius: 2px;
     transform-origin: left center;
-    box-shadow: 0 0 10px rgba(124, 58, 237, 0.7);
+    box-shadow: 0 0 10px rgba(217, 174, 115, 0.7);
+    overflow: hidden;
 
     @include reduced-motion {
         transition: none;
     }
+
+    // Gloss sweep - reads as light catching brushed metal
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.65) 50%, transparent 100%);
+        animation: bar-sheen 1.4s ease-in-out infinite;
+
+        @include reduced-motion {
+            animation: none;
+        }
+    }
+}
+
+@keyframes bar-sheen {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
 // Used by loading.tsx — terminal line above the bar
@@ -106,7 +188,7 @@
 }
 
 .termPrompt {
-    color: var(--glow-purple);
+    color: $gold;
     font-weight: 700;
 }
 
@@ -115,7 +197,7 @@
 }
 
 .termCursor {
-    color: var(--glow-purple);
+    color: $gold;
     animation: cursor-blink 1.1s step-start infinite;
 
     @include reduced-motion {
