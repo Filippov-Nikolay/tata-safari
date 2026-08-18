@@ -11,11 +11,11 @@
 
 .wrap {
     position: relative;
-    height: 810vh;
+    height: 650vh;
 
     @include respond-to("tablet") {
-        height: auto;
-        min-height: 100svh;
+        height: 650svh;
+        min-height: 650svh;
     }
 }
 
@@ -31,10 +31,10 @@
     display: flex;
 
     @include respond-to("tablet") {
-        position: relative;
-        height: auto;
-        min-height: 100svh;
-        overflow: visible;
+        position: sticky;
+        top: 0;
+        height: 100svh;
+        overflow: hidden;
     }
 }
 
@@ -57,6 +57,11 @@
     top: -25%;
     height: 150%;
     will-change: transform;
+
+    @include respond-to("tablet") {
+        top: -6%;
+        height: 112%;
+    }
 }
 
 .layerImage {
@@ -80,6 +85,14 @@
         linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 26%),
         linear-gradient(180deg, transparent 60%, #0b0b11 100%);
     will-change: opacity;
+
+    @include respond-to("tablet") {
+        opacity: 0.32;
+        background:
+            linear-gradient(120deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.36) 48%, rgba(0, 0, 0, 0.1) 78%),
+            linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0) 24%),
+            linear-gradient(180deg, rgba(11, 11, 17, 0) 54%, #0b0b11 100%);
+    }
 }
 
 .solid {
@@ -105,15 +118,27 @@
     display: flex;
     align-items: flex-start;
     flex: 1;
+
+    @include respond-to("tablet") {
+        display: flex;
+        padding-inline: 16px;
+    }
 }
 
 .copy {
     @include flex-column;
 
     gap: 22px;
-    max-width: clamp(550px, 35vw, 520px);
+    max-width: clamp(320px, 35vw, 520px);
     padding-top: clamp(150px, 30vh, 320px);
     will-change: transform, opacity;
+
+    @include respond-to("tablet") {
+        width: min(100%, 19rem);
+        max-width: none;
+        gap: 18px;
+        padding-top: clamp(112px, 16vh, 150px);
+    }
 }
 
 .title {
@@ -124,6 +149,12 @@
     letter-spacing: -0.01em;
     color: #fff;
     white-space: nowrap;
+
+    @include respond-to("tablet") {
+        font-size: clamp(48px, 14vw, 72px);
+        white-space: normal;
+        max-width: 6ch;
+    }
 }
 
 .ghost {
@@ -143,6 +174,11 @@
     line-height: 1.65;
     color: rgba(255, 255, 255, 0.85);
     max-width: 49ch;
+
+    @include respond-to("tablet") {
+        font-size: 16px;
+        max-width: 20ch;
+    }
 }
 
 // =============================================
@@ -190,6 +226,11 @@
     &:active {
         transform: scale(0.96);
         box-shadow: none;
+    }
+
+    @include respond-to("tablet") {
+        padding: 12px 22px;
+        font-size: 15px;
     }
 }
 
@@ -254,7 +295,10 @@
     opacity: 0;
 
     @include respond-to("tablet") {
-        display: none;
+        display: block;
+        top: 47%;
+        font-size: clamp(72px, 22vw, 120px);
+        letter-spacing: 0.03em;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -273,6 +317,278 @@
     color: transparent;
     -webkit-text-fill-color: transparent;
     opacity: 0;
+}
+
+.safariBackdropGlow {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 53%;
+    width: min(70vw, 980px);
+    height: min(28vw, 380px);
+    transform: translate(-50%, -50%);
+    border-radius: 999px;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(217, 174, 115, 0.42) 0%, rgba(217, 174, 115, 0.22) 34%, rgba(217, 174, 115, 0) 74%);
+    filter: blur(34px);
+    opacity: 0;
+    transform-origin: 50% 50%;
+    pointer-events: none;
+    will-change: transform, opacity, filter;
+
+    @include respond-to("tablet") {
+        display: block;
+        top: auto;
+        bottom: clamp(96px, 12vh, 144px);
+        width: min(122vw, 580px);
+        height: min(46vw, 204px);
+        background:
+            radial-gradient(circle at 50% 50%, rgba(217, 174, 115, 0.52) 0%, rgba(217, 174, 115, 0.28) 36%, rgba(217, 174, 115, 0) 76%);
+        filter: blur(28px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        display: none;
+    }
+}
+
+.safariBackdrop {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    bottom: clamp(-200px, -15vh, -90px);
+    width: 100vw;
+    max-width: none;
+    aspect-ratio: 1619 / 971;
+    transform: translateX(-50%);
+    opacity: 0;
+    transform-origin: 50% 100%;
+    pointer-events: none;
+    will-change: transform, opacity, filter;
+
+    @include respond-to("tablet") {
+        display: block;
+        left: calc(100% + 25px);
+        bottom: clamp(-242px, -28vh, -192px);
+        width: min(540vw, 2440px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        display: none;
+    }
+}
+
+.safariBackdropVeil {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: clamp(220px, 34vh, 430px);
+    background: linear-gradient(
+        180deg,
+        rgba(12, 12, 14, 0) 0%,
+        rgba(12, 12, 14, 0.08) 22%,
+        rgba(12, 12, 14, 0.26) 48%,
+        rgba(12, 12, 14, 0.64) 72%,
+        #0c0c0e 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+
+    @include respond-to("tablet") {
+        display: block;
+        height: clamp(180px, 28vh, 260px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        display: none;
+    }
+}
+
+.safariBackdropImage {
+    object-fit: contain;
+    object-position: center bottom;
+    filter: drop-shadow(0 18px 48px rgba(0, 0, 0, 0.55));
+}
+
+.mobileShowcase {
+    display: none;
+
+    @include respond-to("tablet") {
+        @include flex-column;
+
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        min-height: 100svh;
+        gap: clamp(32px, 10vw, 56px);
+        justify-content: space-between;
+        padding: clamp(104px, 24vw, 140px) 20px clamp(36px, 10vw, 64px);
+        overflow: clip;
+        display: none;
+    }
+}
+
+.mobileCopy {
+    display: none;
+
+    @include respond-to("tablet") {
+        @include flex-column;
+
+        position: relative;
+        z-index: 3;
+        width: min(100%, 22rem);
+        gap: 18px;
+    }
+}
+
+.mobileTitle {
+    display: none;
+
+    @include respond-to("tablet") {
+        display: block;
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(46px, 14vw, 64px);
+        line-height: 0.92;
+        letter-spacing: -0.03em;
+        color: #fff;
+        max-width: 6ch;
+        text-wrap: balance;
+    }
+}
+
+.mobileTitleSafari {
+    display: none;
+
+    @include respond-to("tablet") {
+        display: block;
+        margin-top: 0.08em;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+}
+
+.mobileDescription {
+    display: none;
+
+    @include respond-to("tablet") {
+        display: block;
+        margin: 0;
+        max-width: 23ch;
+        font-size: clamp(16px, 4.2vw, 19px);
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.88);
+        text-wrap: pretty;
+    }
+}
+
+.mobileCtaBtn {
+    display: none;
+
+    @include respond-to("tablet") {
+        display: inline-flex;
+        margin-top: 4px;
+    }
+}
+
+.mobileBrandScene {
+    display: none;
+
+    @include respond-to("tablet") {
+        position: relative;
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        margin-top: auto;
+        padding-top: clamp(18px, 6vw, 30px);
+        overflow: clip;
+        isolation: isolate;
+    }
+}
+
+.mobileSafariWord {
+    display: none;
+
+    @include respond-to("tablet") {
+        display: block;
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(56px, 18vw, 92px);
+        line-height: 0.88;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        background-image: linear-gradient(90deg, #4a3a24 0%, #d9ae73 55%, #f6e2bd 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+.mobileBackdropGlow {
+    display: none;
+
+    @include respond-to("tablet") {
+        display: block;
+        position: absolute;
+        z-index: 0;
+        left: 50%;
+        bottom: clamp(56px, 15vw, 94px);
+        width: min(82vw, 440px);
+        height: min(32vw, 168px);
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background:
+            radial-gradient(circle at 50% 50%, rgba(217, 174, 115, 0.42) 0%, rgba(217, 174, 115, 0.2) 34%, rgba(217, 174, 115, 0) 76%);
+        filter: blur(24px);
+        pointer-events: none;
+    }
+}
+
+.mobileBackdrop {
+    display: none;
+
+    @include respond-to("tablet") {
+        display: block;
+        position: relative;
+        z-index: 2;
+        width: min(100%, 470px);
+        max-width: 470px;
+        aspect-ratio: 1619 / 971;
+        margin: clamp(-12px, -3vw, -18px) auto 0;
+    }
+}
+
+.mobileFeatureBlock {
+    display: none;
+
+    @include respond-to("tablet") {
+        @include flex-column;
+
+        align-items: center;
+        width: min(100%, 34rem);
+        padding-inline: 20px;
+        text-align: center;
+
+        .featureTitle {
+            font-size: clamp(24px, 6.6vw, 30px);
+        }
+
+        .featureDescription {
+            font-size: 15px;
+            max-width: 32ch;
+        }
+    }
 }
 
 // =============================================
@@ -294,7 +610,10 @@
     opacity: 0;
 
     @include respond-to("tablet") {
-        display: none;
+        display: block;
+        top: 35%;
+        max-width: 360px;
+        padding-inline: 24px;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -308,110 +627,20 @@
     font-size: clamp(23px, 2.35vw, 29px);
     color: #fff;
     margin-bottom: 12px;
+
+    @include respond-to("tablet") {
+        font-size: clamp(26px, 7vw, 32px);
+    }
 }
 
 .featureDescription {
     font-size: clamp(15px, 1.05vw, 17px);
     line-height: 1.65;
     color: rgba(255, 255, 255, 0.65);
-}
-
-// =============================================
-// Feature media scaffolding — unused for now.
-// =============================================
-
-.featureMedia {
-    position: absolute;
-    z-index: 2;
-    left: 50%;
-    top: clamp(188px, 29vh, 260px);
-    width: min(52vw, 700px);
-    transform: translateX(-50%);
-    pointer-events: none;
-    opacity: 0;
-    will-change: transform, opacity, filter;
 
     @include respond-to("tablet") {
-        display: none;
+        font-size: 15px;
+        max-width: 29ch;
+        margin: 0 auto;
     }
-
-    @media (prefers-reduced-motion: reduce) {
-        display: none;
-    }
-}
-
-.featureMediaGlow {
-    position: absolute;
-    inset: auto 14% -10% 14%;
-    height: 34%;
-    border-radius: 50%;
-    background: radial-gradient(
-        circle,
-        rgba(217, 174, 115, 0.18) 0%,
-        rgba(217, 174, 115, 0.1) 26%,
-        rgba(217, 174, 115, 0) 74%
-    );
-    filter: blur(34px);
-    pointer-events: none;
-}
-
-.featureMediaFrame {
-    position: relative;
-    z-index: 1;
-    aspect-ratio: 1672 / 941;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-    background: #131316;
-    box-shadow:
-        0 24px 64px rgba(0, 0, 0, 0.34),
-        0 0 0 1px rgba(255, 255, 255, 0.02) inset;
-
-    &::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-            linear-gradient(180deg, rgba(0, 0, 0, 0) 58%, rgba(0, 0, 0, 0.08) 100%),
-            radial-gradient(circle at 86% 74%, rgba(0, 0, 0, 0.76) 0%, rgba(0, 0, 0, 0) 34%);
-        pointer-events: none;
-    }
-}
-
-.featureMediaImage {
-    object-fit: cover;
-    object-position: center;
-    opacity: 0;
-    transition: opacity 0.55s ease;
-}
-
-.featureMediaImageLoaded {
-    opacity: 1;
-}
-
-.featureMediaCallout {
-    position: absolute;
-    right: clamp(18px, 2.2vw, 30px);
-    bottom: clamp(18px, 2.6vh, 30px);
-    z-index: 2;
-    width: min(34%, 220px);
-    text-align: left;
-    color: #fff;
-}
-
-.featureMediaCalloutTitle {
-    margin: 0 0 6px;
-    font-family: var(--font-display);
-    font-size: clamp(15px, 1.15vw, 18px);
-    font-weight: 700;
-    line-height: 1.2;
-    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.28);
-}
-
-.featureMediaCalloutText {
-    margin: 0;
-    font-size: clamp(10px, 0.8vw, 12px);
-    line-height: 1.45;
-    color: rgba(255, 255, 255, 0.82);
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.32);
 }

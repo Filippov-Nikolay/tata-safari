@@ -11,23 +11,27 @@ const SAFARI_LIFT_RISE_RATIO = -0.20;
 const SAFARI_FINAL_RISE_RATIO = -0.30;
 const SAFARI_EXIT_RISE_RATIO = -0.62;
 const FEATURE_EXIT_SCALE = 0.88;
-const FEATURE_EXIT_RISE_RATIO = -0.20;
-const GALLERY_FINAL_RISE_RATIO = -0.65;
-
-const isCompact = () => window.matchMedia("(max-width: 768px)").matches;
-
-const PHASE_MORPH_END = 0.304;
-const PHASE_REST_END = 0.369;
-const PHASE_LIFT_END = 0.452;
+const FEATURE_EXIT_RISE_RATIO = -0.32;
+const PHASE_MORPH_END = 0.362;
+const PHASE_REST_END = 0.440;
+const PHASE_LIFT_END = 0.539;
 const PHASE_SHRINK_START = PHASE_LIFT_END;
-const PHASE_SHRINK_END = 0.588;
-const PHASE_FEATURE_REVEAL_START = 0.475;
-const PHASE_FEATURE_REVEAL_END = 0.556;
-const PHASE_HOLD_END = 0.617;
-const PHASE_EXIT_START = PHASE_HOLD_END;
-const PHASE_EXIT_END = 0.839;
-const PHASE_GALLERY_SLIDE_START = PHASE_EXIT_END;
-const PHASE_GALLERY_SLIDE_END = 1;
+const PHASE_SHRINK_END = 0.701;
+const PHASE_BACKDROP_REVEAL_START = 0.39;
+const PHASE_BACKDROP_REVEAL_END = 0.52;
+const PHASE_BACKDROP_HIDE_START = 0.60;
+const PHASE_BACKDROP_FADE_START = 0.73;
+const PHASE_BACKDROP_GLOW_HIDE_END = 0.76;
+const PHASE_BACKDROP_HIDE_END = 0.84;
+const PHASE_FEATURE_REVEAL_START = 0.567;
+const PHASE_FEATURE_REVEAL_END = 0.663;
+const PHASE_HOLD_END = 0.735;
+const PHASE_SAFARI_EXIT_START = PHASE_HOLD_END;
+const PHASE_SAFARI_EXIT_END = 1;
+const PHASE_FEATURE_EXIT_START = 0.71;
+const PHASE_FEATURE_EXIT_END = 0.93;
+const PHASE_GALLERY_ENTRY_START = 0.60;
+const PHASE_GALLERY_ENTRY_END = 1;
 
 export function useHeroSectionAnimations(enabled = true) {
     const reduced = useReducedMotion();
@@ -45,6 +49,9 @@ export function useHeroSectionAnimations(enabled = true) {
     const cloneRef = useRef<HTMLDivElement>(null);
     const cloneGradientRef = useRef<HTMLDivElement>(null);
     const endGhostRef = useRef<HTMLDivElement>(null);
+    const safariBackdropGlowRef = useRef<HTMLDivElement>(null);
+    const safariBackdropRef = useRef<HTMLDivElement>(null);
+    const safariBackdropVeilRef = useRef<HTMLDivElement>(null);
     const featureBlockRef = useRef<HTMLDivElement>(null);
 
     useGSAP(
@@ -60,11 +67,16 @@ export function useHeroSectionAnimations(enabled = true) {
             const clone = cloneRef.current;
             const cloneGradient = cloneGradientRef.current;
             const endGhost = endGhostRef.current;
+            const safariBackdropGlow = safariBackdropGlowRef.current;
+            const safariBackdrop = safariBackdropRef.current;
+            const safariBackdropVeil = safariBackdropVeilRef.current;
             const featureBlock = featureBlockRef.current;
+            const gallery = document.getElementById("grand-design");
 
             if (
                 !wrap || !stage || !sky || !car || !scrim || !solid || !copy || !ghost ||
-                !clone || !cloneGradient || !endGhost || !featureBlock
+                !clone || !cloneGradient || !endGhost || !safariBackdropGlow || !safariBackdrop ||
+                !safariBackdropVeil || !featureBlock
             ) {
                 return;
             }
@@ -73,11 +85,18 @@ export function useHeroSectionAnimations(enabled = true) {
                 return;
             }
 
-            if (reduced || isCompact()) {
-                gsap.set([ghost, sky, car, scrim, solid, copy], { clearProps: "all" });
+            if (reduced) {
+                gsap.set(
+                    [ghost, sky, car, scrim, solid, copy, safariBackdropGlow, safariBackdrop, safariBackdropVeil],
+                    { clearProps: "all" },
+                );
+                if (gallery) {
+                    gsap.set(gallery, { clearProps: "all" });
+                }
                 return;
             }
 
+            const isCompactViewport = window.matchMedia("(max-width: 768px)").matches;
             const ghostTopNeutral = () => {
                 const copyY = gsap.getProperty(copy, "y") as number;
                 return ghost.getBoundingClientRect().top - copyY;
@@ -101,7 +120,13 @@ export function useHeroSectionAnimations(enabled = true) {
             const finalY = () => SAFARI_FINAL_RISE_RATIO * stage.getBoundingClientRect().height;
             const exitY = () => SAFARI_EXIT_RISE_RATIO * stage.getBoundingClientRect().height;
             const featureExitY = () => FEATURE_EXIT_RISE_RATIO * stage.getBoundingClientRect().height;
-            const gallerySlideY = () => GALLERY_FINAL_RISE_RATIO * stage.getBoundingClientRect().height;
+            const scrollDistance = () => Math.max(wrap.offsetHeight - stage.getBoundingClientRect().height, 0);
+            const galleryTopAtPhase = (phase: number) => wrap.offsetHeight - phase * scrollDistance();
+            const galleryEntranceStartY = () => {
+                const stageHeight = stage.getBoundingClientRect().height;
+                return stageHeight - galleryTopAtPhase(PHASE_GALLERY_ENTRY_START);
+            };
+            const galleryEntranceEndY = () => -stage.getBoundingClientRect().height;
             const endScale = () => {
                 const fontSize = Number.parseFloat(window.getComputedStyle(clone).fontSize);
 
@@ -112,12 +137,6 @@ export function useHeroSectionAnimations(enabled = true) {
                 return (fontSize - SAFARI_FINAL_SHRINK_PX) / fontSize;
             };
 
-            // GrandDesignGallery lives in a separate widget, so it's reached
-            // by id rather than a ref threaded across component boundaries.
-            // Optional: if it's missing for any reason, everything above
-            // still works, this tween is just skipped.
-            const gallery = document.getElementById("grand-design");
-
             gsap.set(ghost, { autoAlpha: 0 });
             gsap.set([clone, cloneGradient], {
                 xPercent: -50,
@@ -125,9 +144,22 @@ export function useHeroSectionAnimations(enabled = true) {
                 transformOrigin: "50% 50%",
             });
             gsap.set(cloneGradient, { opacity: 0 });
+            gsap.set(safariBackdropGlow, {
+                autoAlpha: 0,
+                scale: 0.76,
+                yPercent: 8,
+                filter: "blur(88px)",
+            });
+            gsap.set(safariBackdrop, {
+                autoAlpha: 0,
+                scale: 1.09,
+                yPercent: 12,
+                filter: "blur(20px) brightness(0.68) saturate(0.84)",
+            });
+            gsap.set(safariBackdropVeil, { autoAlpha: 0, yPercent: 8 });
             gsap.set(featureBlock, { autoAlpha: 0, y: 24 });
             if (gallery) {
-                gsap.set(gallery, { y: 0 });
+                gsap.set(gallery, { marginTop: galleryEntranceStartY });
             }
 
             const tl = gsap.timeline({
@@ -136,10 +168,16 @@ export function useHeroSectionAnimations(enabled = true) {
                     trigger: wrap,
                     start: "top top",
                     end: "bottom bottom",
-                    scrub: 0.4,
+                    // Lenis (see SmoothScrollProvider) already smooths the underlying
+                    // scroll position globally - stacking a heavy scrub value on top
+                    // of that compounds into a noticeably laggier feel, so this stays
+                    // light and just irons out per-frame stepping.
+                    scrub: isCompactViewport ? 0.18 : 0.4,
                     invalidateOnRefresh: true,
                 },
-            })
+            });
+
+            tl
                 .fromTo(
                     car,
                     { yPercent: 0, scale: 1 },
@@ -184,6 +222,39 @@ export function useHeroSectionAnimations(enabled = true) {
                     PHASE_MORPH_END * 0.77,
                 )
                 .fromTo(
+                    safariBackdropGlow,
+                    { autoAlpha: 0, scale: 0.76, yPercent: 8, filter: "blur(88px)" },
+                    {
+                        autoAlpha: 1,
+                        scale: 1,
+                        yPercent: 0,
+                        filter: "blur(34px)",
+                        duration: PHASE_BACKDROP_REVEAL_END - PHASE_BACKDROP_REVEAL_START,
+                        ease: "power3.out",
+                        immediateRender: false,
+                    },
+                    PHASE_BACKDROP_REVEAL_START,
+                )
+                .fromTo(
+                    safariBackdrop,
+                    {
+                        autoAlpha: 0,
+                        scale: 1.09,
+                        yPercent: 12,
+                        filter: "blur(20px) brightness(0.68) saturate(0.84)",
+                    },
+                    {
+                        autoAlpha: 1,
+                        scale: 1,
+                        yPercent: 0,
+                        filter: "blur(0px) brightness(1) saturate(1)",
+                        duration: PHASE_BACKDROP_REVEAL_END - PHASE_BACKDROP_REVEAL_START,
+                        ease: "power3.out",
+                        immediateRender: false,
+                    },
+                    PHASE_BACKDROP_REVEAL_START,
+                )
+                .fromTo(
                     clone,
                     { x: 0, y: 0, scale: 1 },
                     {
@@ -202,6 +273,60 @@ export function useHeroSectionAnimations(enabled = true) {
                         immediateRender: false,
                     },
                     PHASE_REST_END,
+                )
+                .fromTo(
+                    safariBackdropGlow,
+                    { autoAlpha: 1, scale: 1, yPercent: 0, filter: "blur(34px)" },
+                    {
+                        autoAlpha: 0,
+                        scale: 1.03,
+                        yPercent: 12,
+                        filter: "blur(52px)",
+                        duration: PHASE_BACKDROP_GLOW_HIDE_END - PHASE_BACKDROP_HIDE_START,
+                        ease: "power2.inOut",
+                        immediateRender: false,
+                    },
+                    PHASE_BACKDROP_HIDE_START,
+                )
+                .fromTo(
+                    safariBackdrop,
+                    {
+                        scale: 1,
+                        yPercent: 0,
+                        filter: "blur(0px) brightness(1) saturate(1)",
+                    },
+                    {
+                        scale: 0.992,
+                        yPercent: 24,
+                        filter: "blur(3px) brightness(0.82) saturate(0.92)",
+                        duration: PHASE_BACKDROP_HIDE_END - PHASE_BACKDROP_HIDE_START,
+                        ease: "power3.in",
+                        immediateRender: false,
+                    },
+                    PHASE_BACKDROP_HIDE_START,
+                )
+                .fromTo(
+                    safariBackdropVeil,
+                    { autoAlpha: 0, yPercent: 8 },
+                    {
+                        autoAlpha: 1,
+                        yPercent: 0,
+                        duration: PHASE_BACKDROP_HIDE_END - PHASE_BACKDROP_HIDE_START,
+                        ease: "power2.out",
+                        immediateRender: false,
+                    },
+                    PHASE_BACKDROP_HIDE_START,
+                )
+                .fromTo(
+                    safariBackdrop,
+                    { autoAlpha: 1 },
+                    {
+                        autoAlpha: 0,
+                        duration: PHASE_BACKDROP_HIDE_END - PHASE_BACKDROP_FADE_START,
+                        ease: "power2.out",
+                        immediateRender: false,
+                    },
+                    PHASE_BACKDROP_FADE_START,
                 )
                 .fromTo(
                     featureBlock,
@@ -240,45 +365,47 @@ export function useHeroSectionAnimations(enabled = true) {
                     { y: finalY, autoAlpha: 1 },
                     {
                         y: exitY, autoAlpha: 0,
-                        duration: PHASE_EXIT_END - PHASE_EXIT_START,
+                        duration: PHASE_SAFARI_EXIT_END - PHASE_SAFARI_EXIT_START,
                         immediateRender: false,
                     },
-                    PHASE_EXIT_START,
+                    PHASE_SAFARI_EXIT_START,
                 )
                 .fromTo(
                     cloneGradient,
                     { y: finalY, autoAlpha: 1 },
                     {
                         y: exitY, autoAlpha: 0,
-                        duration: PHASE_EXIT_END - PHASE_EXIT_START,
+                        duration: PHASE_SAFARI_EXIT_END - PHASE_SAFARI_EXIT_START,
                         immediateRender: false,
                     },
-                    PHASE_EXIT_START,
+                    PHASE_SAFARI_EXIT_START,
                 )
                 .fromTo(
                     featureBlock,
-                    { y: 0, scale: 1 },
+                    { y: 0, scale: 1, autoAlpha: 1 },
                     {
-                        y: featureExitY, scale: FEATURE_EXIT_SCALE,
-                        duration: PHASE_EXIT_END - PHASE_EXIT_START,
+                        y: featureExitY,
+                        scale: FEATURE_EXIT_SCALE,
+                        autoAlpha: 0,
+                        duration: PHASE_FEATURE_EXIT_END - PHASE_FEATURE_EXIT_START,
                         immediateRender: false,
                     },
-                    PHASE_EXIT_START,
-                )
-                .to({}, { duration: 1 }, 0);
+                    PHASE_FEATURE_EXIT_START,
+                );
 
             if (gallery) {
-                tl.fromTo(
+                tl.to(
                     gallery,
-                    { y: 0 },
                     {
-                        y: gallerySlideY,
-                        duration: PHASE_GALLERY_SLIDE_END - PHASE_GALLERY_SLIDE_START,
+                        marginTop: galleryEntranceEndY,
+                        duration: PHASE_GALLERY_ENTRY_END - PHASE_GALLERY_ENTRY_START,
                         immediateRender: false,
                     },
-                    PHASE_GALLERY_SLIDE_START,
+                    PHASE_GALLERY_ENTRY_START,
                 );
             }
+
+            tl.to({}, { duration: 1 }, 0);
         },
         { scope: wrapRef, dependencies: [reduced, enabled], revertOnUpdate: true },
     );
@@ -295,6 +422,9 @@ export function useHeroSectionAnimations(enabled = true) {
         cloneRef,
         cloneGradientRef,
         endGhostRef,
+        safariBackdropGlowRef,
+        safariBackdropRef,
+        safariBackdropVeilRef,
         featureBlockRef,
     };
 }

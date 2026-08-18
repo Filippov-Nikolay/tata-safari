@@ -12,6 +12,8 @@ import { cn } from "@/shared/lib/cn";
 import { useHeroSectionAnimations } from "./useHeroSectionAnimations";
 import styles from "./HeroSection.module.scss";
 
+const SAFARI_BACKDROP_SRC = "/hero/bg-SAFARI.png?v=20260818-1326";
+
 export function HeroSection() {
     const t = useTranslations("hero");
     const safeFadeIn = useMotionVariants(fadeIn);
@@ -31,6 +33,9 @@ export function HeroSection() {
         cloneRef,
         cloneGradientRef,
         endGhostRef,
+        safariBackdropGlowRef,
+        safariBackdropRef,
+        safariBackdropVeilRef,
         featureBlockRef,
     } = useHeroSectionAnimations(isReady);
 
@@ -140,6 +145,81 @@ export function HeroSection() {
                     >
                         {t("safariWord")}
                     </div>
+                    <div
+                        className={styles.safariBackdropGlow}
+                        ref={safariBackdropGlowRef}
+                        aria-hidden="true"
+                    />
+                    <div
+                        className={styles.safariBackdrop}
+                        ref={safariBackdropRef}
+                        aria-hidden="true"
+                    >
+                        <Image
+                            src={SAFARI_BACKDROP_SRC}
+                            alt=""
+                            fill
+                            priority
+                            sizes="100vw"
+                            unoptimized
+                            className={styles.safariBackdropImage}
+                        />
+                    </div>
+                    <div
+                        className={styles.safariBackdropVeil}
+                        ref={safariBackdropVeilRef}
+                        aria-hidden="true"
+                    />
+
+                    <m.div
+                        className={styles.mobileShowcase}
+                        variants={safeFadeIn}
+                        initial="hidden"
+                        animate={isReady ? "visible" : "hidden"}
+                    >
+                        <div className={styles.mobileCopy}>
+                            <h1 className={styles.mobileTitle}>
+                                {t.rich("title", {
+                                    safari: (chunks) => (
+                                        <span className={styles.mobileTitleSafari}>
+                                            {chunks}
+                                        </span>
+                                    ),
+                                })}
+                            </h1>
+
+                            <p className={styles.mobileDescription}>{t("description")}</p>
+
+                            <a href="#" className={cn(styles.ctaBtn, styles.mobileCtaBtn)}>
+                                <span className={styles.ctaText}>{t("cta")}</span>
+                                <span className={styles.ctaCircle} aria-hidden="true">
+                                    <span className={styles.arrowTrack}>
+                                        <span className={styles.arrowSlot}>
+                                            <ArrowIcon className={styles.ctaArrow} />
+                                        </span>
+                                        <span className={styles.arrowSlot}>
+                                            <ArrowIcon className={styles.ctaArrow} />
+                                        </span>
+                                    </span>
+                                </span>
+                            </a>
+                        </div>
+
+                        <div className={styles.mobileBrandScene}>
+                            <div className={styles.mobileSafariWord}>{t("safariWord")}</div>
+                            <div className={styles.mobileBackdropGlow} aria-hidden="true" />
+                            <div className={styles.mobileBackdrop}>
+                                <Image
+                                    src={SAFARI_BACKDROP_SRC}
+                                    alt=""
+                                    fill
+                                    sizes="100vw"
+                                    unoptimized
+                                    className={styles.safariBackdropImage}
+                                />
+                            </div>
+                        </div>
+                    </m.div>
 
                     <div className={styles.featureBlock} ref={featureBlockRef}>
                         <h2 className={styles.featureTitle}>{t("featureTitle")}</h2>
