@@ -5,7 +5,7 @@ import Image from "next/image";
 import { createPortal } from "react-dom";
 import { m, AnimatePresence } from "framer-motion";
 import { useMounted } from "@/shared/hooks/useMounted";
-import { useLenis } from "@/shared/providers";
+import { useScrollLock } from "@/shared/hooks";
 import { cn } from "@/shared/lib/cn";
 import styles from "./GalleryDetail.module.scss";
 
@@ -92,20 +92,7 @@ export function GalleryDetail({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, onClose, currentIndex, items.length]);
 
-    const lenis = useLenis();
-
-    useEffect(() => {
-        document.body.style.overflow = isOpen ? "hidden" : "";
-        if (isOpen) {
-            lenis?.stop();
-        } else {
-            lenis?.start();
-        }
-        return () => {
-            document.body.style.overflow = "";
-            lenis?.start();
-        };
-    }, [isOpen, lenis]);
+    useScrollLock(isOpen);
 
     useEffect(() => {
         if (!isOpen) return;

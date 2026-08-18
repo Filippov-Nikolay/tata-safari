@@ -2,6 +2,7 @@
 
 import { AnimatePresence, m } from "framer-motion";
 import { usePreloader } from "@/shared/providers";
+import { useScrollLock } from "@/shared/hooks";
 import { siteConfig } from "@/shared/config/site.config";
 import { TataLogoIcon } from "@/shared/ui";
 import styles from "./Preloader.module.scss";
@@ -10,7 +11,8 @@ const EASE_OUT = [0.4, 0, 0.2, 1] as const;
 const EASE_REVEAL = [0.16, 1, 0.3, 1] as const;
 
 export function Preloader() {
-    const { isShown, onExitComplete } = usePreloader();
+    const { isShown, isReady, onExitComplete } = usePreloader();
+    useScrollLock(!isReady);
 
     return (
         <AnimatePresence onExitComplete={onExitComplete}>

@@ -51,8 +51,12 @@ export function AppProviders({ children }: AppProvidersProps) {
         <ThemeProvider>
             <PreloaderProvider>
                 <MotionProvider>
-                    <Preloader />
-                    <SmoothScrollProvider>{children}</SmoothScrollProvider>
+                    {/* Inside SmoothScrollProvider so it can reach the Lenis
+                        instance and stop it for the duration of the preload. */}
+                    <SmoothScrollProvider>
+                        <Preloader />
+                        {children}
+                    </SmoothScrollProvider>
                 </MotionProvider>
             </PreloaderProvider>
         </ThemeProvider>
