@@ -54,6 +54,19 @@
         "instagram": "Instagram"
     },
     "footer": {
+        "eyebrow": "Der neue Safari",
+        "title": "Erobern Sie Ihr Leben zurück",
+        "description": "Für die Mutigen entwickelt. Für Komfort gefertigt. Entworfen, um Sie weiterzubringen.",
+        "cta": "Jetzt buchen",
+        "brand": "Tata Motors",
+        "nav": {
+            "contact": "Kontakt",
+            "careers": "Karriere",
+            "media": "Medien",
+            "legal": "Rechtliches",
+            "privacy": "Datenschutz",
+            "terms": "Nutzungsbedingungen"
+        },
         "rights": "Alle Rechte vorbehalten."
     }
 }

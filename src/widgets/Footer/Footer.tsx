@@ -1,88 +1,88 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
-import { siteConfig, siteInitials } from "@/shared/config/site.config";
-import { navigation } from "@/shared/config/navigation.config";
-import { scrollToElementId, scrollToTop } from "@/shared/lib/scroll";
-import { cn } from "@/shared/lib/cn";
-import { Container, ContactIcon, GitHubIcon, LinkedInIcon, TelegramIcon } from "@/shared/ui";
-import type { NavItem } from "@/shared/types";
+import { ArrowIcon } from "@/shared/ui";
+import { useFooterAnimations } from "./useFooterAnimations";
 import styles from "./Footer.module.scss";
 
-const SOCIAL_LINKS = [
-    { key: "github",   href: siteConfig.links.github,   Icon: GitHubIcon },
-    { key: "linkedin", href: siteConfig.links.linkedin,  Icon: LinkedInIcon },
-    { key: "telegram", href: siteConfig.links.telegram,  Icon: TelegramIcon },
-    { key: "gmail",    href: siteConfig.links.email,     Icon: ContactIcon },
-] as const;
-
-const SCROLL_OFFSET = 100;
-
-// Same offset logic as Header — kept in sync via `item.scrollOffset` on
-// the shared `navigation` config, not a second hardcoded value here.
-function scrollToSection(e: React.MouseEvent<HTMLAnchorElement>, item: NavItem) {
-    e.preventDefault();
-    scrollToElementId(item.key, { offset: SCROLL_OFFSET + (item.scrollOffset ?? 0) });
-}
+const LEGAL_LINKS = ["contact", "careers", "media", "legal", "privacy", "terms"] as const;
+const FOOTER_BG_SRC = "/footer/bg.png?v=20260818-1454";
+const FOOTER_CAR_SRC = "/footer/car.png?v=20260818-1454";
 
 export function Footer() {
-    const t = useTranslations("nav");
-    const tf = useTranslations("footer");
+    const t = useTranslations("footer");
     const year = new Date().getFullYear();
+    const { footerRef, stageRef, safariWordRef, eyebrowRef, titleRef, descriptionRef, ctaRef } =
+        useFooterAnimations();
 
     return (
-        <footer className={styles.footer}>
-            <Container>
-                <div className={styles.top}>
-                    <Link
-                        href="/"
-                        className={styles.brand}
-                        aria-label="Home"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            scrollToTop();
-                        }}
-                    >
-                        <span className={styles.avatar} aria-hidden="true">{siteInitials}</span>
-                        <span className={styles.name}>{siteConfig.name}</span>
-                    </Link>
+        <footer ref={footerRef} className={styles.footer}>
+            <div ref={stageRef} className={styles.stage}>
+                <div className={styles.background} aria-hidden="true">
+                    <Image
+                        src={FOOTER_BG_SRC}
+                        alt=""
+                        fill
+                        sizes="100vw"
+                        className={styles.bgImage}
+                        unoptimized
+                    />
+                    <p ref={safariWordRef} className={styles.safariWord} aria-hidden="true">
+                        SAFARI
+                    </p>
+                    <div className={styles.carLayer}>
+                        <Image
+                            src={FOOTER_CAR_SRC}
+                            alt=""
+                            fill
+                            sizes="100vw"
+                            className={styles.carImage}
+                            unoptimized
+                        />
+                    </div>
+                    <div className={styles.scrim} />
+                </div>
 
-                    <nav aria-label="Footer navigation">
-                        <ul className={styles.nav}>
-                            {navigation.map((item) => (
-                                <li key={item.key}>
-                                    <a href={item.href} onClick={(e) => scrollToSection(e, item)}>
-                                        {t(item.key)}
-                                    </a>
+                <div className={styles.inner}>
+                    <p ref={eyebrowRef} className={styles.eyebrow}>
+                        {t("eyebrow")}
+                    </p>
+                    <h2 ref={titleRef} className={styles.title}>
+                        {t("title")}
+                    </h2>
+                    <p ref={descriptionRef} className={styles.description}>
+                        {t("description")}
+                    </p>
+
+                    <a ref={ctaRef} href="#" className={styles.ctaBtn}>
+                        <span>{t("cta")}</span>
+                        <span className={styles.ctaCircle} aria-hidden="true">
+                            <ArrowIcon className={styles.ctaArrow} />
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <div className={styles.legal}>
+                <div className={styles.legalInner}>
+                    <span className={styles.brand}>{t("brand")}</span>
+
+                    <nav aria-label="Legal">
+                        <ul className={styles.legalNav}>
+                            {LEGAL_LINKS.map((key) => (
+                                <li key={key}>
+                                    <a href="#">{t(`nav.${key}`)}</a>
                                 </li>
                             ))}
                         </ul>
                     </nav>
 
-                    <ul className={styles.social} aria-label="Social links">
-                        {SOCIAL_LINKS.map(({ key, href, Icon }) => (
-                            <li key={key}>
-                                <a
-                                    href={href}
-                                    target={href.startsWith("mailto") ? undefined : "_blank"}
-                                    rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                                    aria-label={key}
-                                    className={styles.socialLink}
-                                >
-                                    <Icon aria-hidden="true" />
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                <div className={cn(styles.bottom)}>
                     <p className={styles.copyright}>
-                        © {year} {siteConfig.name}. {tf("rights")}
+                        {"\u00A9"} {year} {t("brand")}. {t("rights")}
                     </p>
                 </div>
-            </Container>
+            </div>
         </footer>
     );
 }

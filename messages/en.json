@@ -54,6 +54,19 @@
         "instagram": "Instagram"
     },
     "footer": {
+        "eyebrow": "The New Safari",
+        "title": "Reclaim Your Life",
+        "description": "Engineered for the bold. Crafted for comfort. Designed to take you beyond.",
+        "cta": "Book Now",
+        "brand": "Tata Motors",
+        "nav": {
+            "contact": "Contact Us",
+            "careers": "Careers",
+            "media": "Media",
+            "legal": "Legal",
+            "privacy": "Privacy Policy",
+            "terms": "Terms of Use"
+        },
         "rights": "All rights reserved."
     }
 }

@@ -54,6 +54,19 @@
         "instagram": "Instagram"
     },
     "footer": {
+        "eyebrow": "Nowe Safari",
+        "title": "Odzyskaj Swoje Życie",
+        "description": "Zaprojektowany dla odważnych. Stworzony dla komfortu. Zbudowany, by zabrać Cię dalej.",
+        "cta": "Zarezerwuj teraz",
+        "brand": "Tata Motors",
+        "nav": {
+            "contact": "Kontakt",
+            "careers": "Kariera",
+            "media": "Media",
+            "legal": "Informacje prawne",
+            "privacy": "Polityka prywatności",
+            "terms": "Warunki korzystania"
+        },
         "rights": "Wszelkie prawa zastrzeżone."
     }
 }

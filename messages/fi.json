@@ -54,6 +54,19 @@
         "instagram": "Instagram"
     },
     "footer": {
+        "eyebrow": "Uusi Safari",
+        "title": "Ota Elämäsi Takaisin",
+        "description": "Suunniteltu rohkeille. Valmistettu mukavuutta ajatellen. Tehty viemään sinut pidemmälle.",
+        "cta": "Varaa nyt",
+        "brand": "Tata Motors",
+        "nav": {
+            "contact": "Ota yhteyttä",
+            "careers": "Ura",
+            "media": "Media",
+            "legal": "Lakiasiat",
+            "privacy": "Tietosuoja",
+            "terms": "Käyttöehdot"
+        },
         "rights": "Kaikki oikeudet pidätetään."
     }
 }
