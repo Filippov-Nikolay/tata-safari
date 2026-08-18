@@ -20,7 +20,6 @@ interface GalleryDetailProps {
     items: GalleryDetailItem[];
     startIndex: number | null;
     originKey: string | null;
-    imageRatio: number;
     onClose: () => void;
     closeLabel: string;
 }
@@ -37,24 +36,15 @@ export function GalleryDetail({
     items,
     startIndex,
     originKey,
-    imageRatio,
     onClose,
     closeLabel,
 }: GalleryDetailProps) {
     const mounted = useMounted();
     const isOpen = startIndex !== null;
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(() => startIndex ?? 0);
     const [diving, setDiving] = useState(false);
     const lockedRef = useRef(false);
     const overlayRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (startIndex !== null) {
-            setCurrentIndex(startIndex);
-            setDiving(false);
-            lockedRef.current = false;
-        }
-    }, [startIndex]);
 
     useEffect(() => {
         if (!diving) return;
@@ -116,7 +106,7 @@ export function GalleryDetail({
             lenis?.start();
         };
     }, [isOpen, lenis]);
-    
+
     useEffect(() => {
         if (!isOpen) return;
         const el = overlayRef.current;
@@ -167,7 +157,6 @@ export function GalleryDetail({
                         className={styles.imageWrap}
                         layoutId={!diving && originKey ? `gallery-image-${originKey}` : undefined}
                         transition={IMAGE_FLIP_TRANSITION}
-                        style={{ aspectRatio: imageRatio }}
                     >
                         <AnimatePresence mode="wait">
                             <m.div

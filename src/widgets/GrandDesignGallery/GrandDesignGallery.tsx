@@ -24,7 +24,6 @@ export function GrandDesignGallery() {
 
     const [loaded, setLoaded] = useState<boolean[]>(() => TILES.map(() => false));
     const [startIndex, setStartIndex] = useState<number | null>(null);
-    const [activeRatio, setActiveRatio] = useState(16 / 9);
 
     const markLoaded = (index: number) => {
         setLoaded((prev) => {
@@ -52,11 +51,7 @@ export function GrandDesignGallery() {
                             type="button"
                             ref={setTileRef(index)}
                             className={cn(styles.tile, item.tile)}
-                            onClick={(e) => {
-                                const rect = e.currentTarget.getBoundingClientRect();
-                                setActiveRatio(rect.width / rect.height);
-                                setStartIndex(index);
-                            }}
+                            onClick={() => setStartIndex(index)}
                         >
                             <m.div className={styles.tileImageWrap} layoutId={`gallery-image-${item.key}`}>
                                 <Image
@@ -79,10 +74,10 @@ export function GrandDesignGallery() {
             </div>
 
             <GalleryDetail
+                key={startIndex !== null ? `detail-${startIndex}` : "detail-closed"}
                 items={items}
                 startIndex={startIndex}
                 originKey={startIndex !== null ? TILES[startIndex].key : null}
-                imageRatio={activeRatio}
                 onClose={() => setStartIndex(null)}
                 closeLabel={t("close")}
             />
