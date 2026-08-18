@@ -140,7 +140,6 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
     //          → Sec-CH-Prefers-Color-Scheme (системная тема, Chrome 2й+ визит)
     //          → "dark" (абсолютный fallback; useTheme на клиенте поправит без flash)
     const savedTheme = cookieStore.get("site-theme")?.value;
-    const hasSeenPreloader = cookieStore.get("site-preloader")?.value === "1";
     const clientHint = requestHeaders.get("sec-ch-prefers-color-scheme");
     const theme: "dark" | "light" =
         savedTheme === "light" || savedTheme === "dark"
@@ -170,7 +169,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         >
             <body>
                 <NextIntlClientProvider messages={messages}>
-                    <AppProviders initialHasSeenPreloader={hasSeenPreloader}>
+                    <AppProviders>
                         <Header />
                         {children}
                     </AppProviders>

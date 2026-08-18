@@ -9,10 +9,9 @@ import { Preloader } from "@/widgets/Preloader";
 
 interface AppProvidersProps {
     children: React.ReactNode;
-    initialHasSeenPreloader: boolean;
 }
 
-export function AppProviders({ children, initialHasSeenPreloader }: AppProvidersProps) {
+export function AppProviders({ children }: AppProvidersProps) {
     useLayoutEffect(() => {
         // Keep browser scroll restoration disabled once the app has mounted.
         if ("scrollRestoration" in history) {
@@ -50,7 +49,7 @@ export function AppProviders({ children, initialHasSeenPreloader }: AppProviders
 
     return (
         <ThemeProvider>
-            <PreloaderProvider initialHasSeenPreloader={initialHasSeenPreloader}>
+            <PreloaderProvider>
                 <MotionProvider>
                     <Preloader />
                     <SmoothScrollProvider>{children}</SmoothScrollProvider>
