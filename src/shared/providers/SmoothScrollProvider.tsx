@@ -17,29 +17,36 @@ interface SmoothScrollProviderProps {
 }
 
 export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
-    const [lenis, setLenis] = useState<Lenis | null>(null);
+    const [lenis] = useState<Lenis | null>(() => {
+        if (typeof window === "undefined") {
+            return null;
+        }
 
-    useEffect(() => {
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
         if (reducedMotion || isCompact()) {
+            return null;
+        }
+
+        return new Lenis({ duration: 0.6 });
+    });
+
+    useEffect(() => {
+        if (!lenis) {
             return;
         }
 
-        const instance = new Lenis({ duration: 0.6 });
-        const onTick = (time: number) => instance.raf(time * 1000);
+        const onTick = (time: number) => lenis.raf(time * 1000);
 
-        instance.on("scroll", ScrollTrigger.update);
+        lenis.on("scroll", ScrollTrigger.update);
         gsap.ticker.add(onTick);
         gsap.ticker.lagSmoothing(0);
-        setLenis(instance);
 
         return () => {
             gsap.ticker.remove(onTick);
-            instance.destroy();
-            setLenis(null);
+            lenis.destroy();
         };
-    }, []);
+    }, [lenis]);
 
     return <LenisContext.Provider value={lenis}>{children}</LenisContext.Provider>;
 }
