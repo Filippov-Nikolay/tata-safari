@@ -13,8 +13,18 @@ const FOOTER_CAR_SRC = "/footer/car.png?v=20260818-1454";
 export function Footer() {
     const t = useTranslations("footer");
     const year = new Date().getFullYear();
-    const { footerRef, stageRef, safariWordRef, eyebrowRef, titleRef, descriptionRef, ctaRef } =
-        useFooterAnimations();
+    const {
+        footerRef,
+        stageRef,
+        safariWordRef,
+        carLayerRef,
+        carMotionRef,
+        carRevealRef,
+        eyebrowRef,
+        titleRef,
+        descriptionRef,
+        ctaRef,
+    } = useFooterAnimations();
 
     return (
         <footer ref={footerRef} className={styles.footer}>
@@ -31,15 +41,19 @@ export function Footer() {
                     <p ref={safariWordRef} className={styles.safariWord} aria-hidden="true">
                         SAFARI
                     </p>
-                    <div className={styles.carLayer}>
-                        <Image
-                            src={FOOTER_CAR_SRC}
-                            alt=""
-                            fill
-                            sizes="100vw"
-                            className={styles.carImage}
-                            unoptimized
-                        />
+                    <div ref={carLayerRef} className={styles.carLayer}>
+                        <div ref={carMotionRef} className={styles.carMotion}>
+                            <div ref={carRevealRef} className={styles.carReveal}>
+                                <Image
+                                    src={FOOTER_CAR_SRC}
+                                    alt=""
+                                    fill
+                                    sizes="100vw"
+                                    className={styles.carImage}
+                                    unoptimized
+                                />
+                            </div>
+                        </div>
                     </div>
                     <div className={styles.scrim} />
                 </div>

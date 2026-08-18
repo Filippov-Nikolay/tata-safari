@@ -93,6 +93,21 @@ $ink: #0c0c0e;
     position: absolute;
     inset: 0;
     z-index: 2;
+    will-change: opacity;
+}
+
+.carMotion {
+    position: absolute;
+    inset: 0;
+    transform-origin: 50% 100%;
+    will-change: transform;
+}
+
+.carReveal {
+    position: absolute;
+    inset: 0;
+    transform-origin: 56% 62%;
+    will-change: transform, filter;
 }
 
 .carImage {
