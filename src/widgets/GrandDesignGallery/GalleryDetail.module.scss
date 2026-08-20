@@ -116,10 +116,7 @@
     pointer-events: none;
 
     @include respond-to("tablet") {
-        padding:
-            20px
-            20px
-            max(84px, calc(24px + env(safe-area-inset-bottom)));
+        padding: 20px 20px max(84px, calc(24px + env(safe-area-inset-bottom)));
         max-width: none;
     }
 }
@@ -156,12 +153,13 @@
 
 .dots {
     position: fixed;
-    left: 50%;
+    left: 0;
+    right: 0;
     bottom: clamp(20px, 4vw, 36px);
     z-index: 2;
     display: flex;
+    justify-content: center;
     gap: 10px;
-    transform: translateX(-50%);
 
     @include respond-to("tablet") {
         bottom: max(20px, env(safe-area-inset-bottom));
