@@ -4,6 +4,25 @@
 import { useEffect, type DependencyList } from "react";
 import { ScrollTrigger } from "@/shared/lib/gsap";
 
+let suppressDepth = 0;
+let originalRefresh: typeof ScrollTrigger.refresh | null = null;
+
+export function suppressScrollTriggerAutoRefresh() {
+    if (suppressDepth === 0) {
+        originalRefresh = ScrollTrigger.refresh;
+        ScrollTrigger.refresh = (() => {}) as typeof ScrollTrigger.refresh;
+    }
+    suppressDepth += 1;
+
+    return () => {
+        suppressDepth = Math.max(0, suppressDepth - 1);
+        if (suppressDepth === 0 && originalRefresh) {
+            ScrollTrigger.refresh = originalRefresh;
+            originalRefresh = null;
+        }
+    };
+}
+
 export function useScrollTriggerAutoRefresh(dependencies: DependencyList = []) {
     useEffect(() => {
         let refreshRaf = 0;
