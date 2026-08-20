@@ -69,6 +69,7 @@ export function Footer() {
                         </div>
                     </div>
                     <div className={styles.scrim} />
+                    <div className={styles.topFade} />
                 </div>
 
                 <div className={styles.inner}>
