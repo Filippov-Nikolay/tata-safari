@@ -58,6 +58,7 @@ const UI_CLOSE_TRANSITION = { duration: 0.18, ease: [0.4, 0, 0.2, 1] as const };
 const DIVE_EXIT = { opacity: 0, scale: 0.4, filter: "blur(12px)" };
 const DIVE_TRANSITION = { duration: 0.7, ease: [0.7, 0, 0.84, 0] as const };
 const WHEEL_THRESHOLD = 12;
+const TOUCH_SWIPE_THRESHOLD_PX = 40;
 const STEP_LOCK_MS = 700;
 const CLOSE_IMAGE_RETURN_DELAY_MS = 300;
 const CLOSE_HANDOFF_DELAY_MS = 120;
@@ -120,6 +121,7 @@ export function GalleryDetail({
     const [releaseScrollLock, setReleaseScrollLock] = useState(false);
     const lockedRef = useRef(false);
     const overlayRef = useRef<HTMLDivElement>(null);
+    const touchStartRef = useRef<{ x: number; y: number; handled: boolean } | null>(null);
     const closeLeadTimeoutRef = useRef<number | null>(null);
     const closeHandoffTimeoutRef = useRef<number | null>(null);
 
@@ -297,6 +299,54 @@ export function GalleryDetail({
 
         el.addEventListener("wheel", handleWheelNative, { passive: false });
         return () => el.removeEventListener("wheel", handleWheelNative);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen, phase, currentIndex, items.length, closing]);
+
+    useEffect(() => {
+        if (!isOpen) return;
+        const el = overlayRef.current;
+        if (!el) return;
+
+        const handleTouchStart = (e: TouchEvent) => {
+            if (e.touches.length !== 1) return;
+            const touch = e.touches[0];
+            touchStartRef.current = { x: touch.clientX, y: touch.clientY, handled: false };
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            const start = touchStartRef.current;
+            if (!start || e.touches.length !== 1) return;
+
+            e.preventDefault();
+
+            if (start.handled || phase !== "open" || closing) return;
+
+            const touch = e.touches[0];
+            const deltaX = start.x - touch.clientX;
+            const deltaY = start.y - touch.clientY;
+            const horizontal = Math.abs(deltaX) > Math.abs(deltaY);
+            const delta = horizontal ? deltaX : deltaY;
+
+            if (Math.abs(delta) < TOUCH_SWIPE_THRESHOLD_PX) return;
+
+            start.handled = true;
+            goTo(currentIndex + (delta > 0 ? 1 : -1));
+        };
+
+        const handleTouchEnd = () => {
+            touchStartRef.current = null;
+        };
+
+        el.addEventListener("touchstart", handleTouchStart, { passive: true });
+        el.addEventListener("touchmove", handleTouchMove, { passive: false });
+        el.addEventListener("touchend", handleTouchEnd, { passive: true });
+        el.addEventListener("touchcancel", handleTouchEnd, { passive: true });
+        return () => {
+            el.removeEventListener("touchstart", handleTouchStart);
+            el.removeEventListener("touchmove", handleTouchMove);
+            el.removeEventListener("touchend", handleTouchEnd);
+            el.removeEventListener("touchcancel", handleTouchEnd);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, phase, currentIndex, items.length, closing]);
 
