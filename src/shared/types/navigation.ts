@@ -8,4 +8,8 @@ export interface NavItem {
     icon?: ComponentType<SVGProps<SVGSVGElement>>;
     /** Extra px offset added on top of the default scroll offset for this section. */
     scrollOffset?: number;
+    /** Optional stable element used as the scroll anchor instead of the linked section. */
+    scrollAnchorId?: string;
+    /** Which edge of the scroll anchor should be aligned with the viewport. */
+    scrollAlign?: "start" | "end";
 }

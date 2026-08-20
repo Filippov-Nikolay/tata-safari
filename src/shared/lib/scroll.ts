@@ -1,17 +1,23 @@
+import type Lenis from "lenis";
+
 const COMPLETE_EPSILON_PX = 2;
 const RETARGET_EPSILON_PX = 12;
 const STALL_FRAME_LIMIT = 5;
 const DEFAULT_MAX_DURATION_MS = 1400;
+const LENIS_NAVIGATION_DURATION = 1.2;
+const lenisNavigationEase = (progress: number) => (1 - Math.cos(Math.PI * progress)) / 2;
 
 let activeScrollToken = 0;
 
 interface ManagedScrollOptions {
     behavior?: ScrollBehavior;
     maxDurationMs?: number;
+    lenis?: Lenis | null;
 }
 
 interface ScrollToElementOptions extends ManagedScrollOptions {
     offset?: number;
+    align?: "start" | "end";
 }
 
 function runManagedScroll(
@@ -19,12 +25,22 @@ function runManagedScroll(
     {
         behavior = "smooth",
         maxDurationMs = DEFAULT_MAX_DURATION_MS,
+        lenis,
     }: ManagedScrollOptions = {},
 ) {
     const initialTarget = resolveTargetTop();
     if (initialTarget == null) return;
 
     const token = ++activeScrollToken;
+
+    if (lenis) {
+        lenis.scrollTo(initialTarget, {
+            duration: LENIS_NAVIGATION_DURATION,
+            easing: lenisNavigationEase,
+        });
+        return;
+    }
+
     let rafId = 0;
     let lastY = window.scrollY;
     let stallFrames = 0;
@@ -107,13 +123,16 @@ function runManagedScroll(
 
 export function scrollToElementId(
     id: string,
-    { offset = 0, ...options }: ScrollToElementOptions = {},
+    { offset = 0, align = "start", ...options }: ScrollToElementOptions = {},
 ) {
     runManagedScroll(() => {
         const el = document.getElementById(id);
         if (!el) return null;
 
-        return Math.max(0, el.getBoundingClientRect().top + window.scrollY - offset);
+        const rect = el.getBoundingClientRect();
+        const alignmentOffset = align === "end" ? window.innerHeight - rect.height : 0;
+
+        return Math.max(0, rect.top + window.scrollY - alignmentOffset - offset);
     }, options);
 }
 

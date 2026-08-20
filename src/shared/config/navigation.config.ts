@@ -5,14 +5,16 @@ import type { NavItem } from "@/shared/types";
 // every consumer (Header, Footer, useActiveSection) picks it up —
 // nothing else needs to change in sync.
 //
-// Only "overview" (the Hero) exists as a real section today. The rest are
-// placeholder links (href="#") until their sections are built — see README
-// "Creating a section" for how to wire a new one up.
+// Only these two sections actually exist on the page today. Add an entry
+// here only once its section is really built and rendered — a nav item
+// with nothing to scroll to is worse than no nav item.
 export const navigation: NavItem[] = [
     { key: "overview", href: "#overview" },
-    { key: "edition", href: "#" },
-    { key: "specs", href: "#" },
-    { key: "compare", href: "#" },
-    { key: "reviews", href: "#" },
-    { key: "price", href: "#" },
+    {
+        key: "grand-design",
+        href: "#grand-design",
+        scrollAnchorId: "overview",
+        scrollAlign: "end",
+        scrollOffset: 70,
+    },
 ];

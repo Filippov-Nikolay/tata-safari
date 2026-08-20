@@ -11,6 +11,7 @@
     right: 0;
     z-index: 50;
     padding: 10px 0;
+    padding-inline-end: var(--scroll-lock-offset, 0px);
     background: rgba(20, 18, 24, 0.32);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow:

@@ -9,7 +9,7 @@ import { useMotionVariants } from "@/shared/hooks/useMotionVariants";
 import { useActiveSection } from "@/shared/hooks";
 import { slideDown } from "@/shared/lib/motion/slide-down";
 import { scrollToElementId, scrollToTop } from "@/shared/lib/scroll";
-import { usePreloader } from "@/shared/providers";
+import { useLenis, usePreloader } from "@/shared/providers";
 import { cn } from "@/shared/lib/cn";
 import styles from "./Header.module.scss";
 import { TataLogoIcon } from "@/shared/ui";
@@ -26,6 +26,7 @@ export function Header() {
     const safeSlideDown = useMotionVariants(slideDown);
     const t = useTranslations("nav");
     const { isReady } = usePreloader();
+    const lenis = useLenis();
     // useActiveSection reports "" while at the very top of the page (it
     // assumes a hero *before* the first tracked section). Here "overview"
     // *is* the hero, so top-of-page should still highlight it.
@@ -54,7 +55,11 @@ export function Header() {
     function scrollToSection(e: React.MouseEvent<HTMLAnchorElement>, item: NavItem) {
         e.preventDefault();
         setMenuOpen(false);
-        scrollToElementId(item.key, { offset: SCROLL_OFFSET + (item.scrollOffset ?? 0) });
+        scrollToElementId(item.scrollAnchorId ?? item.key, {
+            align: item.scrollAlign,
+            offset: SCROLL_OFFSET + (item.scrollOffset ?? 0),
+            lenis,
+        });
     }
 
     return (
@@ -92,7 +97,7 @@ export function Header() {
                     onClick={(e) => {
                         e.preventDefault();
                         setMenuOpen(false);
-                        scrollToTop();
+                        scrollToTop({ lenis });
                     }}
                 >
                     <TataLogoIcon className={styles.logoIcon} />

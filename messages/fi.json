@@ -1,11 +1,7 @@
 {
     "nav": {
         "overview": "Overview",
-        "edition": "Edition",
-        "specs": "Specs",
-        "compare": "Compare",
-        "reviews": "Reviews",
-        "price": "Price"
+        "grand-design": "Kohokohdat"
     },
     "hero": {
         "title": "The New <safari>Safari</safari>",
