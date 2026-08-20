@@ -68,5 +68,41 @@
             "terms": "Käyttöehdot"
         },
         "rights": "Kaikki oikeudet pidätetään."
+    },
+    "booking": {
+        "eyebrow": "Varaa nyt",
+        "title": "Varaa oma Safarisi",
+        "subtitle": "Jätä yhteystietosi, niin tiimimme ottaa sinuun pian yhteyttä.",
+        "name": {
+            "label": "Koko nimi",
+            "placeholder": "Matti Meikäläinen"
+        },
+        "phone": {
+            "label": "Puhelinnumero",
+            "placeholder": "+358 40 123 4567"
+        },
+        "email": {
+            "label": "Sähköposti",
+            "placeholder": "matti@example.com"
+        },
+        "city": {
+            "label": "Kaupunki",
+            "optional": "valinnainen",
+            "placeholder": "Kaupunkisi"
+        },
+        "consent": "Hyväksyn, että minuun otetaan yhteyttä varauspyyntööni liittyen.",
+        "submit": "Lähetä pyyntö",
+        "submitting": "Lähetetään...",
+        "close": "Sulje",
+        "errors": {
+            "name": "Anna nimesi",
+            "phone": "Anna kelvollinen puhelinnumero",
+            "email": "Anna kelvollinen sähköpostiosoite",
+            "consent": "Hyväksy jatkaaksesi"
+        },
+        "success": {
+            "title": "Pyyntö lähetetty!",
+            "message": "Kiitos, {name}. Tiimimme ottaa sinuun yhteyttä 24 tunnin kuluessa."
+        }
     }
 }

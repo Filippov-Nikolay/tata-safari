@@ -1,0 +1,407 @@
+@use "@/shared/styles/mixins" as *;
+
+$gold: #d9ae73;
+$ink: #0c0c0e;
+
+// =============================================
+// Overlay + modal
+// =============================================
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(5, 4, 8, 0.82);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+
+    @include respond-to("mobile") {
+        align-items: flex-end;
+        padding: 0;
+    }
+}
+
+.modal {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    max-width: 580px;
+    max-height: 90vh;
+    max-height: 90svh;
+    overflow: hidden auto;
+    overscroll-behavior: contain;
+    padding: 56px 56px 52px;
+    background: linear-gradient(180deg, #141216 0%, #0c0c0e 100%);
+    border: 1px solid rgba(217, 174, 115, 0.16);
+    border-radius: 18px;
+    box-shadow:
+        0 40px 100px -20px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(0, 0, 0, 0.4),
+        0 0 90px -24px rgba(217, 174, 115, 0.22);
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(217, 174, 115, 0.25) transparent;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(217, 174, 115, 0.25);
+        border-radius: 99px;
+    }
+
+    @include respond-to("mobile") {
+        max-width: none;
+        max-height: calc(100svh - 0px);
+        border-radius: 20px 20px 0 0;
+        padding: 40px 24px 32px;
+    }
+}
+
+.watermark {
+    position: absolute;
+    top: -4%;
+    left: 50%;
+    z-index: 0;
+    margin: 0;
+    transform: translateX(-50%);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 116px;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: rgba(217, 174, 115, 0.045);
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 20px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    cursor: pointer;
+    @include transition(background-color, color, border-color);
+    @include focus-ring;
+
+    @include can-hover {
+        &:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.24);
+        }
+    }
+}
+
+.body {
+    position: relative;
+    z-index: 1;
+}
+
+// =============================================
+// Heading
+// =============================================
+
+.eyebrow {
+    margin: 0 0 10px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: $gold;
+}
+
+.title {
+    margin: 0 0 10px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(24px, 3vw, 29px);
+    line-height: 1.12;
+    color: #fff;
+}
+
+.subtitle {
+    margin: 0 0 28px;
+    max-width: 40ch;
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+// =============================================
+// Form
+// =============================================
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.fieldRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    @include respond-to("mobile") {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.optional {
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.input {
+    height: 46px;
+    padding: 0 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    color: #fff;
+    font-size: 14px;
+    font-family: inherit;
+    @include transition(border-color, background-color, box-shadow);
+
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.28);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: rgba(217, 174, 115, 0.55);
+        background: rgba(217, 174, 115, 0.05);
+        box-shadow: 0 0 0 3px rgba(217, 174, 115, 0.12);
+    }
+}
+
+.inputError {
+    border-color: rgba(239, 68, 68, 0.5);
+
+    &:focus {
+        border-color: rgba(239, 68, 68, 0.65);
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14);
+    }
+}
+
+.errorText {
+    margin: 0;
+    min-height: 15px;
+    font-size: 12px;
+    line-height: 15px;
+    color: var(--color-error);
+    opacity: 0;
+    @include transition(opacity);
+
+    @include reduced-motion {
+        transition: none;
+    }
+}
+
+.errorTextVisible {
+    opacity: 1;
+}
+
+.checkboxRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.checkbox {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: $gold;
+    cursor: pointer;
+}
+
+.checkboxLabel {
+    font-size: 13px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+// =============================================
+// Submit button
+// =============================================
+
+.submitBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    height: 52px;
+    margin-top: 6px;
+    padding: 0 8px 0 26px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #d1a463 0%, #e3bd7f 100%);
+    color: $ink;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    cursor: pointer;
+    @include transition(background-color, box-shadow, opacity);
+    @include focus-ring;
+
+    @include can-hover {
+        &:hover:not(:disabled) {
+            background: linear-gradient(135deg, #d9ae73 0%, #ecc98f 100%);
+        }
+    }
+
+    &:disabled {
+        opacity: 0.75;
+        cursor: wait;
+    }
+}
+
+.submitIcon {
+    @include flex-center;
+
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: $ink;
+    flex-shrink: 0;
+}
+
+.arrow {
+    width: 15px;
+    height: auto;
+    color: #fff;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #fff;
+    animation: spin 0.7s linear infinite;
+
+    @include reduced-motion {
+        animation-duration: 1.4s;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// =============================================
+// Success state
+// =============================================
+
+.successPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-block: 20px 8px;
+    text-align: center;
+}
+
+.successRing {
+    width: 62px;
+    height: 62px;
+    margin-bottom: 28px;
+}
+
+.successCircle {
+    fill: none;
+    stroke: $gold;
+    stroke-width: 2;
+    filter: drop-shadow(0 0 8px rgba(217, 174, 115, 0.5));
+}
+
+.successCheck {
+    fill: none;
+    stroke: $gold;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.successTitle {
+    margin: 0 0 14px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 24px;
+    color: #fff;
+}
+
+.successMessage {
+    margin: 0 0 34px;
+    max-width: 34ch;
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.successClose {
+    padding: 12px 28px;
+    border: 1px solid rgba(217, 174, 115, 0.35);
+    border-radius: 8px;
+    background: transparent;
+    color: $gold;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    @include transition(background-color, border-color, color);
+    @include focus-ring;
+
+    @include can-hover {
+        &:hover {
+            background: rgba(217, 174, 115, 0.08);
+            border-color: rgba(217, 174, 115, 0.5);
+        }
+    }
+}

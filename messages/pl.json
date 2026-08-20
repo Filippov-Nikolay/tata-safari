@@ -68,5 +68,41 @@
             "terms": "Warunki korzystania"
         },
         "rights": "Wszelkie prawa zastrzeżone."
+    },
+    "booking": {
+        "eyebrow": "Zarezerwuj teraz",
+        "title": "Zarezerwuj swoje Safari",
+        "subtitle": "Zostaw swoje dane, a nasz zespół skontaktuje się z Tobą wkrótce.",
+        "name": {
+            "label": "Imię i nazwisko",
+            "placeholder": "Jan Kowalski"
+        },
+        "phone": {
+            "label": "Numer telefonu",
+            "placeholder": "+48 600 123 456"
+        },
+        "email": {
+            "label": "E-mail",
+            "placeholder": "jan@example.com"
+        },
+        "city": {
+            "label": "Miasto",
+            "optional": "opcjonalnie",
+            "placeholder": "Twoje miasto"
+        },
+        "consent": "Wyrażam zgodę na kontakt w sprawie mojego zgłoszenia.",
+        "submit": "Wyślij zgłoszenie",
+        "submitting": "Wysyłanie...",
+        "close": "Zamknij",
+        "errors": {
+            "name": "Podaj swoje imię",
+            "phone": "Podaj prawidłowy numer telefonu",
+            "email": "Podaj prawidłowy adres e-mail",
+            "consent": "Zaakceptuj, aby kontynuować"
+        },
+        "success": {
+            "title": "Zgłoszenie wysłane!",
+            "message": "Dziękujemy, {name}. Nasz zespół skontaktuje się z Tobą w ciągu 24 godzin."
+        }
     }
 }

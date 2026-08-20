@@ -68,5 +68,41 @@
             "terms": "Terms of Use"
         },
         "rights": "All rights reserved."
+    },
+    "booking": {
+        "eyebrow": "Book Now",
+        "title": "Reserve Your Safari",
+        "subtitle": "Leave your details and our team will get back to you shortly.",
+        "name": {
+            "label": "Full Name",
+            "placeholder": "John Doe"
+        },
+        "phone": {
+            "label": "Phone Number",
+            "placeholder": "+1 234 567 8900"
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "john@example.com"
+        },
+        "city": {
+            "label": "City",
+            "optional": "optional",
+            "placeholder": "Your city"
+        },
+        "consent": "I agree to be contacted about my booking request.",
+        "submit": "Submit Request",
+        "submitting": "Sending...",
+        "close": "Close",
+        "errors": {
+            "name": "Please enter your name",
+            "phone": "Please enter a valid phone number",
+            "email": "Please enter a valid email address",
+            "consent": "Please accept to continue"
+        },
+        "success": {
+            "title": "Request Sent!",
+            "message": "Thank you, {name}. Our team will contact you within 24 hours."
+        }
     }
 }

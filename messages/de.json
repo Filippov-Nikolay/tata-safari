@@ -68,5 +68,41 @@
             "terms": "Nutzungsbedingungen"
         },
         "rights": "Alle Rechte vorbehalten."
+    },
+    "booking": {
+        "eyebrow": "Jetzt buchen",
+        "title": "Reservieren Sie Ihren Safari",
+        "subtitle": "Hinterlassen Sie Ihre Daten, unser Team meldet sich in Kürze bei Ihnen.",
+        "name": {
+            "label": "Vollständiger Name",
+            "placeholder": "Max Mustermann"
+        },
+        "phone": {
+            "label": "Telefonnummer",
+            "placeholder": "+49 30 1234 5678"
+        },
+        "email": {
+            "label": "E-Mail",
+            "placeholder": "max@example.com"
+        },
+        "city": {
+            "label": "Stadt",
+            "optional": "optional",
+            "placeholder": "Ihre Stadt"
+        },
+        "consent": "Ich stimme zu, bezüglich meiner Buchungsanfrage kontaktiert zu werden.",
+        "submit": "Anfrage senden",
+        "submitting": "Wird gesendet...",
+        "close": "Schließen",
+        "errors": {
+            "name": "Bitte geben Sie Ihren Namen ein",
+            "phone": "Bitte geben Sie eine gültige Telefonnummer ein",
+            "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+            "consent": "Bitte stimmen Sie zu, um fortzufahren"
+        },
+        "success": {
+            "title": "Anfrage gesendet!",
+            "message": "Danke, {name}. Unser Team wird sich innerhalb von 24 Stunden bei Ihnen melden."
+        }
     }
 }

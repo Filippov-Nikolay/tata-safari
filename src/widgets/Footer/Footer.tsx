@@ -1,8 +1,10 @@
 "use client";
 
+import { useCallback } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ArrowIcon } from "@/shared/ui";
+import { useBookingModalActions, useLenis } from "@/shared/providers";
 import { useFooterAnimations } from "./useFooterAnimations";
 import styles from "./Footer.module.scss";
 
@@ -13,6 +15,8 @@ const FOOTER_CAR_SRC = "/footer/car.png?v=20260818-1454";
 export function Footer() {
     const t = useTranslations("footer");
     const year = new Date().getFullYear();
+    const { open: openBooking } = useBookingModalActions();
+    const lenis = useLenis();
     const {
         footerRef,
         stageRef,
@@ -25,6 +29,15 @@ export function Footer() {
         descriptionRef,
         ctaRef,
     } = useFooterAnimations();
+
+    const handleOpenBooking = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+
+        const frozenScrollY = Math.round(window.scrollY);
+        lenis?.scrollTo(frozenScrollY, { immediate: true, force: true });
+        lenis?.stop();
+        openBooking();
+    }, [lenis, openBooking]);
 
     return (
         <footer ref={footerRef} className={styles.footer}>
@@ -69,7 +82,12 @@ export function Footer() {
                         {t("description")}
                     </p>
 
-                    <a ref={ctaRef} href="#" className={styles.ctaBtn}>
+                    <a
+                        ref={ctaRef}
+                        href="#"
+                        className={styles.ctaBtn}
+                        onClick={handleOpenBooking}
+                    >
                         <span>{t("cta")}</span>
                         <span className={styles.ctaCircle} aria-hidden="true">
                             <ArrowIcon className={styles.ctaArrow} />

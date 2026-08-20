@@ -4,8 +4,10 @@ import { useLayoutEffect } from "react";
 import { MotionProvider } from "./MotionProvider";
 import { ThemeProvider } from "./ThemeProvider";
 import { PreloaderProvider } from "./PreloaderProvider";
+import { BookingModalProvider } from "./BookingModalProvider";
 import { SmoothScrollProvider } from "./SmoothScrollProvider";
 import { Preloader } from "@/widgets/Preloader";
+import { BookingModal } from "@/widgets/BookingModal";
 
 interface AppProvidersProps {
     children: React.ReactNode;
@@ -50,14 +52,15 @@ export function AppProviders({ children }: AppProvidersProps) {
     return (
         <ThemeProvider>
             <PreloaderProvider>
-                <MotionProvider>
-                    {/* Inside SmoothScrollProvider so it can reach the Lenis
-                        instance and stop it for the duration of the preload. */}
-                    <SmoothScrollProvider>
-                        <Preloader />
-                        {children}
-                    </SmoothScrollProvider>
-                </MotionProvider>
+                <BookingModalProvider>
+                    <MotionProvider>
+                        <SmoothScrollProvider>
+                            <Preloader />
+                            <BookingModal />
+                            {children}
+                        </SmoothScrollProvider>
+                    </MotionProvider>
+                </BookingModalProvider>
             </PreloaderProvider>
         </ThemeProvider>
     );

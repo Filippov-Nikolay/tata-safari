@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Image from "next/image";
 import { m } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Section, ArrowIcon } from "@/shared/ui";
 import { useMotionVariants } from "@/shared/hooks/useMotionVariants";
 import { fadeIn } from "@/shared/lib/motion/fade-in";
-import { usePreloader } from "@/shared/providers";
+import { usePreloader, useBookingModalActions, useLenis } from "@/shared/providers";
 import { cn } from "@/shared/lib/cn";
 import { useHeroSectionAnimations } from "./useHeroSectionAnimations";
 import styles from "./HeroSection.module.scss";
@@ -18,6 +18,8 @@ export function HeroSection() {
     const t = useTranslations("hero");
     const safeFadeIn = useMotionVariants(fadeIn);
     const { isReady } = usePreloader();
+    const { open: openBooking } = useBookingModalActions();
+    const lenis = useLenis();
     const [skyLoaded, setSkyLoaded] = useState(false);
     const [carLoaded, setCarLoaded] = useState(false);
 
@@ -38,6 +40,15 @@ export function HeroSection() {
         safariBackdropVeilRef,
         featureBlockRef,
     } = useHeroSectionAnimations(isReady);
+
+    const handleOpenBooking = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+
+        const frozenScrollY = Math.round(window.scrollY);
+        lenis?.scrollTo(frozenScrollY, { immediate: true, force: true });
+        lenis?.stop();
+        openBooking();
+    }, [lenis, openBooking]);
 
     return (
         <Section id="overview" className={styles.sectionReset}>
@@ -97,7 +108,7 @@ export function HeroSection() {
 
                             <p className={styles.description}>{t("description")}</p>
 
-                            <a href="#" className={styles.ctaBtn}>
+                            <a href="#" className={styles.ctaBtn} onClick={handleOpenBooking}>
                                 <span className={styles.ctaText}>{t("cta")}</span>
                                 <span className={styles.ctaCircle} aria-hidden="true">
                                     {/* Two arrows in a sliding track: on hover the
@@ -194,7 +205,11 @@ export function HeroSection() {
 
                             <p className={styles.mobileDescription}>{t("description")}</p>
 
-                            <a href="#" className={cn(styles.ctaBtn, styles.mobileCtaBtn)}>
+                            <a
+                                href="#"
+                                className={cn(styles.ctaBtn, styles.mobileCtaBtn)}
+                                onClick={handleOpenBooking}
+                            >
                                 <span className={styles.ctaText}>{t("cta")}</span>
                                 <span className={styles.ctaCircle} aria-hidden="true">
                                     <span className={styles.arrowTrack}>
