@@ -35,7 +35,7 @@ export function useGrandDesignGalleryAnimations() {
                             trigger: tile,
                             start: "top bottom",
                             end: "bottom top",
-                            scrub: 0.4,
+                            scrub: true,
                         },
                     },
                 );
@@ -44,5 +44,5 @@ export function useGrandDesignGalleryAnimations() {
         { scope: gridRef },
     );
 
-    return { sectionRef, gridRef, setTileRef };
+    return { sectionRef, gridRef, setTileRef, tileRefs };
 }

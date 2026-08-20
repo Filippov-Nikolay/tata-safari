@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Image from "next/image";
-import { m } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Section } from "@/shared/ui";
 import { cn } from "@/shared/lib/cn";
+import { ScrollTrigger } from "@/shared/lib/gsap";
+import { useLenis } from "@/shared/providers";
 import { useGrandDesignGalleryAnimations } from "./useGrandDesignGalleryAnimations";
-import { GalleryDetail } from "./GalleryDetail";
+import { GalleryDetail, type TileVisualSnapshot } from "./GalleryDetail";
 import styles from "./GrandDesignGallery.module.scss";
 
 const TILES = [
@@ -20,10 +21,14 @@ const TILES = [
 
 export function GrandDesignGallery() {
     const t = useTranslations("gallery");
-    const { sectionRef, gridRef, setTileRef } = useGrandDesignGalleryAnimations();
+    const lenis = useLenis();
+    const { sectionRef, gridRef, setTileRef, tileRefs } = useGrandDesignGalleryAnimations();
 
     const [loaded, setLoaded] = useState<boolean[]>(() => TILES.map(() => false));
     const [startIndex, setStartIndex] = useState<number | null>(null);
+    const [activeTileKey, setActiveTileKey] = useState<string | null>(null);
+    const [launchSnapshot, setLaunchSnapshot] = useState<TileVisualSnapshot | null>(null);
+    const [sessionId, setSessionId] = useState(0);
 
     const markLoaded = (index: number) => {
         setLoaded((prev) => {
@@ -33,7 +38,32 @@ export function GrandDesignGallery() {
             return next;
         });
     };
-    
+
+    const getSnapshotForKey = useCallback((key: string, scrollY = window.scrollY): TileVisualSnapshot | null => {
+        const index = TILES.findIndex((tile) => tile.key === key);
+        if (index === -1) return null;
+
+        const tile = tileRefs.current[index];
+        if (!tile) return null;
+
+        const imageWrap = tile.querySelector<HTMLElement>(`.${styles.tileImageWrap}`);
+        const image = tile.querySelector<HTMLImageElement>("img");
+        const rect = (imageWrap ?? tile).getBoundingClientRect();
+        const computedImageStyle = image ? window.getComputedStyle(image) : null;
+
+        return {
+            top: rect.top,
+            left: rect.left,
+            width: rect.width,
+            height: rect.height,
+            imageTransform: computedImageStyle?.transform && computedImageStyle.transform !== "none"
+                ? computedImageStyle.transform
+                : "none",
+            imageTransformOrigin: computedImageStyle?.transformOrigin ?? "50% 50%",
+            scrollY,
+        };
+    }, [tileRefs]);
+
     const items = TILES.map((tile) => ({
         key: tile.key,
         src: tile.src,
@@ -50,19 +80,34 @@ export function GrandDesignGallery() {
                             key={item.key}
                             type="button"
                             ref={setTileRef(index)}
-                            className={cn(styles.tile, item.tile)}
-                            onClick={() => setStartIndex(index)}
+                            className={cn(
+                                styles.tile,
+                                item.tile,
+                                activeTileKey === item.key && styles.tileActive,
+                            )}
+                            onClick={() => {
+                                const visualScrollY = lenis?.animatedScroll ?? window.scrollY;
+                                lenis?.scrollTo(visualScrollY, { immediate: true, force: true });
+                                ScrollTrigger.update();
+
+                                setSessionId((id) => id + 1);
+                                setLaunchSnapshot(getSnapshotForKey(item.key, visualScrollY));
+                                setActiveTileKey(item.key);
+                                setStartIndex(index);
+                            }}
                         >
-                            <m.div className={styles.tileImageWrap} layoutId={`gallery-image-${item.key}`}>
-                                <Image
-                                    src={item.src}
-                                    alt={t(`${item.key}.title`)}
-                                    fill
-                                    sizes="(max-width: 768px) 100vw, 60vw"
-                                    onLoad={() => markLoaded(index)}
-                                    className={cn(styles.tileImage, loaded[index] && styles.tileImageLoaded)}
-                                />
-                            </m.div>
+                            <div className={styles.tileImageWrap}>
+                                <div className={styles.tileDepthLayer}>
+                                    <Image
+                                        src={item.src}
+                                        alt={t(`${item.key}.title`)}
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 60vw"
+                                        onLoad={() => markLoaded(index)}
+                                        className={cn(styles.tileImage, loaded[index] && styles.tileImageLoaded)}
+                                    />
+                                </div>
+                            </div>
                             <div className={styles.tileScrim} aria-hidden="true" />
                             <div className={styles.tileCallout}>
                                 <h3 className={styles.tileTitle}>{t(`${item.key}.title`)}</h3>
@@ -74,11 +119,18 @@ export function GrandDesignGallery() {
             </div>
 
             <GalleryDetail
-                key={startIndex !== null ? `detail-${startIndex}` : "detail-closed"}
+                key={`detail-${sessionId}`}
                 items={items}
                 startIndex={startIndex}
-                originKey={startIndex !== null ? TILES[startIndex].key : null}
-                onClose={() => setStartIndex(null)}
+                launchSnapshot={launchSnapshot}
+                getSnapshotForKey={getSnapshotForKey}
+                onClose={() => {
+                    setStartIndex(null);
+                    setLaunchSnapshot(null);
+                }}
+                onActiveKeyChange={setActiveTileKey}
+                onReturnReady={() => setActiveTileKey(null)}
+                onExitComplete={() => setActiveTileKey(null)}
                 closeLabel={t("close")}
             />
         </Section>

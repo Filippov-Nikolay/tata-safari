@@ -13,11 +13,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #050408;
+    background: transparent;
 
     @include respond-to("tablet") {
         align-items: flex-start;
     }
+}
+
+.backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: #050408;
 }
 
 .close {
@@ -61,14 +68,24 @@
 // =============================================
 
 .imageWrap {
-    position: absolute;
-    inset: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
     overflow: hidden;
+    border-radius: 0;
+    will-change: top, left, width, height, border-radius;
 }
 
 .depthLayer {
     position: absolute;
     inset: 0;
+}
+
+.imageMotionLayer {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
 }
 
 .image {
