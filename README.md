@@ -81,7 +81,7 @@ src/
 │   └── Footer/                        # Parallax car reveal, CTA, legal links
 └── shared/
     ├── config/               # site.config.ts, navigation.config.ts, env.ts — branding
-    ├── ui/                    # Reusable primitives (Section, ArrowIcon, ShowcaseModal, ...)
+    ├── ui/                    # Reusable primitives (Section, ArrowIcon, LangSwitcher, ...)
     ├── hooks/                  # useScrollLock, useActiveSection, useScrollTriggerAutoRefresh, ...
     ├── providers/                # Theme, preloader, booking-modal, smooth-scroll contexts
     └── lib/, styles/, types/       # Infrastructure, design tokens, TypeScript contracts
@@ -96,11 +96,6 @@ src/
 <GrandDesignGallery />
 <Footer />
 ```
-
-A few additional widgets (`ShowcaseSection`, `FeaturesSection`, `GallerySection`, `TimelineSection`,
-`ContactSection`) and their content JSON under `src/shared/content/` exist in the repo as scaffolding
-from an earlier, more generic iteration of this project but aren't wired into the page — safe to ignore,
-reuse, or delete.
 
 ---
 
