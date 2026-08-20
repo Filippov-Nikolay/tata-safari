@@ -314,8 +314,7 @@ it in `page.tsx` the same way.
   name, tagline, description, canonical URL, social links. Everything above reads from here.
 - **Sitemap & robots:** [`src/app/sitemap.ts`](src/app/sitemap.ts) / [`src/app/robots.ts`](src/app/robots.ts)
   — both dynamic, both derive their domain from `siteConfig.url`.
-- **OpenGraph / favicon images:** `public/og/cover.png` (1200×630) and `public/icon/icon.png` (32×32) —
-  currently neutral placeholders, replace before publishing.
+- **OpenGraph / favicon images:** `public/og/cover.jpg` (1731×909) and `public/icon/icon.png` (32×32).
 
 ---
 
@@ -455,7 +454,7 @@ Developer / designer portfolio
 - [ ] Set brand name, tagline and links in `src/shared/config/site.config.ts`
 - [ ] Set brand colors in `src/shared/styles/tokens.scss` (`--glow-purple` / `--glow-orange`)
 - [ ] Replace the content in `src/shared/content/*.json` (features, showcase, gallery, timeline)
-- [ ] Replace `public/icon/icon.png` (favicon) and `public/og/cover.png` (social share image)
+- [ ] Replace `public/icon/icon.png` (favicon) and `public/og/cover.jpg` (social share image)
 - [ ] Set `NEXT_PUBLIC_SITE_URL` for your production environment
 - [ ] Update `LOCALE_META` and the JSON-LD `@type` in `src/app/[locale]/layout.tsx`
 - [ ] Remove any languages you don't need, or add your own (see [Localization](#localization))
