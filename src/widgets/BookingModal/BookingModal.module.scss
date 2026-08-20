@@ -10,6 +10,7 @@ $ink: #0c0c0e;
 .overlay {
     position: fixed;
     inset: 0;
+    height: var(--booking-viewport-height, 100dvh);
     z-index: 300;
     display: flex;
     align-items: center;
@@ -20,8 +21,9 @@ $ink: #0c0c0e;
     -webkit-backdrop-filter: blur(20px) saturate(140%);
 
     @include respond-to("mobile") {
-        align-items: flex-end;
-        padding: 0;
+        align-items: stretch;
+        justify-content: flex-end;
+        padding: max(8px, env(safe-area-inset-top)) 0 0;
     }
 }
 
@@ -34,6 +36,9 @@ $ink: #0c0c0e;
     max-height: 90svh;
     overflow: hidden auto;
     overscroll-behavior: contain;
+    scroll-behavior: smooth;
+    scroll-padding-block: 96px 32px;
+    -webkit-overflow-scrolling: touch;
     padding: 56px 56px 52px;
     background: linear-gradient(180deg, #141216 0%, #0c0c0e 100%);
     border: 1px solid rgba(217, 174, 115, 0.16);
@@ -61,9 +66,11 @@ $ink: #0c0c0e;
 
     @include respond-to("mobile") {
         max-width: none;
-        max-height: calc(100svh - 0px);
+        height: 100%;
+        max-height: none;
         border-radius: 20px 20px 0 0;
-        padding: 40px 24px 32px;
+        padding: 40px 24px calc(32px + env(safe-area-inset-bottom));
+        scroll-padding-block: 88px 36px;
     }
 }
 
@@ -158,6 +165,10 @@ $ink: #0c0c0e;
     display: flex;
     flex-direction: column;
     gap: 20px;
+
+    @include respond-to("mobile") {
+        gap: 18px;
+    }
 }
 
 .fieldRow {
@@ -212,6 +223,12 @@ $ink: #0c0c0e;
         border-color: rgba(217, 174, 115, 0.55);
         background: rgba(217, 174, 115, 0.05);
         box-shadow: 0 0 0 3px rgba(217, 174, 115, 0.12);
+    }
+
+    @include respond-to("mobile") {
+        height: 54px;
+        padding-inline: 18px;
+        font-size: 16px;
     }
 }
 

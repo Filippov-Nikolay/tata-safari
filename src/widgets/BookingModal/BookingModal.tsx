@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { m, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
@@ -22,7 +22,9 @@ export function BookingModal() {
     const mounted = useMounted();
     const { isOpen, close } = useBookingModal();
     const t = useTranslations("booking");
-    const { values, errors, touched, status, setField, touchField, submit, reset } = useBookingForm();
+    const { values, errors, touched, status, setField, touchField, submit, reset } =
+        useBookingForm();
+    const modalRef = useRef<HTMLDivElement>(null);
     const nameInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -38,6 +40,9 @@ export function BookingModal() {
         if (!isOpen) return;
 
         const rafId = requestAnimationFrame(() => {
+            const isTouchViewport = window.matchMedia("(pointer: coarse)").matches;
+            if (isTouchViewport) return;
+
             const input = nameInputRef.current;
             if (!input) return;
 
@@ -46,6 +51,62 @@ export function BookingModal() {
 
         return () => cancelAnimationFrame(rafId);
     }, [isOpen]);
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const root = document.documentElement;
+        const viewport = window.visualViewport;
+
+        const syncViewportHeight = () => {
+            const height = Math.round(viewport?.height ?? window.innerHeight);
+            root.style.setProperty("--booking-viewport-height", `${height}px`);
+        };
+
+        syncViewportHeight();
+        viewport?.addEventListener("resize", syncViewportHeight);
+        viewport?.addEventListener("scroll", syncViewportHeight);
+        window.addEventListener("resize", syncViewportHeight);
+
+        return () => {
+            viewport?.removeEventListener("resize", syncViewportHeight);
+            viewport?.removeEventListener("scroll", syncViewportHeight);
+            window.removeEventListener("resize", syncViewportHeight);
+            root.style.removeProperty("--booking-viewport-height");
+        };
+    }, [isOpen]);
+
+    const keepFieldVisible = useCallback((target: HTMLElement) => {
+        const modal = modalRef.current;
+        if (!modal) return;
+
+        const adjust = () => {
+            if (document.activeElement !== target) return;
+
+            const modalRect = modal.getBoundingClientRect();
+            const targetRect = target.getBoundingClientRect();
+            const topComfort = 96;
+            const bottomComfort = 28;
+
+            if (targetRect.top < modalRect.top + topComfort) {
+                modal.scrollBy({
+                    top: targetRect.top - modalRect.top - topComfort,
+                    behavior: "smooth",
+                });
+                return;
+            }
+
+            if (targetRect.bottom > modalRect.bottom - bottomComfort) {
+                modal.scrollBy({
+                    top: targetRect.bottom - modalRect.bottom + bottomComfort,
+                    behavior: "smooth",
+                });
+            }
+        };
+
+        window.setTimeout(adjust, 80);
+        window.setTimeout(adjust, 280);
+    }, []);
 
     if (!mounted) return null;
 
@@ -66,229 +127,366 @@ export function BookingModal() {
         <AnimatePresence onExitComplete={reset}>
             {isOpen && (
                 <PresenceScrollLock>
-            <m.div
-                className={styles.overlay}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                onClick={handleBackdropClick}
-            >
-                <m.div
-                    className={styles.modal}
-                    role="dialog"
-                    aria-modal="true"
-                    aria-labelledby="booking-title"
-                    data-lenis-prevent
-                    initial={{ opacity: 0, scale: 0.94, y: 24, filter: "blur(14px)" }}
-                    animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, scale: 0.96, y: 12, filter: "blur(8px)" }}
-                    transition={{ duration: 0.5, ease: EASE_REVEAL }}
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <p className={styles.watermark} aria-hidden="true">
-                        SAFARI
-                    </p>
-
-                    <button
-                        type="button"
-                        className={styles.close}
-                        onClick={close}
-                        aria-label={t("close")}
+                    <m.div
+                        className={styles.overlay}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                        onClick={handleBackdropClick}
                     >
-                        &times;
-                    </button>
+                        <m.div
+                            ref={modalRef}
+                            className={styles.modal}
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="booking-title"
+                            data-lenis-prevent
+                            initial={{ opacity: 0, scale: 0.94, y: 24, filter: "blur(14px)" }}
+                            animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+                            exit={{ opacity: 0, scale: 0.96, y: 12, filter: "blur(8px)" }}
+                            transition={{ duration: 0.5, ease: EASE_REVEAL }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <p className={styles.watermark} aria-hidden="true">
+                                SAFARI
+                            </p>
 
-                    <div className={styles.body}>
-                        <AnimatePresence mode="wait" initial={false}>
-                            {status === "success" ? (
-                                <m.div
-                                    key="success"
-                                    className={styles.successPanel}
-                                    initial={{ opacity: 0, y: 8 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.4, ease: EASE_REVEAL }}
-                                >
-                                    <svg className={styles.successRing} viewBox="0 0 64 64" aria-hidden="true">
-                                        <m.circle
-                                            className={styles.successCircle}
-                                            cx="32"
-                                            cy="32"
-                                            r="29"
-                                            initial={{ pathLength: 0 }}
-                                            animate={{ pathLength: 1 }}
-                                            transition={{ duration: 0.6, ease: EASE_REVEAL }}
-                                        />
-                                        <m.path
-                                            className={styles.successCheck}
-                                            d="M19 33 L28 42 L45 22"
-                                            initial={{ pathLength: 0, opacity: 0 }}
-                                            animate={{ pathLength: 1, opacity: 1 }}
-                                            transition={{ duration: 0.45, delay: 0.4, ease: EASE_REVEAL }}
-                                        />
-                                    </svg>
+                            <button
+                                type="button"
+                                className={styles.close}
+                                onClick={close}
+                                aria-label={t("close")}
+                            >
+                                &times;
+                            </button>
 
-                                    <h2 className={styles.successTitle}>{t("success.title")}</h2>
-                                    <p className={styles.successMessage}>
-                                        {t("success.message", { name: values.name.trim() || "-" })}
-                                    </p>
-
-                                    <button type="button" className={styles.successClose} onClick={close}>
-                                        {t("close")}
-                                    </button>
-                                </m.div>
-                            ) : (
-                                <m.div
-                                    key="form"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.3, ease: EASE_REVEAL }}
-                                >
-                                    <p className={styles.eyebrow}>{t("eyebrow")}</p>
-                                    <h2 id="booking-title" className={styles.title}>
-                                        {t("title")}
-                                    </h2>
-                                    <p className={styles.subtitle}>{t("subtitle")}</p>
-
-                                    <form className={styles.form} onSubmit={handleSubmit} noValidate>
-                                        <div className={styles.fieldRow}>
-                                            <div className={styles.field}>
-                                                <label htmlFor="booking-name" className={styles.label}>
-                                                    {t("name.label")}
-                                                </label>
-                                                <input
-                                                    ref={nameInputRef}
-                                                    id="booking-name"
-                                                    name="name"
-                                                    type="text"
-                                                    autoComplete="name"
-                                                    placeholder={t("name.placeholder")}
-                                                    value={values.name}
-                                                    onChange={(e) => setField("name", e.target.value)}
-                                                    onBlur={() => touchField("name")}
-                                                    className={cn(styles.input, fieldError("name") && styles.inputError)}
-                                                    aria-invalid={Boolean(fieldError("name"))}
-                                                    aria-describedby={fieldError("name") ? "booking-name-error" : undefined}
-                                                />
-                                                <p
-                                                    id="booking-name-error"
-                                                    className={cn(styles.errorText, fieldError("name") && styles.errorTextVisible)}
-                                                >
-                                                    {fieldError("name") ? t(`errors.${errors.name}`) : null}
-                                                </p>
-                                            </div>
-
-                                            <div className={styles.field}>
-                                                <label htmlFor="booking-phone" className={styles.label}>
-                                                    {t("phone.label")}
-                                                </label>
-                                                <input
-                                                    id="booking-phone"
-                                                    name="phone"
-                                                    type="tel"
-                                                    autoComplete="tel"
-                                                    placeholder={t("phone.placeholder")}
-                                                    value={values.phone}
-                                                    onChange={(e) => setField("phone", e.target.value)}
-                                                    onBlur={() => touchField("phone")}
-                                                    className={cn(styles.input, fieldError("phone") && styles.inputError)}
-                                                    aria-invalid={Boolean(fieldError("phone"))}
-                                                    aria-describedby={fieldError("phone") ? "booking-phone-error" : undefined}
-                                                />
-                                                <p
-                                                    id="booking-phone-error"
-                                                    className={cn(styles.errorText, fieldError("phone") && styles.errorTextVisible)}
-                                                >
-                                                    {fieldError("phone") ? t(`errors.${errors.phone}`) : null}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <div className={styles.fieldRow}>
-                                            <div className={styles.field}>
-                                                <label htmlFor="booking-email" className={styles.label}>
-                                                    {t("email.label")}
-                                                </label>
-                                                <input
-                                                    id="booking-email"
-                                                    name="email"
-                                                    type="email"
-                                                    autoComplete="email"
-                                                    placeholder={t("email.placeholder")}
-                                                    value={values.email}
-                                                    onChange={(e) => setField("email", e.target.value)}
-                                                    onBlur={() => touchField("email")}
-                                                    className={cn(styles.input, fieldError("email") && styles.inputError)}
-                                                    aria-invalid={Boolean(fieldError("email"))}
-                                                    aria-describedby={fieldError("email") ? "booking-email-error" : undefined}
-                                                />
-                                                <p
-                                                    id="booking-email-error"
-                                                    className={cn(styles.errorText, fieldError("email") && styles.errorTextVisible)}
-                                                >
-                                                    {fieldError("email") ? t(`errors.${errors.email}`) : null}
-                                                </p>
-                                            </div>
-
-                                            <div className={styles.field}>
-                                                <label htmlFor="booking-city" className={styles.label}>
-                                                    {t("city.label")}{" "}
-                                                    <span className={styles.optional}>({t("city.optional")})</span>
-                                                </label>
-                                                <input
-                                                    id="booking-city"
-                                                    name="city"
-                                                    type="text"
-                                                    autoComplete="address-level2"
-                                                    placeholder={t("city.placeholder")}
-                                                    value={values.city}
-                                                    onChange={(e) => setField("city", e.target.value)}
-                                                    className={styles.input}
-                                                />
-                                                <p className={styles.errorText} aria-hidden="true" />
-                                            </div>
-                                        </div>
-
-                                        <div className={styles.field}>
-                                            <label className={styles.checkboxRow}>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={values.consent}
-                                                    onChange={(e) => setField("consent", e.target.checked)}
-                                                    onBlur={() => touchField("consent")}
-                                                    className={styles.checkbox}
-                                                />
-                                                <span className={styles.checkboxLabel}>{t("consent")}</span>
-                                            </label>
-                                            <p className={cn(styles.errorText, fieldError("consent") && styles.errorTextVisible)}>
-                                                {fieldError("consent") ? t(`errors.${errors.consent}`) : null}
-                                            </p>
-                                        </div>
-
-                                        <button
-                                            type="submit"
-                                            className={styles.submitBtn}
-                                            disabled={status === "submitting"}
+                            <div className={styles.body}>
+                                <AnimatePresence mode="wait" initial={false}>
+                                    {status === "success" ? (
+                                        <m.div
+                                            key="success"
+                                            className={styles.successPanel}
+                                            initial={{ opacity: 0, y: 8 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.4, ease: EASE_REVEAL }}
                                         >
-                                            <span>{status === "submitting" ? t("submitting") : t("submit")}</span>
-                                            <span className={styles.submitIcon} aria-hidden="true">
-                                                {status === "submitting" ? (
-                                                    <span className={styles.spinner} />
-                                                ) : (
-                                                    <ArrowIcon className={styles.arrow} />
-                                                )}
-                                            </span>
-                                        </button>
-                                    </form>
-                                </m.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-                </m.div>
-            </m.div>
+                                            <svg
+                                                className={styles.successRing}
+                                                viewBox="0 0 64 64"
+                                                aria-hidden="true"
+                                            >
+                                                <m.circle
+                                                    className={styles.successCircle}
+                                                    cx="32"
+                                                    cy="32"
+                                                    r="29"
+                                                    initial={{ pathLength: 0 }}
+                                                    animate={{ pathLength: 1 }}
+                                                    transition={{
+                                                        duration: 0.6,
+                                                        ease: EASE_REVEAL,
+                                                    }}
+                                                />
+                                                <m.path
+                                                    className={styles.successCheck}
+                                                    d="M19 33 L28 42 L45 22"
+                                                    initial={{ pathLength: 0, opacity: 0 }}
+                                                    animate={{ pathLength: 1, opacity: 1 }}
+                                                    transition={{
+                                                        duration: 0.45,
+                                                        delay: 0.4,
+                                                        ease: EASE_REVEAL,
+                                                    }}
+                                                />
+                                            </svg>
+
+                                            <h2 className={styles.successTitle}>
+                                                {t("success.title")}
+                                            </h2>
+                                            <p className={styles.successMessage}>
+                                                {t("success.message", {
+                                                    name: values.name.trim() || "-",
+                                                })}
+                                            </p>
+
+                                            <button
+                                                type="button"
+                                                className={styles.successClose}
+                                                onClick={close}
+                                            >
+                                                {t("close")}
+                                            </button>
+                                        </m.div>
+                                    ) : (
+                                        <m.div
+                                            key="form"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ duration: 0.3, ease: EASE_REVEAL }}
+                                        >
+                                            <p className={styles.eyebrow}>{t("eyebrow")}</p>
+                                            <h2 id="booking-title" className={styles.title}>
+                                                {t("title")}
+                                            </h2>
+                                            <p className={styles.subtitle}>{t("subtitle")}</p>
+
+                                            <form
+                                                className={styles.form}
+                                                onSubmit={handleSubmit}
+                                                noValidate
+                                            >
+                                                <div className={styles.fieldRow}>
+                                                    <div className={styles.field}>
+                                                        <label
+                                                            htmlFor="booking-name"
+                                                            className={styles.label}
+                                                        >
+                                                            {t("name.label")}
+                                                        </label>
+                                                        <input
+                                                            ref={nameInputRef}
+                                                            id="booking-name"
+                                                            name="name"
+                                                            type="text"
+                                                            autoComplete="name"
+                                                            enterKeyHint="next"
+                                                            placeholder={t("name.placeholder")}
+                                                            value={values.name}
+                                                            onChange={(e) =>
+                                                                setField("name", e.target.value)
+                                                            }
+                                                            onFocus={(e) =>
+                                                                keepFieldVisible(e.currentTarget)
+                                                            }
+                                                            onBlur={() => touchField("name")}
+                                                            className={cn(
+                                                                styles.input,
+                                                                fieldError("name") &&
+                                                                    styles.inputError
+                                                            )}
+                                                            aria-invalid={Boolean(
+                                                                fieldError("name")
+                                                            )}
+                                                            aria-describedby={
+                                                                fieldError("name")
+                                                                    ? "booking-name-error"
+                                                                    : undefined
+                                                            }
+                                                        />
+                                                        <p
+                                                            id="booking-name-error"
+                                                            className={cn(
+                                                                styles.errorText,
+                                                                fieldError("name") &&
+                                                                    styles.errorTextVisible
+                                                            )}
+                                                        >
+                                                            {fieldError("name")
+                                                                ? t(`errors.${errors.name}`)
+                                                                : null}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className={styles.field}>
+                                                        <label
+                                                            htmlFor="booking-phone"
+                                                            className={styles.label}
+                                                        >
+                                                            {t("phone.label")}
+                                                        </label>
+                                                        <input
+                                                            id="booking-phone"
+                                                            name="phone"
+                                                            type="tel"
+                                                            autoComplete="tel"
+                                                            inputMode="tel"
+                                                            enterKeyHint="next"
+                                                            placeholder={t("phone.placeholder")}
+                                                            value={values.phone}
+                                                            onChange={(e) =>
+                                                                setField("phone", e.target.value)
+                                                            }
+                                                            onFocus={(e) =>
+                                                                keepFieldVisible(e.currentTarget)
+                                                            }
+                                                            onBlur={() => touchField("phone")}
+                                                            className={cn(
+                                                                styles.input,
+                                                                fieldError("phone") &&
+                                                                    styles.inputError
+                                                            )}
+                                                            aria-invalid={Boolean(
+                                                                fieldError("phone")
+                                                            )}
+                                                            aria-describedby={
+                                                                fieldError("phone")
+                                                                    ? "booking-phone-error"
+                                                                    : undefined
+                                                            }
+                                                        />
+                                                        <p
+                                                            id="booking-phone-error"
+                                                            className={cn(
+                                                                styles.errorText,
+                                                                fieldError("phone") &&
+                                                                    styles.errorTextVisible
+                                                            )}
+                                                        >
+                                                            {fieldError("phone")
+                                                                ? t(`errors.${errors.phone}`)
+                                                                : null}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div className={styles.fieldRow}>
+                                                    <div className={styles.field}>
+                                                        <label
+                                                            htmlFor="booking-email"
+                                                            className={styles.label}
+                                                        >
+                                                            {t("email.label")}
+                                                        </label>
+                                                        <input
+                                                            id="booking-email"
+                                                            name="email"
+                                                            type="email"
+                                                            autoComplete="email"
+                                                            inputMode="email"
+                                                            enterKeyHint="next"
+                                                            placeholder={t("email.placeholder")}
+                                                            value={values.email}
+                                                            onChange={(e) =>
+                                                                setField("email", e.target.value)
+                                                            }
+                                                            onFocus={(e) =>
+                                                                keepFieldVisible(e.currentTarget)
+                                                            }
+                                                            onBlur={() => touchField("email")}
+                                                            className={cn(
+                                                                styles.input,
+                                                                fieldError("email") &&
+                                                                    styles.inputError
+                                                            )}
+                                                            aria-invalid={Boolean(
+                                                                fieldError("email")
+                                                            )}
+                                                            aria-describedby={
+                                                                fieldError("email")
+                                                                    ? "booking-email-error"
+                                                                    : undefined
+                                                            }
+                                                        />
+                                                        <p
+                                                            id="booking-email-error"
+                                                            className={cn(
+                                                                styles.errorText,
+                                                                fieldError("email") &&
+                                                                    styles.errorTextVisible
+                                                            )}
+                                                        >
+                                                            {fieldError("email")
+                                                                ? t(`errors.${errors.email}`)
+                                                                : null}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className={styles.field}>
+                                                        <label
+                                                            htmlFor="booking-city"
+                                                            className={styles.label}
+                                                        >
+                                                            {t("city.label")}{" "}
+                                                            <span className={styles.optional}>
+                                                                ({t("city.optional")})
+                                                            </span>
+                                                        </label>
+                                                        <input
+                                                            id="booking-city"
+                                                            name="city"
+                                                            type="text"
+                                                            autoComplete="address-level2"
+                                                            enterKeyHint="done"
+                                                            placeholder={t("city.placeholder")}
+                                                            value={values.city}
+                                                            onChange={(e) =>
+                                                                setField("city", e.target.value)
+                                                            }
+                                                            onFocus={(e) =>
+                                                                keepFieldVisible(e.currentTarget)
+                                                            }
+                                                            className={styles.input}
+                                                        />
+                                                        <p
+                                                            className={styles.errorText}
+                                                            aria-hidden="true"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className={styles.field}>
+                                                    <label className={styles.checkboxRow}>
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={values.consent}
+                                                            onChange={(e) =>
+                                                                setField(
+                                                                    "consent",
+                                                                    e.target.checked
+                                                                )
+                                                            }
+                                                            onBlur={() => touchField("consent")}
+                                                            className={styles.checkbox}
+                                                        />
+                                                        <span className={styles.checkboxLabel}>
+                                                            {t("consent")}
+                                                        </span>
+                                                    </label>
+                                                    <p
+                                                        className={cn(
+                                                            styles.errorText,
+                                                            fieldError("consent") &&
+                                                                styles.errorTextVisible
+                                                        )}
+                                                    >
+                                                        {fieldError("consent")
+                                                            ? t(`errors.${errors.consent}`)
+                                                            : null}
+                                                    </p>
+                                                </div>
+
+                                                <button
+                                                    type="submit"
+                                                    className={styles.submitBtn}
+                                                    disabled={status === "submitting"}
+                                                >
+                                                    <span>
+                                                        {status === "submitting"
+                                                            ? t("submitting")
+                                                            : t("submit")}
+                                                    </span>
+                                                    <span
+                                                        className={styles.submitIcon}
+                                                        aria-hidden="true"
+                                                    >
+                                                        {status === "submitting" ? (
+                                                            <span className={styles.spinner} />
+                                                        ) : (
+                                                            <ArrowIcon className={styles.arrow} />
+                                                        )}
+                                                    </span>
+                                                </button>
+                                            </form>
+                                        </m.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        </m.div>
+                    </m.div>
                 </PresenceScrollLock>
             )}
         </AnimatePresence>,
-        document.body,
+        document.body
     );
 }
