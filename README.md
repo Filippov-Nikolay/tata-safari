@@ -8,6 +8,10 @@ booking modal with real client-side validation.
 Built with Next.js App Router, TypeScript and SCSS Modules, following
 [Feature-Sliced Design](https://feature-sliced.design).
 
+![Tata Safari — The New Safari](public/og/cover.jpg)
+
+**Demo:** [tata-safari.vercel.app](https://tata-safari.vercel.app/)
+
 ---
 
 ## Features
