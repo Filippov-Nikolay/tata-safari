@@ -35,6 +35,7 @@ interface GalleryDetailProps {
     launchSnapshot: TileVisualSnapshot | null;
     getSnapshotForKey: (key: string) => TileVisualSnapshot | null;
     onClose: () => void;
+    onBeforeClose?: (key: string) => void;
     onActiveKeyChange?: (key: string) => void;
     onReturnReady?: () => void;
     onExitComplete?: () => void;
@@ -95,6 +96,7 @@ export function GalleryDetail({
     launchSnapshot,
     getSnapshotForKey,
     onClose,
+    onBeforeClose,
     onActiveKeyChange,
     onReturnReady,
     onExitComplete,
@@ -108,8 +110,12 @@ export function GalleryDetail({
     const [phase, setPhase] = useState<ScenePhase>(() => (launchSnapshot ? "opening" : "open"));
     const [closeTargetSnapshot, setCloseTargetSnapshot] = useState<TileVisualSnapshot | null>(null);
     const [viewportRect, setViewportRect] = useState<RectSnapshot>(() => getViewportRect());
-    const [imageTransform, setImageTransform] = useState(() => launchSnapshot?.imageTransform ?? "none");
-    const [imageTransformOrigin, setImageTransformOrigin] = useState(() => launchSnapshot?.imageTransformOrigin ?? "50% 50%");
+    const [imageTransform, setImageTransform] = useState(
+        () => launchSnapshot?.imageTransform ?? "none"
+    );
+    const [imageTransformOrigin, setImageTransformOrigin] = useState(
+        () => launchSnapshot?.imageTransformOrigin ?? "50% 50%"
+    );
     const [imageMotionTransition, setImageMotionTransition] = useState("none");
     const [releaseScrollLock, setReleaseScrollLock] = useState(false);
     const lockedRef = useRef(false);
@@ -149,7 +155,6 @@ export function GalleryDetail({
             if (closeHandoffTimeoutRef.current !== null) {
                 window.clearTimeout(closeHandoffTimeoutRef.current);
             }
-
         };
     }, []);
 
@@ -207,6 +212,8 @@ export function GalleryDetail({
         if (closeLeadTimeoutRef.current !== null) {
             window.clearTimeout(closeLeadTimeoutRef.current);
         }
+
+        onBeforeClose?.(current.key);
 
         const targetSnapshot = getSnapshotForKey(current.key) ?? launchSnapshot;
         setCloseTargetSnapshot(targetSnapshot);
@@ -308,7 +315,11 @@ export function GalleryDetail({
                         initial={{ opacity: 1 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={diving ? { duration: 0.5, delay: 0.35, ease: "easeOut" } : { duration: 0.18, ease: "easeOut" }}
+                        transition={
+                            diving
+                                ? { duration: 0.5, delay: 0.35, ease: "easeOut" }
+                                : { duration: 0.18, ease: "easeOut" }
+                        }
                     >
                         <m.div
                             className={styles.backdrop}
@@ -330,12 +341,12 @@ export function GalleryDetail({
                             initial={
                                 launchSnapshot
                                     ? {
-                                        top: launchSnapshot.top,
-                                        left: launchSnapshot.left,
-                                        width: launchSnapshot.width,
-                                        height: launchSnapshot.height,
-                                        borderRadius: TILE_RADIUS_PX,
-                                    }
+                                          top: launchSnapshot.top,
+                                          left: launchSnapshot.left,
+                                          width: launchSnapshot.width,
+                                          height: launchSnapshot.height,
+                                          borderRadius: TILE_RADIUS_PX,
+                                      }
                                     : false
                             }
                             animate={{
@@ -345,13 +356,15 @@ export function GalleryDetail({
                                 height: sceneTargetRect.height,
                                 borderRadius: phase === "closing" ? TILE_RADIUS_PX : 0,
                             }}
-                            transition={phase === "closing" ? IMAGE_CLOSE_TRANSITION : IMAGE_OPEN_TRANSITION}
+                            transition={
+                                phase === "closing" ? IMAGE_CLOSE_TRANSITION : IMAGE_OPEN_TRANSITION
+                            }
                             onAnimationComplete={() => {
                                 if (phase === "opening") {
                                     setPhase("open");
                                 } else if (phase === "closing") {
                                     if (closeHandoffTimeoutRef.current !== null) return;
-                                    
+
                                     setReleaseScrollLock(true);
                                     closeHandoffTimeoutRef.current = window.setTimeout(() => {
                                         closeHandoffTimeoutRef.current = null;
@@ -364,7 +377,9 @@ export function GalleryDetail({
                                 <m.div
                                     key={current.key}
                                     className={styles.depthLayer}
-                                    initial={phase === "opening" ? false : { opacity: 0, scale: 1.05 }}
+                                    initial={
+                                        phase === "opening" ? false : { opacity: 0, scale: 1.05 }
+                                    }
                                     animate={{ opacity: 1, scale: 1 }}
                                     exit={diving ? DIVE_EXIT : { opacity: 0, scale: 0.97 }}
                                     transition={diving ? DIVE_TRANSITION : DEPTH_TRANSITION}
@@ -396,17 +411,37 @@ export function GalleryDetail({
                             initial={{ opacity: 0 }}
                             animate={closing ? { opacity: 0 } : { opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            transition={closing ? SCRIM_CLOSE_TRANSITION : phase === "opening" ? SCRIM_OPEN_TRANSITION : { duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                            transition={
+                                closing
+                                    ? SCRIM_CLOSE_TRANSITION
+                                    : phase === "opening"
+                                      ? SCRIM_OPEN_TRANSITION
+                                      : { duration: 0.18, ease: [0.16, 1, 0.3, 1] }
+                            }
                         />
 
                         <AnimatePresence mode="wait">
                             <m.div
                                 key={current.key}
                                 className={styles.textBlock}
-                                initial={phase === "opening" ? { opacity: 0, y: 32, filter: "blur(22px)" } : { opacity: 0, y: 18, filter: "blur(14px)" }}
-                                animate={closing ? { opacity: 0, y: -26, filter: "blur(12px)" } : { opacity: 1, y: 0, filter: "blur(0px)" }}
+                                initial={
+                                    phase === "opening"
+                                        ? { opacity: 0, y: 32, filter: "blur(22px)" }
+                                        : { opacity: 0, y: 18, filter: "blur(14px)" }
+                                }
+                                animate={
+                                    closing
+                                        ? { opacity: 0, y: -26, filter: "blur(12px)" }
+                                        : { opacity: 1, y: 0, filter: "blur(0px)" }
+                                }
                                 exit={{ opacity: 0, y: -16, filter: "blur(10px)" }}
-                                transition={closing ? TEXT_CLOSE_TRANSITION : phase === "opening" ? TEXT_OPEN_TRANSITION : TEXT_STEP_TRANSITION}
+                                transition={
+                                    closing
+                                        ? TEXT_CLOSE_TRANSITION
+                                        : phase === "opening"
+                                          ? TEXT_OPEN_TRANSITION
+                                          : TEXT_STEP_TRANSITION
+                                }
                             >
                                 <h2 className={styles.title}>{current.title}</h2>
                                 <p className={styles.text}>{current.text}</p>
@@ -418,10 +453,22 @@ export function GalleryDetail({
                             onClick={requestClose}
                             aria-label={closeLabel}
                             autoFocus
-                            initial={phase === "opening" ? { opacity: 0, scale: 0.92, y: -10 } : false}
-                            animate={closing ? { opacity: 0, scale: 0.92, y: -10 } : { opacity: 1, scale: 1, y: 0 }}
+                            initial={
+                                phase === "opening" ? { opacity: 0, scale: 0.92, y: -10 } : false
+                            }
+                            animate={
+                                closing
+                                    ? { opacity: 0, scale: 0.92, y: -10 }
+                                    : { opacity: 1, scale: 1, y: 0 }
+                            }
                             exit={{ opacity: 0, scale: 0.92 }}
-                            transition={closing ? UI_CLOSE_TRANSITION : phase === "opening" ? UI_OPEN_TRANSITION : { duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                            transition={
+                                closing
+                                    ? UI_CLOSE_TRANSITION
+                                    : phase === "opening"
+                                      ? UI_OPEN_TRANSITION
+                                      : { duration: 0.18, ease: [0.16, 1, 0.3, 1] }
+                            }
                         >
                             &times;
                         </m.button>
@@ -432,7 +479,13 @@ export function GalleryDetail({
                                 initial={phase === "opening" ? { opacity: 0, y: 10 } : false}
                                 animate={closing ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 10 }}
-                                transition={closing ? UI_CLOSE_TRANSITION : phase === "opening" ? UI_OPEN_TRANSITION : { duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                                transition={
+                                    closing
+                                        ? UI_CLOSE_TRANSITION
+                                        : phase === "opening"
+                                          ? UI_OPEN_TRANSITION
+                                          : { duration: 0.18, ease: [0.16, 1, 0.3, 1] }
+                                }
                             >
                                 {items.map((it, i) => (
                                     <button
@@ -440,7 +493,10 @@ export function GalleryDetail({
                                         type="button"
                                         aria-label={it.title}
                                         aria-current={i === currentIndex}
-                                        className={cn(styles.dot, i === currentIndex && styles.dotActive)}
+                                        className={cn(
+                                            styles.dot,
+                                            i === currentIndex && styles.dotActive
+                                        )}
                                         onClick={() => goTo(i)}
                                     />
                                 ))}
@@ -450,6 +506,6 @@ export function GalleryDetail({
                 </PresenceScrollLock>
             )}
         </AnimatePresence>,
-        document.body,
+        document.body
     );
 }

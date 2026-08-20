@@ -4,4 +4,4 @@ export { useMotionVariants } from "./useMotionVariants";
 export { useMounted } from "./useMounted";
 export { useArrayRefs } from "./useArrayRefs";
 export { useScrollTriggerAutoRefresh } from "./useScrollTriggerAutoRefresh";
-export { useScrollLock } from "./useScrollLock";
+export { useScrollLock, isScrollLocked, shiftScrollLock } from "./useScrollLock";

@@ -10,8 +10,13 @@ interface UseScrollLockOptions {
     scrollY?: number;
 }
 
+interface ShiftScrollLockOptions {
+    syncScrollTriggers?: boolean;
+}
+
 let lockCount = 0;
 let lockedScrollY = 0;
+let domLocked = false;
 let pendingUnlock: ReturnType<typeof setTimeout> | null = null;
 let restoreBodyPosition = "";
 let restoreBodyTop = "";
@@ -43,19 +48,20 @@ function getVisibleScrollY(lenis: ReturnType<typeof useLenis>) {
     return Math.round(
         typeof animatedScrollY === "number" && Number.isFinite(animatedScrollY)
             ? animatedScrollY
-            : window.scrollY,
+            : window.scrollY
     );
 }
 
 function lockNow(lenis: ReturnType<typeof useLenis>, scrollYOverride?: number) {
     const html = document.documentElement;
     const body = document.body;
-    
+
     const scrollbarWidth = Math.max(measureScrollbarWidth(), window.innerWidth - html.clientWidth);
     const currentPaddingRight = Number.parseFloat(getComputedStyle(html).paddingRight) || 0;
-    const frozenScrollY = typeof scrollYOverride === "number"
-        ? Math.round(scrollYOverride)
-        : getVisibleScrollY(lenis);
+    const frozenScrollY =
+        typeof scrollYOverride === "number"
+            ? Math.round(scrollYOverride)
+            : getVisibleScrollY(lenis);
 
     lenis?.scrollTo(frozenScrollY, { immediate: true, force: true });
     lenis?.stop();
@@ -67,7 +73,7 @@ function lockNow(lenis: ReturnType<typeof useLenis>, scrollYOverride?: number) {
     lockedScrollY = frozenScrollY;
 
     const unsuppress = suppressScrollTriggerAutoRefresh();
-    
+
     restoreBodyPosition = body.style.position;
     restoreBodyTop = body.style.top;
     restoreBodyLeft = body.style.left;
@@ -87,18 +93,34 @@ function lockNow(lenis: ReturnType<typeof useLenis>, scrollYOverride?: number) {
         body.style.paddingRight = `${scrollbarWidth}px`;
     }
     html.style.setProperty("--scroll-lock-offset", `${scrollbarWidth}px`);
+    domLocked = true;
 
     window.setTimeout(unsuppress, 200);
 }
 
-function unlockNow(lenis: ReturnType<typeof useLenis>, preserveScrollPosition: boolean) {
+function applyDomLock(scrollY: number) {
     const html = document.documentElement;
     const body = document.body;
 
-    const unsuppress = suppressScrollTriggerAutoRefresh();
+    const scrollbarWidth = Math.max(measureScrollbarWidth(), window.innerWidth - html.clientWidth);
+    const currentPaddingRight = Number.parseFloat(getComputedStyle(html).paddingRight) || 0;
 
-    const pinnedScrollY = Math.round(Math.abs(Number.parseFloat(body.style.top) || 0));
-    const restoredScrollY = lockedScrollY || pinnedScrollY;
+    body.style.position = "fixed";
+    body.style.top = `${-scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    if (scrollbarWidth > 0) {
+        html.style.paddingRight = `${currentPaddingRight + scrollbarWidth}px`;
+        body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+    html.style.setProperty("--scroll-lock-offset", `${scrollbarWidth}px`);
+    domLocked = true;
+}
+
+function restoreDomLockStyles() {
+    const html = document.documentElement;
+    const body = document.body;
 
     body.style.position = restoreBodyPosition;
     body.style.top = restoreBodyTop;
@@ -112,17 +134,51 @@ function unlockNow(lenis: ReturnType<typeof useLenis>, preserveScrollPosition: b
     } else {
         html.style.removeProperty("--scroll-lock-offset");
     }
+}
 
+function syncLockedScrollTriggers(scrollY: number) {
+    const unsuppress = suppressScrollTriggerAutoRefresh();
+
+    restoreDomLockStyles();
+    domLocked = false;
     void document.body.offsetHeight;
-    lenis?.resize();
+
+    window.scrollTo(0, scrollY);
+
+    for (const trigger of ScrollTrigger.getAll()) {
+        trigger.enable(false, false);
+    }
+    ScrollTrigger.update();
+    for (const trigger of ScrollTrigger.getAll()) {
+        trigger.disable(false);
+    }
+
+    applyDomLock(scrollY);
+    window.setTimeout(unsuppress, 200);
+}
+
+function unlockNow(lenis: ReturnType<typeof useLenis>, preserveScrollPosition: boolean) {
+    const body = document.body;
+
+    const unsuppress = suppressScrollTriggerAutoRefresh();
+
+    const pinnedScrollY = Math.round(Math.abs(Number.parseFloat(body.style.top) || 0));
+    const restoredScrollY = lockedScrollY || pinnedScrollY;
+    const targetScrollY = preserveScrollPosition ? restoredScrollY : window.scrollY;
+
+    restoreDomLockStyles();
+
+    domLocked = false;
+    void document.body.offsetHeight;
 
     if (preserveScrollPosition) {
-        window.scrollTo(0, restoredScrollY);
-        lenis?.scrollTo(restoredScrollY, { immediate: true, force: true });
-    } else {
-        lenis?.scrollTo(window.scrollY, { immediate: true, force: true });
+        window.scrollTo(0, targetScrollY);
     }
+
+    lenis?.resize();
+    lenis?.scrollTo(targetScrollY, { immediate: true, force: true });
     lenis?.start();
+    lenis?.scrollTo(targetScrollY, { immediate: true, force: true });
 
     for (const trigger of ScrollTrigger.getAll()) {
         trigger.enable(false, false);
@@ -132,9 +188,29 @@ function unlockNow(lenis: ReturnType<typeof useLenis>, preserveScrollPosition: b
     window.setTimeout(unsuppress, 200);
 }
 
+export function isScrollLocked() {
+    return domLocked;
+}
+
+export function shiftScrollLock(
+    deltaY: number,
+    { syncScrollTriggers = false }: ShiftScrollLockOptions = {}
+) {
+    if (!domLocked || Math.abs(deltaY) < 1) {
+        return;
+    }
+
+    lockedScrollY = Math.max(0, Math.round(lockedScrollY + deltaY));
+    document.body.style.top = `${-lockedScrollY}px`;
+
+    if (syncScrollTriggers) {
+        syncLockedScrollTriggers(lockedScrollY);
+    }
+}
+
 export function useScrollLock(
     locked: boolean,
-    { preserveScrollPosition = true, scrollY }: UseScrollLockOptions = {},
+    { preserveScrollPosition = true, scrollY }: UseScrollLockOptions = {}
 ) {
     const lenis = useLenis();
 

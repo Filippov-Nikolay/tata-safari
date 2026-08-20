@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { isScrollLocked } from "./useScrollLock";
 
 export function useActiveSection(ids: readonly string[], enabled = false): string {
     const [active, setActive] = useState<string>("");
@@ -8,6 +9,8 @@ export function useActiveSection(ids: readonly string[], enabled = false): strin
         if (!enabled) return;
 
         const compute = () => {
+            if (isScrollLocked()) return;
+
             const scrollY = window.scrollY;
             const viewportH = window.innerHeight;
             const docH = document.documentElement.scrollHeight;

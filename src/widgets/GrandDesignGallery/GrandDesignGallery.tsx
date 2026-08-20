@@ -5,8 +5,9 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Section } from "@/shared/ui";
 import { cn } from "@/shared/lib/cn";
-import { ScrollTrigger } from "@/shared/lib/gsap";
+import { gsap, ScrollTrigger } from "@/shared/lib/gsap";
 import { useLenis } from "@/shared/providers";
+import { shiftScrollLock } from "@/shared/hooks";
 import { useGrandDesignGalleryAnimations } from "./useGrandDesignGalleryAnimations";
 import { GalleryDetail, type TileVisualSnapshot } from "./GalleryDetail";
 import styles from "./GrandDesignGallery.module.scss";
@@ -18,6 +19,10 @@ const TILES = [
     { key: "tile4", src: "/grand-design/image-4.png", tile: styles.tile4 },
     { key: "tile5", src: "/grand-design/image-5.png", tile: styles.tile5 },
 ] as const;
+
+const REFRAME_TOP_MARGIN = 110;
+const REFRAME_BOTTOM_MARGIN = 32;
+const PARALLAX_PERCENT = 8;
 
 export function GrandDesignGallery() {
     const t = useTranslations("gallery");
@@ -39,30 +44,72 @@ export function GrandDesignGallery() {
         });
     };
 
-    const getSnapshotForKey = useCallback((key: string, scrollY = window.scrollY): TileVisualSnapshot | null => {
-        const index = TILES.findIndex((tile) => tile.key === key);
-        if (index === -1) return null;
+    const getSnapshotForKey = useCallback(
+        (key: string, scrollY = window.scrollY): TileVisualSnapshot | null => {
+            const index = TILES.findIndex((tile) => tile.key === key);
+            if (index === -1) return null;
 
-        const tile = tileRefs.current[index];
-        if (!tile) return null;
+            const tile = tileRefs.current[index];
+            if (!tile) return null;
 
-        const imageWrap = tile.querySelector<HTMLElement>(`.${styles.tileImageWrap}`);
-        const image = tile.querySelector<HTMLImageElement>("img");
-        const rect = (imageWrap ?? tile).getBoundingClientRect();
-        const computedImageStyle = image ? window.getComputedStyle(image) : null;
+            const imageWrap = tile.querySelector<HTMLElement>(`.${styles.tileImageWrap}`);
+            const image = tile.querySelector<HTMLImageElement>("img");
+            const rect = (imageWrap ?? tile).getBoundingClientRect();
+            const computedImageStyle = image ? window.getComputedStyle(image) : null;
 
-        return {
-            top: rect.top,
-            left: rect.left,
-            width: rect.width,
-            height: rect.height,
-            imageTransform: computedImageStyle?.transform && computedImageStyle.transform !== "none"
-                ? computedImageStyle.transform
-                : "none",
-            imageTransformOrigin: computedImageStyle?.transformOrigin ?? "50% 50%",
-            scrollY,
-        };
-    }, [tileRefs]);
+            return {
+                top: rect.top,
+                left: rect.left,
+                width: rect.width,
+                height: rect.height,
+                imageTransform:
+                    computedImageStyle?.transform && computedImageStyle.transform !== "none"
+                        ? computedImageStyle.transform
+                        : "none",
+                imageTransformOrigin: computedImageStyle?.transformOrigin ?? "50% 50%",
+                scrollY,
+            };
+        },
+        [tileRefs]
+    );
+
+    const reframeTileForClose = useCallback(
+        (key: string) => {
+            const index = TILES.findIndex((tile) => tile.key === key);
+            if (index === -1) return;
+
+            const tile = tileRefs.current[index];
+            if (!tile) return;
+
+            const rect = tile.getBoundingClientRect();
+            const viewportH = window.innerHeight;
+            const maxTop = Math.max(
+                REFRAME_TOP_MARGIN,
+                viewportH - rect.height - REFRAME_BOTTOM_MARGIN
+            );
+            const desiredTop = Math.min(
+                maxTop,
+                Math.max(REFRAME_TOP_MARGIN, (viewportH - rect.height) / 2)
+            );
+
+            shiftScrollLock(rect.top - desiredTop, { syncScrollTriggers: true });
+
+            const syncedRect = tile.getBoundingClientRect();
+            shiftScrollLock(syncedRect.top - desiredTop, { syncScrollTriggers: true });
+
+            const image = tile.querySelector<HTMLImageElement>("img");
+            if (image) {
+                const progress = Math.min(
+                    1,
+                    Math.max(0, (viewportH - desiredTop) / (viewportH + rect.height))
+                );
+                gsap.set(image, {
+                    yPercent: -PARALLAX_PERCENT + progress * (2 * PARALLAX_PERCENT),
+                });
+            }
+        },
+        [tileRefs]
+    );
 
     const items = TILES.map((tile) => ({
         key: tile.key,
@@ -83,7 +130,7 @@ export function GrandDesignGallery() {
                             className={cn(
                                 styles.tile,
                                 item.tile,
-                                activeTileKey === item.key && styles.tileActive,
+                                activeTileKey === item.key && styles.tileActive
                             )}
                             onClick={() => {
                                 const visualScrollY = lenis?.animatedScroll ?? window.scrollY;
@@ -104,7 +151,10 @@ export function GrandDesignGallery() {
                                         fill
                                         sizes="(max-width: 768px) 100vw, 60vw"
                                         onLoad={() => markLoaded(index)}
-                                        className={cn(styles.tileImage, loaded[index] && styles.tileImageLoaded)}
+                                        className={cn(
+                                            styles.tileImage,
+                                            loaded[index] && styles.tileImageLoaded
+                                        )}
                                     />
                                 </div>
                             </div>
@@ -124,6 +174,7 @@ export function GrandDesignGallery() {
                 startIndex={startIndex}
                 launchSnapshot={launchSnapshot}
                 getSnapshotForKey={getSnapshotForKey}
+                onBeforeClose={reframeTileForClose}
                 onClose={() => {
                     setStartIndex(null);
                     setLaunchSnapshot(null);
