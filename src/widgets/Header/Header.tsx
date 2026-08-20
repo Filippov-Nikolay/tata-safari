@@ -12,7 +12,7 @@ import { scrollToElementId, scrollToTop } from "@/shared/lib/scroll";
 import { useLenis, usePreloader } from "@/shared/providers";
 import { cn } from "@/shared/lib/cn";
 import styles from "./Header.module.scss";
-import { TataLogoIcon } from "@/shared/ui";
+import { TataLogoIcon, LangSwitcher } from "@/shared/ui";
 import type { NavItem } from "@/shared/types";
 
 // Derived from `navigation` — never hardcoded separately, so adding or
@@ -103,52 +103,63 @@ export function Header() {
                     <TataLogoIcon className={styles.logoIcon} />
                 </Link>
 
-                <nav aria-label="Main navigation">
-                    <ul className={styles.nav}>
-                        {navigation.map((item) => (
-                            <li key={item.href + item.key}>
-                                <a
-                                    href={item.href}
-                                    onClick={(e) => scrollToSection(e, item)}
-                                    className={cn(
-                                        styles.link,
-                                        activeSection === item.key && styles.linkActive
-                                    )}
-                                >
-                                    <AnimatePresence>
-                                        {activeSection === item.key && (
-                                            <m.span
-                                                key="pill"
-                                                layoutId="desktop-nav-underline"
-                                                className={styles.activeUnderline}
-                                                initial={{ opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                exit={{ opacity: 0 }}
-                                                transition={{
-                                                    opacity: { duration: 0.2, ease: "easeInOut" },
-                                                    layout: { type: "spring", stiffness: 380, damping: 32 },
-                                                }}
-                                            />
+                <div className={styles.actions}>
+                    <nav aria-label="Main navigation">
+                        <ul className={styles.nav}>
+                            {navigation.map((item) => (
+                                <li key={item.href + item.key}>
+                                    <a
+                                        href={item.href}
+                                        onClick={(e) => scrollToSection(e, item)}
+                                        className={cn(
+                                            styles.link,
+                                            activeSection === item.key && styles.linkActive
                                         )}
-                                    </AnimatePresence>
-                                    {t(item.key)}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
+                                    >
+                                        <AnimatePresence>
+                                            {activeSection === item.key && (
+                                                <m.span
+                                                    key="pill"
+                                                    layoutId="desktop-nav-underline"
+                                                    className={styles.activeUnderline}
+                                                    initial={{ opacity: 0 }}
+                                                    animate={{ opacity: 1 }}
+                                                    exit={{ opacity: 0 }}
+                                                    transition={{
+                                                        opacity: {
+                                                            duration: 0.2,
+                                                            ease: "easeInOut",
+                                                        },
+                                                        layout: {
+                                                            type: "spring",
+                                                            stiffness: 380,
+                                                            damping: 32,
+                                                        },
+                                                    }}
+                                                />
+                                            )}
+                                        </AnimatePresence>
+                                        {t(item.key)}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
 
-                <button
-                    type="button"
-                    className={cn(styles.menuToggle, menuOpen && styles.menuToggleOpen)}
-                    aria-label={menuOpen ? "Close menu" : "Open menu"}
-                    aria-expanded={menuOpen}
-                    onClick={() => setMenuOpen((open) => !open)}
-                >
-                    <span />
-                    <span />
-                    <span />
-                </button>
+                    <LangSwitcher className={styles.langSwitcher} />
+
+                    <button
+                        type="button"
+                        className={cn(styles.menuToggle, menuOpen && styles.menuToggleOpen)}
+                        aria-label={menuOpen ? "Close menu" : "Open menu"}
+                        aria-expanded={menuOpen}
+                        onClick={() => setMenuOpen((open) => !open)}
+                    >
+                        <span />
+                        <span />
+                        <span />
+                    </button>
+                </div>
             </div>
 
             <AnimatePresence>
@@ -179,7 +190,8 @@ export function Header() {
                                             onClick={(e) => scrollToSection(e, item)}
                                             className={cn(
                                                 styles.mobileLink,
-                                                activeSection === item.key && styles.mobileLinkActive
+                                                activeSection === item.key &&
+                                                    styles.mobileLinkActive
                                             )}
                                         >
                                             {t(item.key)}

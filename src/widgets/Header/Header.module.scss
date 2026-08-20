@@ -108,6 +108,16 @@
 // Navigation
 // =============================================
 
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    @include respond-to("tablet") {
+        gap: 12px;
+    }
+}
+
 .nav {
     display: flex;
     align-items: center;
@@ -119,6 +129,10 @@
     @include respond-to("tablet") {
         display: none;
     }
+}
+
+.langSwitcher {
+    z-index: 2;
 }
 
 .link {
