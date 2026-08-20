@@ -11,10 +11,10 @@ export const siteConfig = {
         "The New Safari carries on the legendary lineage with contemporary and premium updates.",
     url: env.siteUrl.replace(/\/$/, ""),
     links: {
-        github: "https://github.com/your-username",
+        github: "https://github.com/Filippov-Nikolay",
         linkedin: "https://www.linkedin.com/in/your-profile",
         telegram: "https://t.me/your-username",
         instagram: "https://instagram.com/your-username",
-        email: "mailto:hello@example.com",
+        email: "mailto:filippovnikolay195@gmail.com",
     },
 };
