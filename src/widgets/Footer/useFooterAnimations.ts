@@ -110,9 +110,9 @@ export function useFooterAnimations(enabled = true) {
 
             gsap.set(cta, {
                 autoAlpha: 0,
-                y: compact ? 52 : 72,
-                scale: 0.88,
-                filter: "blur(24px)",
+                y: compact ? 36 : 48,
+                scale: 0.94,
+                filter: "blur(16px)",
             });
 
             const revealTl = gsap.timeline({
@@ -193,14 +193,15 @@ export function useFooterAnimations(enabled = true) {
                 .to(
                     cta,
                     {
-                        autoAlpha: 1,
-                        y: 0,
-                        scale: 1,
-                        filter: "blur(0px)",
-                        duration: 0.78,
-                    },
-                    0.58,
-                );
+                    autoAlpha: 1,
+                    y: 0,
+                    scale: 1,
+                    filter: "blur(0px)",
+                    duration: 0.72,
+                    ease: "power2.out",
+                },
+                0.48,
+            );
 
             revealTl.progress(0);
 
@@ -218,8 +219,8 @@ export function useFooterAnimations(enabled = true) {
             const updateRevealProgress = () => {
                 const viewportHeight = window.innerHeight || 1;
                 const stageTop = stage.getBoundingClientRect().top;
-                const startPx = viewportHeight * (compact ? 0.76 : 0.68);
-                const endPx = viewportHeight * (compact ? -0.04 : -0.1);
+                const startPx = viewportHeight * (compact ? 0.78 : 0.68);
+                const endPx = viewportHeight * (compact ? 0.24 : -0.1);
                 const linearProgress = gsap.utils.clamp(
                     0,
                     1,
