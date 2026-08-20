@@ -1,5 +1,7 @@
 @use "@/shared/styles/mixins" as *;
 
+$gold: #d9ae73;
+
 .wrapper {
     position: relative;
     flex-shrink: 0;
@@ -12,43 +14,52 @@
 .trigger {
     @include flex-center;
 
-    gap: 10px;
-    padding: 3px 8px;
-    border: 1px solid var(--color-border);
-    // No border-radius here — set by each usage context to avoid CSS Modules
-    // order-dependent overrides (e.g. langMobileTrigger needs radius-sm, not radius-v-sm)
-    background: transparent;
-    font-size: 14px;
+    gap: 8px;
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius-v-sm);
+    background: rgba(255, 255, 255, 0.04);
+    font-family: var(--font-display);
+    font-size: 13px;
     font-weight: 600;
-    font-family: var(--font-mono);
-    color: var(--color-text-primary);
-    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.78);
+    letter-spacing: 0.04em;
     cursor: pointer;
     white-space: nowrap;
     appearance: none;
     -webkit-appearance: none;
     -webkit-tap-highlight-color: transparent;
-    @include transition(border-color, background);
+    @include transition(border-color, background-color, color);
     @include focus-ring;
+
+    @include can-hover {
+        &:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.32);
+            background: rgba(255, 255, 255, 0.08);
+        }
+    }
 }
 
 .triggerOpen {
-    border-color: rgba(124, 58, 237, 0.4);
-    background: rgba(124, 58, 237, 0.06);
+    color: #fff;
+    border-color: rgba(217, 174, 115, 0.55);
+    background: rgba(217, 174, 115, 0.08);
 }
 
 .dot {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    background: var(--glow-purple);
-    box-shadow: 0 0 6px rgba(124, 58, 237, 0.8);
+    background: $gold;
+    box-shadow: 0 0 6px rgba(217, 174, 115, 0.75);
     flex-shrink: 0;
     transition: transform var(--transition-fast);
 }
 
 .dotOpen {
-    transform: scale(1.4);
+    transform: scale(1.5);
 }
 
 // =============================================
@@ -57,17 +68,19 @@
 
 .dropdown {
     position: absolute;
-    top: calc(100% + 8px);
+    top: calc(100% + 10px);
     right: 0;
     z-index: 100;
     list-style: none;
     margin: 0;
     padding: 4px;
     min-width: 100%;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    background: rgba(20, 18, 24, 0.86);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-v-sm);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
 }
 
 // =============================================
@@ -79,42 +92,41 @@
     width: 100%;
     padding: 6px 14px;
     border: none;
-    border-radius: var(--radius-v-sm);
+    border-radius: 3px;
     background: transparent;
+    font-family: var(--font-display);
     font-size: 13px;
     font-weight: 600;
-    font-family: var(--font-mono);
-    letter-spacing: 0.08em;
-    color: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.6);
     text-align: left;
     cursor: pointer;
     white-space: nowrap;
-    @include transition(background, color);
+    @include transition(background-color, color);
 
     @include can-hover {
         &:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--color-text-primary);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
         }
     }
 
     &:active {
-        background: rgba(255, 255, 255, 0.05);
-        color: var(--color-text-primary);
+        background: rgba(255, 255, 255, 0.08);
     }
 }
 
 .optionActive {
-    color: var(--glow-purple);
+    color: $gold;
 
     @include can-hover {
         &:hover {
-            background: rgba(124, 58, 237, 0.08);
-            color: var(--glow-purple);
+            background: rgba(217, 174, 115, 0.12);
+            color: $gold;
         }
     }
 
     &:active {
-        background: rgba(124, 58, 237, 0.08);
+        background: rgba(217, 174, 115, 0.12);
     }
 }
