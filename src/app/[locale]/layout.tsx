@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Sora } from "next/font/google";
 import { cookies, headers } from "next/headers";
 import { NextIntlClientProvider } from "next-intl";
@@ -12,6 +12,13 @@ import { Header } from "@/widgets/Header";
 import { routing, type Locale } from "@/i18n/routing";
 
 import "@/shared/styles/globals.scss";
+
+export const viewport: Viewport = {
+    width: "device-width",
+    initialScale: 1,
+    viewportFit: "cover",
+    themeColor: "#141218",
+};
 
 const sora = Sora({
     subsets: ["latin"],
@@ -67,13 +74,7 @@ const LOCALE_META: Record<string, { title: string; description: string; ogLocale
     },
 };
 
-const KEYWORDS_COMMON = [
-    siteConfig.name,
-    siteConfig.title,
-    "React",
-    "Next.js",
-    "TypeScript",
-];
+const KEYWORDS_COMMON = [siteConfig.name, siteConfig.title, "React", "Next.js", "TypeScript"];
 
 interface LocaleLayoutProps {
     children: React.ReactNode;
@@ -115,6 +116,8 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
         },
         icons: {
             icon: [
+                { url: "/icon.svg", type: "image/svg+xml" },
+                { url: "/favicon.svg", type: "image/svg+xml" },
                 { url: "/icon/icon.svg", type: "image/svg+xml" },
                 { url: "/icon/icon.png", type: "image/png" },
             ],
