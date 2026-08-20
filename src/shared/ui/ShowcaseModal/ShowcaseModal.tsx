@@ -6,9 +6,15 @@ import { createPortal } from "react-dom";
 import { m, AnimatePresence } from "framer-motion";
 import type { ShowcaseItem } from "@/shared/types";
 import { useMounted } from "@/shared/hooks/useMounted";
+import { useScrollLock } from "@/shared/hooks";
 import { Tag, ArrowIcon } from "@/shared/ui";
 import { ACCENT_COLORS } from "@/shared/constants/colors";
 import styles from "./ShowcaseModal.module.scss";
+
+function PresenceScrollLock({ children }: { children: React.ReactNode }) {
+    useScrollLock(true);
+    return <>{children}</>;
+}
 
 function initials(title: string): string {
     return title
@@ -19,8 +25,6 @@ function initials(title: string): string {
         .join("")
         .toUpperCase();
 }
-
-// == ModalContent =========================================
 
 interface ModalContentProps {
     item: ShowcaseItem;
@@ -59,9 +63,7 @@ function ModalContent({ item, onClose, viewLabel }: ModalContentProps) {
                 ×
             </button>
 
-            {/* Inner scroll container — clipped by .modal's overflow:hidden + border-radius */}
             <div className={styles.body}>
-                {/* Visual area */}
                 <div className={styles.visual} aria-hidden="true">
                     <div className={styles.visualGlow} />
                     {item.src ? (
@@ -82,7 +84,6 @@ function ModalContent({ item, onClose, viewLabel }: ModalContentProps) {
                     <div className={styles.grid} />
                 </div>
 
-                {/* Content */}
                 <div className={styles.content}>
                     {item.category && <div className={styles.badge}>{item.category}</div>}
 
@@ -126,8 +127,6 @@ function ModalContent({ item, onClose, viewLabel }: ModalContentProps) {
     );
 }
 
-// == ShowcaseModal ==========================================
-
 interface ShowcaseModalProps {
     item: ShowcaseItem | null;
     onClose: () => void;
@@ -137,7 +136,6 @@ interface ShowcaseModalProps {
 export function ShowcaseModal({ item, onClose, viewLabel }: ShowcaseModalProps) {
     const mounted = useMounted();
 
-    // ESC to close
     useEffect(() => {
         if (!item) return;
         const handler = (e: KeyboardEvent) => {
@@ -147,34 +145,28 @@ export function ShowcaseModal({ item, onClose, viewLabel }: ShowcaseModalProps) 
         return () => document.removeEventListener("keydown", handler);
     }, [item, onClose]);
 
-    // Prevent body scroll while open
-    useEffect(() => {
-        document.body.style.overflow = item ? "hidden" : "";
-        return () => {
-            document.body.style.overflow = "";
-        };
-    }, [item]);
-
     if (!mounted) return null;
 
     return createPortal(
         <AnimatePresence>
             {item && (
-                <m.div
-                    className={styles.overlay}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.22 }}
-                    onClick={onClose}
-                >
-                    <ModalContent
-                        key={item.id}
-                        item={item}
-                        onClose={onClose}
-                        viewLabel={viewLabel}
-                    />
-                </m.div>
+                <PresenceScrollLock>
+                    <m.div
+                        className={styles.overlay}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.22 }}
+                        onClick={onClose}
+                    >
+                        <ModalContent
+                            key={item.id}
+                            item={item}
+                            onClose={onClose}
+                            viewLabel={viewLabel}
+                        />
+                    </m.div>
+                </PresenceScrollLock>
             )}
         </AnimatePresence>,
         document.body
