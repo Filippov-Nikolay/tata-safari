@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import { useLocale } from "next-intl";
-import { useRouter, usePathname } from "@/i18n/navigation";
+import { usePathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { cn } from "@/shared/lib/cn";
 import styles from "./LangSwitcher.module.scss";
@@ -21,6 +21,10 @@ const dropdownVariants = {
     visible: { opacity: 1, y: 0, scaleY: 1 },
 };
 
+function navigateToLocale(pathname: string, code: string) {
+    window.location.href = pathname === "/" ? `/${code}` : `/${code}${pathname}`;
+}
+
 interface LangSwitcherProps {
     className?: string;
     triggerClassName?: string;
@@ -28,7 +32,6 @@ interface LangSwitcherProps {
 
 export function LangSwitcher({ className, triggerClassName }: LangSwitcherProps) {
     const locale = useLocale();
-    const router = useRouter();
     const pathname = usePathname();
 
     const [isOpen, setIsOpen] = useState(false);
@@ -51,9 +54,9 @@ export function LangSwitcher({ className, triggerClassName }: LangSwitcherProps)
         };
     }, []);
 
-    function switchLocale(code: typeof routing.locales[number]) {
-        router.replace(pathname, { locale: code });
+    function switchLocale(code: (typeof routing.locales)[number]) {
         setIsOpen(false);
+        navigateToLocale(pathname, code);
     }
 
     const currentLabel = LANGUAGES.find((l) => l.code === locale)?.label ?? "ENG";
