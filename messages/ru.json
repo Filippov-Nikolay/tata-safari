@@ -4,50 +4,40 @@
         "grand-design": "Особенности"
     },
     "hero": {
-        "title": "The New <safari>Safari</safari>",
-        "description": "The New Safari carries on the legendary lineage with contemporary and premium updates. The New Safari is a compelling combination of Grand Design, Cutting-edge Technology & Luxurious Comfort",
-        "cta": "Book Now",
+        "title": "Новый <safari>Safari</safari>",
+        "description": "Новый Safari продолжает легендарную родословную с современными премиальными обновлениями. Новый Safari — это убедительное сочетание грандиозного дизайна, передовых технологий и роскошного комфорта",
+        "cta": "Забронировать",
         "safariWord": "Safari",
-        "featureTitle": "The Grand Design",
-        "featureDescription": "The new safari showcases an artistic sensibility that's sophisticated, assertive and way ahead of its time"
+        "featureTitle": "Грандиозный дизайн",
+        "featureDescription": "Новый Safari демонстрирует художественную чуткость — утончённую, уверенную и опережающую своё время"
     },
     "gallery": {
         "tile1": {
-            "title": "New Parametric Grille",
-            "short": "A bold parametric grille and signature lighting give the New Safari a commanding road presence from every angle.",
-            "expanded": "The New Safari's front design combines a wide parametric grille with a confident upright stance and distinctive lighting signature. Sculpted surfaces and carefully integrated details create a modern interpretation of Safari's unmistakable road presence."
+            "title": "Новая параметрическая решётка радиатора",
+            "short": "Смелая параметрическая решётка радиатора и фирменная светотехника придают новому Safari уверенный вид на дороге с любого ракурса.",
+            "expanded": "Дизайн передней части нового Safari сочетает широкую параметрическую решётку радиатора с уверенной вертикальной посадкой и характерной световой подписью. Скульптурные поверхности и продуманные детали создают современную интерпретацию узнаваемого облика Safari."
         },
         "tile2": {
-            "title": "Luxurious Comfort",
-            "short": "A spacious, refined cabin designed to make every journey comfortable — whether you're driving or relaxing in the rear.",
-            "expanded": "Step inside a cabin designed around space, comfort and everyday usability. Generous seating, premium finishes and thoughtfully positioned controls create an inviting environment for both short city drives and long-distance journeys."
+            "title": "Роскошный комфорт",
+            "short": "Просторный, изысканный салон создан для комфорта в любой поездке — за рулём или отдыхая на заднем сиденье.",
+            "expanded": "Салон продуман вокруг простора, комфорта и повседневного удобства. Просторные сиденья, премиальная отделка и продуманное расположение органов управления создают располагающую атмосферу как для коротких поездок по городу, так и для дальних путешествий."
         },
         "tile3": {
-            "title": "Effortless Everyday Access",
-            "short": "Smart and convenient access to the luggage area makes loading and unloading effortless when your hands are full.",
-            "expanded": "Everyday practicality is built into the New Safari. The large luggage area and convenient tailgate access make it easier to load shopping, luggage or travel essentials while keeping the experience simple and intuitive."
+            "title": "Лёгкий доступ каждый день",
+            "short": "Удобный доступ к багажному отделению делает погрузку и разгрузку простой, даже когда руки заняты.",
+            "expanded": "Практичность на каждый день заложена в новом Safari. Просторный багажник и удобный доступ через дверь багажника облегчают загрузку покупок, багажа или вещей в дорогу, сохраняя простоту и интуитивность использования."
         },
         "tile4": {
-            "title": "Distinctive From Every Angle",
-            "short": "A distinctive rear light signature and sculpted proportions give the Safari an unmistakable presence even as it drives away.",
-            "expanded": "The rear of the New Safari continues the confident design language of the front. A clean horizontal lighting signature emphasises its width, while strong surfaces and carefully detailed elements create a planted and sophisticated appearance."
+            "title": "Узнаваем с любого угла",
+            "short": "Характерная световая подпись задних фонарей и скульптурные пропорции делают Safari узнаваемым, даже когда он удаляется.",
+            "expanded": "Задняя часть нового Safari продолжает уверенный язык дизайна передней части. Чёткая горизонтальная световая подпись подчёркивает ширину автомобиля, а выразительные поверхности и продуманные детали создают устойчивый и изысканный облик."
         },
         "tile5": {
-            "title": "Connected Digital Cockpit",
-            "short": "An intuitive driver-focused cockpit brings information, entertainment and essential controls together in one refined space.",
-            "expanded": "The New Safari places technology at the centre of the driving experience. Digital displays, intuitive controls and an intelligently organised dashboard keep important information within easy reach while maintaining a clean, premium interior design."
+            "title": "Цифровая кабина нового поколения",
+            "short": "Интуитивно понятная, ориентированная на водителя кабина объединяет информацию, развлечения и важные функции управления в едином изысканном пространстве.",
+            "expanded": "Новый Safari ставит технологии в центр опыта вождения. Цифровые дисплеи, интуитивное управление и продуманная организация приборной панели держат важную информацию под рукой, сохраняя чистый премиальный дизайн интерьера."
         },
-        "close": "Close"
-    },
-    "contact": {
-        "headlineStart": "Давайте",
-        "headlineEnd": "Общаться",
-        "tagline": "Свяжитесь с нами",
-        "github": "GitHub",
-        "telegram": "Telegram",
-        "gmail": "Gmail",
-        "linkedin": "LinkedIn",
-        "instagram": "Instagram"
+        "close": "Закрыть"
     },
     "footer": {
         "eyebrow": "Новый Safari",

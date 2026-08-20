@@ -4,50 +4,40 @@
         "grand-design": "Highlights"
     },
     "hero": {
-        "title": "The New <safari>Safari</safari>",
-        "description": "The New Safari carries on the legendary lineage with contemporary and premium updates. The New Safari is a compelling combination of Grand Design, Cutting-edge Technology & Luxurious Comfort",
-        "cta": "Book Now",
+        "title": "Der Neue <safari>Safari</safari>",
+        "description": "Der neue Safari führt das legendäre Erbe mit zeitgemäßen, hochwertigen Updates fort. Der neue Safari ist eine überzeugende Kombination aus großzügigem Design, modernster Technologie und luxuriösem Komfort",
+        "cta": "Jetzt buchen",
         "safariWord": "Safari",
-        "featureTitle": "The Grand Design",
-        "featureDescription": "The new safari showcases an artistic sensibility that's sophisticated, assertive and way ahead of its time"
+        "featureTitle": "Das großzügige Design",
+        "featureDescription": "Der neue Safari zeigt ein künstlerisches Gespür, das anspruchsvoll, selbstbewusst und seiner Zeit weit voraus ist"
     },
     "gallery": {
         "tile1": {
-            "title": "New Parametric Grille",
-            "short": "A bold parametric grille and signature lighting give the New Safari a commanding road presence from every angle.",
-            "expanded": "The New Safari's front design combines a wide parametric grille with a confident upright stance and distinctive lighting signature. Sculpted surfaces and carefully integrated details create a modern interpretation of Safari's unmistakable road presence."
+            "title": "Neuer parametrischer Kühlergrill",
+            "short": "Ein markanter parametrischer Kühlergrill und die charakteristische Beleuchtung verleihen dem neuen Safari aus jedem Blickwinkel eine gebieterische Präsenz auf der Straße.",
+            "expanded": "Das Frontdesign des neuen Safari verbindet einen breiten parametrischen Kühlergrill mit einer selbstbewussten, aufrechten Haltung und einer unverwechselbaren Lichtsignatur. Skulptierte Flächen und sorgfältig integrierte Details schaffen eine moderne Interpretation der unverkennbaren Straßenpräsenz des Safari."
         },
         "tile2": {
-            "title": "Luxurious Comfort",
-            "short": "A spacious, refined cabin designed to make every journey comfortable — whether you're driving or relaxing in the rear.",
-            "expanded": "Step inside a cabin designed around space, comfort and everyday usability. Generous seating, premium finishes and thoughtfully positioned controls create an inviting environment for both short city drives and long-distance journeys."
+            "title": "Luxuriöser Komfort",
+            "short": "Eine geräumige, edle Kabine sorgt dafür, dass jede Fahrt komfortabel ist — ob am Steuer oder entspannt auf der Rückbank.",
+            "expanded": "Steigen Sie ein in eine Kabine, die auf Raum, Komfort und Alltagstauglichkeit ausgelegt ist. Großzügige Sitze, hochwertige Verarbeitung und durchdacht platzierte Bedienelemente schaffen eine einladende Atmosphäre für kurze Stadtfahrten ebenso wie für lange Reisen."
         },
         "tile3": {
-            "title": "Effortless Everyday Access",
-            "short": "Smart and convenient access to the luggage area makes loading and unloading effortless when your hands are full.",
-            "expanded": "Everyday practicality is built into the New Safari. The large luggage area and convenient tailgate access make it easier to load shopping, luggage or travel essentials while keeping the experience simple and intuitive."
+            "title": "Müheloser Zugang im Alltag",
+            "short": "Der praktische, komfortable Zugang zum Laderaum macht das Be- und Entladen mühelos, auch wenn die Hände voll sind.",
+            "expanded": "Alltagstauglichkeit ist fest im neuen Safari verankert. Der große Laderaum und der komfortable Zugang über die Heckklappe erleichtern das Verstauen von Einkäufen, Gepäck oder Reiseutensilien und sorgen dabei für ein einfaches, intuitives Erlebnis."
         },
         "tile4": {
-            "title": "Distinctive From Every Angle",
-            "short": "A distinctive rear light signature and sculpted proportions give the Safari an unmistakable presence even as it drives away.",
-            "expanded": "The rear of the New Safari continues the confident design language of the front. A clean horizontal lighting signature emphasises its width, while strong surfaces and carefully detailed elements create a planted and sophisticated appearance."
+            "title": "Unverwechselbar aus jedem Blickwinkel",
+            "short": "Eine markante Heckleuchtensignatur und skulptierte Proportionen verleihen dem Safari eine unverkennbare Präsenz, selbst wenn er davonfährt.",
+            "expanded": "Das Heck des neuen Safari führt die selbstbewusste Designsprache der Front fort. Eine klare horizontale Lichtsignatur betont seine Breite, während kräftige Flächen und sorgfältig gestaltete Details ein bodenständiges und zugleich elegantes Erscheinungsbild schaffen."
         },
         "tile5": {
-            "title": "Connected Digital Cockpit",
-            "short": "An intuitive driver-focused cockpit brings information, entertainment and essential controls together in one refined space.",
-            "expanded": "The New Safari places technology at the centre of the driving experience. Digital displays, intuitive controls and an intelligently organised dashboard keep important information within easy reach while maintaining a clean, premium interior design."
+            "title": "Vernetztes digitales Cockpit",
+            "short": "Ein intuitives, fahrerorientiertes Cockpit vereint Informationen, Unterhaltung und wichtige Bedienelemente in einem eleganten Raum.",
+            "expanded": "Der neue Safari stellt Technologie in den Mittelpunkt des Fahrerlebnisses. Digitale Displays, intuitive Bedienelemente und ein intelligent organisiertes Armaturenbrett halten wichtige Informationen stets griffbereit und bewahren dabei ein klares, hochwertiges Interieurdesign."
         },
-        "close": "Close"
-    },
-    "contact": {
-        "headlineStart": "Lass uns",
-        "headlineEnd": "Reden",
-        "tagline": "Nehmen Sie Kontakt auf",
-        "github": "GitHub",
-        "telegram": "Telegram",
-        "gmail": "Gmail",
-        "linkedin": "LinkedIn",
-        "instagram": "Instagram"
+        "close": "Schließen"
     },
     "footer": {
         "eyebrow": "Der neue Safari",

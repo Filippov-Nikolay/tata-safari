@@ -4,50 +4,40 @@
         "grand-design": "Kohokohdat"
     },
     "hero": {
-        "title": "The New <safari>Safari</safari>",
-        "description": "The New Safari carries on the legendary lineage with contemporary and premium updates. The New Safari is a compelling combination of Grand Design, Cutting-edge Technology & Luxurious Comfort",
-        "cta": "Book Now",
+        "title": "Uusi <safari>Safari</safari>",
+        "description": "Uusi Safari jatkaa legendaarista perintöä nykyaikaisin ja ylellisin päivityksin. Uusi Safari yhdistää vaikuttavasti näyttävän muotoilun, huipputeknologian ja ylellisen mukavuuden",
+        "cta": "Varaa nyt",
         "safariWord": "Safari",
-        "featureTitle": "The Grand Design",
-        "featureDescription": "The new safari showcases an artistic sensibility that's sophisticated, assertive and way ahead of its time"
+        "featureTitle": "Näyttävä muotoilu",
+        "featureDescription": "Uusi Safari ilmentää taiteellista herkkyyttä, joka on hienostunutta, itsevarmaa ja aikaansa edellä"
     },
     "gallery": {
         "tile1": {
-            "title": "New Parametric Grille",
-            "short": "A bold parametric grille and signature lighting give the New Safari a commanding road presence from every angle.",
-            "expanded": "The New Safari's front design combines a wide parametric grille with a confident upright stance and distinctive lighting signature. Sculpted surfaces and carefully integrated details create a modern interpretation of Safari's unmistakable road presence."
+            "title": "Uusi parametrinen säleikkö",
+            "short": "Rohkea parametrinen säleikkö ja tunnusomainen valaistus antavat uudelle Safarille vaikuttavan olemuksen tieltä joka kulmasta katsottuna.",
+            "expanded": "Uuden Safarin etuosan muotoilu yhdistää leveän parametrisen säleikön itsevarmaan, pystyyn asentoon ja omaleimaiseen valoallekirjoitukseen. Veistokselliset pinnat ja huolellisesti integroidut yksityiskohdat luovat modernin tulkinnan Safarin tunnistettavasta tieolemuksesta."
         },
         "tile2": {
-            "title": "Luxurious Comfort",
-            "short": "A spacious, refined cabin designed to make every journey comfortable — whether you're driving or relaxing in the rear.",
-            "expanded": "Step inside a cabin designed around space, comfort and everyday usability. Generous seating, premium finishes and thoughtfully positioned controls create an inviting environment for both short city drives and long-distance journeys."
+            "title": "Ylellinen mukavuus",
+            "short": "Tilava, tyylikäs sisätila on suunniteltu tekemään jokaisesta matkasta mukava — ajoit sitten itse tai rentoudu takapenkillä.",
+            "expanded": "Astu sisään tilaan, joka on suunniteltu väljyyden, mukavuuden ja arjen käytettävyyden ehdoilla. Runsaat istumapaikat, laadukkaat pinnat ja harkitusti sijoitetut hallintalaitteet luovat kutsuvan ympäristön niin lyhyille kaupunkiajoille kuin pitkille matkoillekin."
         },
         "tile3": {
-            "title": "Effortless Everyday Access",
-            "short": "Smart and convenient access to the luggage area makes loading and unloading effortless when your hands are full.",
-            "expanded": "Everyday practicality is built into the New Safari. The large luggage area and convenient tailgate access make it easier to load shopping, luggage or travel essentials while keeping the experience simple and intuitive."
+            "title": "Vaivaton käyttö arjessa",
+            "short": "Kätevä ja käytännöllinen pääsy tavaratilaan tekee lastaamisesta ja purkamisesta vaivatonta, vaikka kädet olisivat täynnä.",
+            "expanded": "Arjen käytännöllisyys on rakennettu uuteen Safariin. Tilava tavaratila ja kätevä takaluukun kautta tapahtuva pääsy helpottavat ostosten, matkatavaroiden tai matkatarvikkeiden lastaamista pitäen kokemuksen samalla yksinkertaisena ja intuitiivisena."
         },
         "tile4": {
-            "title": "Distinctive From Every Angle",
-            "short": "A distinctive rear light signature and sculpted proportions give the Safari an unmistakable presence even as it drives away.",
-            "expanded": "The rear of the New Safari continues the confident design language of the front. A clean horizontal lighting signature emphasises its width, while strong surfaces and carefully detailed elements create a planted and sophisticated appearance."
+            "title": "Omaleimainen jokaisesta kulmasta",
+            "short": "Tunnusomainen takavalojen allekirjoitus ja veistokselliset mittasuhteet antavat Safarille tunnistettavan olemuksen vielä sen ajaessakin pois.",
+            "expanded": "Uuden Safarin takaosa jatkaa etuosan itsevarmaa muotoilukieltä. Selkeä vaakasuuntainen valoallekirjoitus korostaa sen leveyttä, kun taas vahvat pinnat ja huolella viimeistellyt yksityiskohdat luovat maanläheisen ja hienostuneen ilmeen."
         },
         "tile5": {
-            "title": "Connected Digital Cockpit",
-            "short": "An intuitive driver-focused cockpit brings information, entertainment and essential controls together in one refined space.",
-            "expanded": "The New Safari places technology at the centre of the driving experience. Digital displays, intuitive controls and an intelligently organised dashboard keep important information within easy reach while maintaining a clean, premium interior design."
+            "title": "Yhdistetty digitaalinen ohjaamo",
+            "short": "Intuitiivinen, kuljettajakeskeinen ohjaamo tuo tiedon, viihteen ja tärkeimmät hallintatoiminnot yhteen tyylikkääseen tilaan.",
+            "expanded": "Uusi Safari asettaa teknologian ajokokemuksen keskiöön. Digitaaliset näytöt, intuitiivinen hallinta ja älykkäästi järjestetty kojelauta pitävät tärkeän tiedon helposti saatavilla säilyttäen samalla selkeän, laadukkaan sisustan muotoilun."
         },
-        "close": "Close"
-    },
-    "contact": {
-        "headlineStart": "Otetaan",
-        "headlineEnd": "Yhteyttä",
-        "tagline": "Ota yhteyttä",
-        "github": "GitHub",
-        "telegram": "Telegram",
-        "gmail": "Gmail",
-        "linkedin": "LinkedIn",
-        "instagram": "Instagram"
+        "close": "Sulje"
     },
     "footer": {
         "eyebrow": "Uusi Safari",

@@ -39,16 +39,6 @@
         },
         "close": "Close"
     },
-    "contact": {
-        "headlineStart": "Let's",
-        "headlineEnd": "Talk",
-        "tagline": "Get in touch",
-        "github": "GitHub",
-        "telegram": "Telegram",
-        "gmail": "Gmail",
-        "linkedin": "LinkedIn",
-        "instagram": "Instagram"
-    },
     "footer": {
         "eyebrow": "The New Safari",
         "title": "Reclaim Your Life",
