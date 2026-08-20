@@ -81,10 +81,6 @@ export function useHeroSectionAnimations(enabled = true) {
                 return;
             }
 
-            if (!enabled) {
-                return;
-            }
-
             if (reduced) {
                 gsap.set(
                     [ghost, sky, car, scrim, solid, copy, safariBackdropGlow, safariBackdrop, safariBackdropVeil],
@@ -122,11 +118,12 @@ export function useHeroSectionAnimations(enabled = true) {
             const featureExitY = () => FEATURE_EXIT_RISE_RATIO * stage.getBoundingClientRect().height;
             const scrollDistance = () => Math.max(wrap.offsetHeight - stage.getBoundingClientRect().height, 0);
             const galleryTopAtPhase = (phase: number) => wrap.offsetHeight - phase * scrollDistance();
-            const galleryEntranceStartY = () => {
+            const galleryEntranceStartOffset = () => {
                 const stageHeight = stage.getBoundingClientRect().height;
                 return stageHeight - galleryTopAtPhase(PHASE_GALLERY_ENTRY_START);
             };
-            const galleryEntranceEndY = () => -stage.getBoundingClientRect().height;
+            const galleryEntranceEndOffset = () => -stage.getBoundingClientRect().height;
+            const galleryEntranceStartY = () => galleryEntranceStartOffset() - galleryEntranceEndOffset();
             const endScale = () => {
                 const fontSize = Number.parseFloat(window.getComputedStyle(clone).fontSize);
 
@@ -138,12 +135,24 @@ export function useHeroSectionAnimations(enabled = true) {
             };
 
             gsap.set(ghost, { autoAlpha: 0 });
-            gsap.set([clone, cloneGradient], {
+            gsap.set(clone, {
                 xPercent: -50,
                 yPercent: -50,
                 transformOrigin: "50% 50%",
+                x: dx,
+                y: dy,
+                scale: startScale,
+                color: "#ffffff",
             });
-            gsap.set(cloneGradient, { opacity: 0 });
+            gsap.set(cloneGradient, {
+                xPercent: -50,
+                yPercent: -50,
+                transformOrigin: "50% 50%",
+                x: dx,
+                y: dy,
+                scale: startScale,
+                opacity: 0,
+            });
             gsap.set(safariBackdropGlow, {
                 autoAlpha: 0,
                 scale: 0.76,
@@ -159,7 +168,15 @@ export function useHeroSectionAnimations(enabled = true) {
             gsap.set(safariBackdropVeil, { autoAlpha: 0, yPercent: 8 });
             gsap.set(featureBlock, { autoAlpha: 0, y: 24 });
             if (gallery) {
-                gsap.set(gallery, { marginTop: galleryEntranceStartY });
+                gsap.set(gallery, {
+                    marginTop: galleryEntranceEndOffset,
+                    y: galleryEntranceStartY,
+                    force3D: true,
+                });
+            }
+
+            if (!enabled) {
+                return;
             }
 
             const tl = gsap.timeline({
@@ -168,11 +185,11 @@ export function useHeroSectionAnimations(enabled = true) {
                     trigger: wrap,
                     start: "top top",
                     end: "bottom bottom",
-                    // Lenis (see SmoothScrollProvider) already smooths the underlying
-                    // scroll position globally - stacking a heavy scrub value on top
-                    // of that compounds into a noticeably laggier feel, so this stays
-                    // light and just irons out per-frame stepping.
-                    scrub: isCompactViewport ? 0.18 : 0.4,
+                    // Desktop already runs through Lenis, so tying the timeline
+                    // directly to scroll avoids the "catch-up" hop when the wheel
+                    // stops. On compact viewports there is no Lenis, so a tiny
+                    // scrub still helps soften native stepping a bit.
+                    scrub: isCompactViewport ? 0.12 : true,
                     invalidateOnRefresh: true,
                 },
             });
@@ -397,7 +414,7 @@ export function useHeroSectionAnimations(enabled = true) {
                 tl.to(
                     gallery,
                     {
-                        marginTop: galleryEntranceEndY,
+                        y: 0,
                         duration: PHASE_GALLERY_ENTRY_END - PHASE_GALLERY_ENTRY_START,
                         immediateRender: false,
                     },

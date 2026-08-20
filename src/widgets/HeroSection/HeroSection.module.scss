@@ -38,6 +38,19 @@
     }
 }
 
+.stage[data-preloader-ready="false"] {
+    .copy,
+    .mobileShowcase,
+    .featureBlock,
+    .safariClone:not(.measureGhost),
+    .safariBackdropGlow,
+    .safariBackdrop,
+    .safariBackdropVeil {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
 // =============================================
 // Background layers — sky (slow) + car/dirt (fast, rises on scroll)
 // =============================================

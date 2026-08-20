@@ -42,7 +42,11 @@ export function HeroSection() {
     return (
         <Section id="overview" className={styles.sectionReset}>
             <div className={styles.wrap} ref={wrapRef}>
-                <div className={styles.stage} ref={stageRef}>
+                <div
+                    className={styles.stage}
+                    ref={stageRef}
+                    data-preloader-ready={isReady ? "true" : "false"}
+                >
                     <div className={styles.background} aria-hidden="true">
                         <div className={styles.skyLayer} ref={skyRef}>
                             <Image
