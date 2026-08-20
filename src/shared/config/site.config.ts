@@ -18,12 +18,3 @@ export const siteConfig = {
         email: "mailto:hello@example.com",
     },
 };
-
-// Derived monogram (e.g. "Your Brand" -> "YB") used by the logo/avatar/preloader.
-export const siteInitials = siteConfig.name
-    .split(" ")
-    .filter(Boolean)
-    .map((word) => word[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();

@@ -12,7 +12,7 @@ const EASE_REVEAL = [0.16, 1, 0.3, 1] as const;
 
 export function Preloader() {
     const { isShown, isReady, onExitComplete } = usePreloader();
-    useScrollLock(!isReady);
+    useScrollLock(!isReady, { preserveScrollPosition: false });
 
     return (
         <AnimatePresence onExitComplete={onExitComplete}>
