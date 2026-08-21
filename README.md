@@ -137,7 +137,12 @@ Built on [`next-intl`](https://next-intl.dev), with full routing, middleware and
 - **Branding & site URL:** [`src/shared/config/site.config.ts`](src/shared/config/site.config.ts).
 - **Sitemap & robots:** [`src/app/sitemap.ts`](src/app/sitemap.ts) / [`src/app/robots.ts`](src/app/robots.ts)
   — both dynamic, both derive their domain from `siteConfig.url`.
-- **OpenGraph / favicon images:** `public/og/cover.jpg` (1731×909) and `public/icon/icon.png` (32×32).
+- **OpenGraph image:** `public/og/cover.jpg` (1731×909).
+- **Favicons:** `src/app/icon.svg` (App Router convention) and `public/favicon.svg` take priority over
+  the `public/icon/icon.svg` / `icon.png` (32×32) fallback pair, for browsers that support SVG icons.
+- **Viewport:** exported from [`src/app/[locale]/layout.tsx`](<src/app/[locale]/layout.tsx>) —
+  `device-width`, `initialScale: 1`, `viewportFit: "cover"`, and a `theme-color` matching the site's
+  dark background.
 
 ---
 
