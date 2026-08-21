@@ -48,6 +48,15 @@ pnpm-debug.log*
 .idea/
 
 # =========================
+# Testing
+# =========================
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+coverage/
+
+# =========================
 # OS
 # =========================
 .DS_Store

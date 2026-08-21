@@ -12,6 +12,9 @@
         "format": "prettier . --write",
         "format:check": "prettier . --check",
         "build:check": "cross-env NEXT_OUTPUT=standalone next build",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:e2e": "playwright test",
         "prepare": "husky"
     },
     "lint-staged": {
@@ -52,6 +55,7 @@
         "not dead"
     ],
     "devDependencies": {
+        "@playwright/test": "^1.62.1",
         "@svgr/webpack": "^8.1.0",
         "@types/node": "^20.19.41",
         "@types/react": "^19",
@@ -62,6 +66,7 @@
         "husky": "^9.1.7",
         "lint-staged": "^16.4.0",
         "prettier": "^3.8.3",
-        "typescript": "^5"
+        "typescript": "^5",
+        "vitest": "^4.1.11"
     }
 }

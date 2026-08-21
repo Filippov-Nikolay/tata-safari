@@ -25,7 +25,7 @@ const INITIAL_VALUES: BookingFormValues = {
     consent: false,
 };
 
-function validate(values: BookingFormValues): BookingFormErrors {
+export function validate(values: BookingFormValues): BookingFormErrors {
     const errors: BookingFormErrors = {};
 
     if (!values.name.trim()) {

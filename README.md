@@ -37,7 +37,7 @@ Built with Next.js App Router, TypeScript and SCSS Modules, following
 - **Accessible defaults** — semantic landmarks, focus-visible rings, `prefers-reduced-motion` respected
   by every animation (GSAP and Framer Motion alike).
 - **Docker-ready** — multi-stage `Dockerfile` + `docker-compose.yml`, `output: standalone`.
-- **CI** — GitHub Actions pipeline (`install → lint → type-check → build`).
+- **CI** — GitHub Actions pipeline (`install → lint → type-check → test → build → test:e2e`).
 
 ---
 
@@ -49,7 +49,7 @@ GSAP + ScrollTrigger · Lenis (smooth scroll)
 **i18n:** next-intl (routing, middleware, message catalogs)
 
 **Tooling:** ESLint · Prettier · Husky · lint-staged · path aliases (`@/`) · TypeScript strict mode ·
-`@svgr/webpack` (SVG as React components)
+`@svgr/webpack` (SVG as React components) · Vitest · Playwright
 
 **Infrastructure:** Docker · Docker Compose · GitHub Actions CI
 
@@ -161,6 +161,29 @@ outside of Vercel.
 
 ---
 
+## Testing
+
+This app has little business logic and a lot of cross-system, scroll/animation-driven state
+(the shared scroll lock, GSAP `ScrollTrigger`, Lenis, Framer Motion) — the kind of bug a unit test
+can't see, since it only shows up once several of those are interacting live in a real page. So the
+suite skews toward a few targeted end-to-end checks over broad component coverage:
+
+- **Unit ([Vitest](https://vitest.dev)):** pure logic only — currently
+  [`useBookingForm`](src/widgets/BookingModal/useBookingForm.test.ts)'s field validation.
+- **E2E ([Playwright](https://playwright.dev)):** the flows that have actually broken before — see
+  [`e2e/`](e2e). `gallery.spec.ts` covers scroll-spy staying correct while the gallery is open, the
+  detail view's pagination dots staying centered, closing onto a tile reached via keyboard
+  navigation reframing the background instead of landing off-screen, and stepping past the last
+  slide closing cleanly onto it. `gallery.mobile.spec.ts` (mobile-chrome project only) covers swipe
+  navigation. `language.spec.ts` covers the page staying scrollable after a locale switch.
+
+```bash
+npm run test       # unit
+npm run test:e2e   # e2e — starts its own dev server, see playwright.config.ts
+```
+
+---
+
 ## Scripts
 
 ```bash
@@ -172,6 +195,9 @@ npm run lint:fix      # ESLint autofix
 npm run type-check    # TypeScript check (no emit)
 npm run format         # Prettier format
 npm run format:check  # Prettier check only
+npm run test          # unit tests (Vitest)
+npm run test:watch    # unit tests, watch mode
+npm run test:e2e      # e2e tests (Playwright, starts its own dev server)
 ```
 
 ---
@@ -192,8 +218,8 @@ Multi-stage `Dockerfile`: `builder` installs deps and runs `next build`; `runner
 
 ## CI
 
-GitHub Actions runs `install → lint → type-check → build` on every push/PR to `main`. See
-[`.github/workflows/ci.yml`](.github/workflows/ci.yml).
+GitHub Actions runs `install → lint → type-check → test → build → test:e2e` on every push/PR to
+`main`. See [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
 
 ---
 
