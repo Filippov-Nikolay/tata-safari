@@ -15,7 +15,7 @@ export type BookingFormErrors = Partial<Record<BookingFormField, string>>;
 export type BookingFormStatus = "idle" | "submitting" | "success";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PHONE_PATTERN = /^[+\d][\d\s().-]{6,}$/;
+const PHONE_PATTERN = /^[+\d(][\d\s().-]{6,}$/;
 
 const INITIAL_VALUES: BookingFormValues = {
     name: "",
@@ -54,9 +54,12 @@ export function useBookingForm() {
 
     const errors = validate(values);
 
-    const setField = useCallback(<K extends BookingFormField>(field: K, value: BookingFormValues[K]) => {
-        setValues((prev) => ({ ...prev, [field]: value }));
-    }, []);
+    const setField = useCallback(
+        <K extends BookingFormField>(field: K, value: BookingFormValues[K]) => {
+            setValues((prev) => ({ ...prev, [field]: value }));
+        },
+        []
+    );
 
     const touchField = useCallback(
         (field: BookingFormField) => {
@@ -69,7 +72,7 @@ export function useBookingForm() {
 
             setTouched((prev) => ({ ...prev, [field]: true }));
         },
-        [values],
+        [values]
     );
 
     const reset = useCallback(() => {
