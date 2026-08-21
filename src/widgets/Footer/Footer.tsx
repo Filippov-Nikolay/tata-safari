@@ -8,7 +8,10 @@ import { useBookingModalActions, useLenis } from "@/shared/providers";
 import { useFooterAnimations } from "./useFooterAnimations";
 import styles from "./Footer.module.scss";
 
-const LEGAL_LINKS = ["contact", "careers", "media", "legal", "privacy", "terms"] as const;
+const FOOTER_LINK_GROUPS = [
+    ["contact", "careers", "media"],
+    ["legal", "privacy", "terms"],
+] as const;
 const FOOTER_BG_SRC = "/footer/bg.png?v=20260818-1454";
 const FOOTER_CAR_SRC = "/footer/car.png?v=20260818-1454";
 
@@ -30,14 +33,17 @@ export function Footer() {
         ctaRef,
     } = useFooterAnimations();
 
-    const handleOpenBooking = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
+    const handleOpenBooking = useCallback(
+        (e: React.MouseEvent<HTMLAnchorElement>) => {
+            e.preventDefault();
 
-        const frozenScrollY = Math.round(window.scrollY);
-        lenis?.scrollTo(frozenScrollY, { immediate: true, force: true });
-        lenis?.stop();
-        openBooking();
-    }, [lenis, openBooking]);
+            const frozenScrollY = Math.round(window.scrollY);
+            lenis?.scrollTo(frozenScrollY, { immediate: true, force: true });
+            lenis?.stop();
+            openBooking();
+        },
+        [lenis, openBooking]
+    );
 
     return (
         <footer ref={footerRef} className={styles.footer}>
@@ -83,12 +89,7 @@ export function Footer() {
                         {t("description")}
                     </p>
 
-                    <a
-                        ref={ctaRef}
-                        href="#"
-                        className={styles.ctaBtn}
-                        onClick={handleOpenBooking}
-                    >
+                    <a ref={ctaRef} href="#" className={styles.ctaBtn} onClick={handleOpenBooking}>
                         <span>{t("cta")}</span>
                         <span className={styles.ctaCircle} aria-hidden="true">
                             <ArrowIcon className={styles.ctaArrow} />
@@ -101,14 +102,16 @@ export function Footer() {
                 <div className={styles.legalInner}>
                     <span className={styles.brand}>{t("brand")}</span>
 
-                    <nav aria-label="Legal">
-                        <ul className={styles.legalNav}>
-                            {LEGAL_LINKS.map((key) => (
-                                <li key={key}>
-                                    <a href="#">{t(`nav.${key}`)}</a>
-                                </li>
-                            ))}
-                        </ul>
+                    <nav className={styles.legalNav} aria-label="Legal">
+                        {FOOTER_LINK_GROUPS.map((group) => (
+                            <ul key={group.join("-")} className={styles.legalNavGroup}>
+                                {group.map((key) => (
+                                    <li key={key}>
+                                        <a href="#">{t(`nav.${key}`)}</a>
+                                    </li>
+                                ))}
+                            </ul>
+                        ))}
                     </nav>
 
                     <p className={styles.copyright}>
