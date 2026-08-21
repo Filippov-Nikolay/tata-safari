@@ -30,6 +30,11 @@
         -webkit-backdrop-filter: blur(20px) saturate(150%);
         transition: opacity 0.6s ease;
         pointer-events: none;
+
+        @include respond-to("tablet") {
+            backdrop-filter: blur(10px) saturate(125%);
+            -webkit-backdrop-filter: blur(10px) saturate(125%);
+        }
     }
 
     &::after {
@@ -47,6 +52,15 @@
 
         @supports (backdrop-filter: url("#x")) {
             backdrop-filter: url("#navbar-liquid-glass") blur(6px) saturate(150%);
+        }
+
+        @include respond-to("tablet") {
+            backdrop-filter: blur(10px) saturate(125%);
+            -webkit-backdrop-filter: blur(10px) saturate(125%);
+
+            @supports (backdrop-filter: url("#x")) {
+                backdrop-filter: blur(10px) saturate(125%);
+            }
         }
     }
 }
