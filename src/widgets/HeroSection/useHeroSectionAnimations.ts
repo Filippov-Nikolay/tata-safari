@@ -5,6 +5,44 @@ import { useReducedMotion } from "framer-motion";
 import { useGSAP, gsap } from "@/shared/lib/gsap";
 import { useScrollTriggerAutoRefresh } from "@/shared/hooks";
 
+// ================================================================
+// This whole file builds ONE GSAP timeline pinned to the hero's scroll
+// distance via ScrollTrigger (start: "top top", end: "bottom bottom",
+// scrub: true) - scrolling through the hero maps 1:1 to this timeline's
+// progress from 0 to 1. Every PHASE_* constant below is a position on
+// that 0-1 timeline, not a real-time delay. In broad strokes, in the
+// order the phases actually play out:
+//
+//   1. Morph            (0    -> 0.362) headline recedes, "Safari" flies
+//                                        from the headline to a big
+//                                        centered watermark, background
+//                                        darkens to flat.
+//   2. Backdrop reveal   (0.39 -> 0.52)  a car-photo backdrop + glow fade
+//                                        in behind the watermark.
+//   3. Lift              (0.44 -> 0.539) watermark rises while resting at
+//                                        full size.
+//   4. Shrink            (0.539-> 0.701) watermark keeps rising while
+//                                        shrinking to its final size.
+//      Feature reveal    (0.567-> 0.663) the headline/description feature
+//                                        block fades in underneath it
+//                                        (overlaps the shrink).
+//   5. Backdrop hide     (0.60 -> 0.84)  the car-photo backdrop and glow
+//                                        dissolve back out.
+//      Gallery entry     (0.60 -> 1)     the next section slides up into
+//                                        place from below (overlaps
+//                                        everything from here on).
+//   6. Hold + exit       (0.735-> 1)     watermark rises further and fades
+//                                        out completely.
+//      Feature exit      (0.71 -> 0.93) the feature block also rises,
+//                                        shrinks and fades (overlaps the
+//                                        watermark's exit).
+//
+// A final `tl.to({}, {duration:1}, 0)` dummy tween pins the timeline's
+// total length to exactly 1, so every PHASE_* fraction above lines up
+// directly with scroll progress regardless of what the last real tween's
+// end time would otherwise be.
+// ================================================================
+
 const SAFARI_GOLD = "#D9AE73";
 const SAFARI_FINAL_SHRINK_PX = 100;
 const SAFARI_LIFT_RISE_RATIO = -0.2;
@@ -228,6 +266,19 @@ export function useHeroSectionAnimations(enabled = true) {
                 },
             });
 
+            // ========================================================
+            // Phase 1 - Morph (0 -> PHASE_MORPH_END, 0.362)
+            // The opening photo (car + sky) pushes up and zooms slightly
+            // like a parallax dolly, while scrim/solid darken it to a flat
+            // background. At the same time the "Safari" ghost text inside
+            // the headline morphs into `clone`/`cloneGradient`: it flies
+            // from the headline's exact position (dx/dy/startScale, all
+            // measured live off `ghost`'s and `endGhost`'s rects) to dead
+            // center, growing to full watermark size and shifting from
+            // white to gold as `cloneGradient`'s gradient fill fades in on
+            // top of it near the end of this phase. `copy` (the rest of the
+            // headline/description/CTA) fades out and lifts away early.
+            // ========================================================
             tl.fromTo(
                 car,
                 { yPercent: 0, scale: 1 },
@@ -271,6 +322,13 @@ export function useHeroSectionAnimations(enabled = true) {
                     { opacity: 1, duration: PHASE_MORPH_END * 0.31 },
                     PHASE_MORPH_END * 0.77
                 )
+                // ====================================================
+                // Phase 2 - Backdrop reveal (0.39 -> 0.52)
+                // A soft gold glow (safariBackdropGlow) and the car-photo
+                // backdrop image (safariBackdrop) fade and sharpen in
+                // behind the watermark - starts right at the tail of the
+                // morph phase, while the watermark is still settling.
+                // ====================================================
                 .fromTo(
                     safariBackdropGlow,
                     { autoAlpha: 0, scale: 0.76, yPercent: 8, filter: glowHiddenFilter },
@@ -304,6 +362,14 @@ export function useHeroSectionAnimations(enabled = true) {
                     },
                     PHASE_BACKDROP_REVEAL_START
                 )
+                // ====================================================
+                // Phase 3 - Lift (PHASE_REST_END 0.44 -> PHASE_LIFT_END
+                // 0.539)
+                // The watermark has been sitting still (full size, centered)
+                // since the morph finished at 0.362; from here it starts
+                // rising (liftY, a fraction of the stage's own height so it
+                // scales with viewport size) while still at full scale.
+                // ====================================================
                 .fromTo(
                     clone,
                     { x: 0, y: 0, scale: 1 },
@@ -328,6 +394,17 @@ export function useHeroSectionAnimations(enabled = true) {
                     },
                     PHASE_REST_END
                 )
+                // ====================================================
+                // Phase 4 - Backdrop hide (PHASE_BACKDROP_HIDE_START 0.60 ->
+                // PHASE_BACKDROP_HIDE_END 0.84)
+                // The glow and backdrop photo from phase 2 dissolve back
+                // out: the glow fades/blurs away first (ends at 0.76), the
+                // backdrop scales down slightly and darkens while a veil
+                // gradient fades in over it to help mask the transition,
+                // then the backdrop's own opacity fades the rest of the way
+                // out starting at PHASE_BACKDROP_FADE_START (0.73). This
+                // overlaps with the gallery entry and feature reveal below.
+                // ====================================================
                 .fromTo(
                     safariBackdropGlow,
                     { autoAlpha: 1, scale: 1, yPercent: 0, filter: glowVisibleFilter },
@@ -382,6 +459,14 @@ export function useHeroSectionAnimations(enabled = true) {
                     },
                     PHASE_BACKDROP_FADE_START
                 )
+                // ====================================================
+                // Feature reveal (PHASE_FEATURE_REVEAL_START 0.567 ->
+                // PHASE_FEATURE_REVEAL_END 0.663) - runs in parallel with
+                // the tail of the backdrop hide and the shrink below.
+                // The headline/description feature block fades and rises
+                // into place, taking over as the watermark shrinks away
+                // above it.
+                // ====================================================
                 .fromTo(
                     featureBlock,
                     { autoAlpha: 0, y: 24 },
@@ -393,6 +478,14 @@ export function useHeroSectionAnimations(enabled = true) {
                     },
                     PHASE_FEATURE_REVEAL_START
                 )
+                // ====================================================
+                // Phase 5 - Shrink (PHASE_SHRINK_START = PHASE_LIFT_END
+                // 0.539 -> PHASE_SHRINK_END 0.701)
+                // The watermark keeps rising (to finalY) while now also
+                // shrinking down to endScale (computed from its current
+                // font-size so the shrink amount, SAFARI_FINAL_SHRINK_PX,
+                // stays visually consistent across viewport sizes).
+                // ====================================================
                 .fromTo(
                     clone,
                     { x: 0, y: liftY, scale: 1 },
@@ -419,6 +512,16 @@ export function useHeroSectionAnimations(enabled = true) {
                     },
                     PHASE_SHRINK_START
                 )
+                // ====================================================
+                // Phase 6 - Hold + exit
+                // The shrink ends at PHASE_SHRINK_END (0.701) but the exit
+                // tween below doesn't start until PHASE_SAFARI_EXIT_START
+                // (= PHASE_HOLD_END, 0.735) - so the watermark just holds
+                // still at its shrunk size for that stretch. From 0.735 to
+                // 1 (PHASE_SAFARI_EXIT_END) it rises further (exitY) and
+                // fades out completely, finishing exactly as the hero's
+                // scroll distance runs out.
+                // ====================================================
                 .fromTo(
                     clone,
                     { y: finalY, autoAlpha: 1 },
@@ -441,6 +544,13 @@ export function useHeroSectionAnimations(enabled = true) {
                     },
                     PHASE_SAFARI_EXIT_START
                 )
+                // ====================================================
+                // Feature exit (PHASE_FEATURE_EXIT_START 0.71 ->
+                // PHASE_FEATURE_EXIT_END 0.93) - overlaps the watermark's
+                // hold+exit above. The feature block that revealed itself
+                // earlier now rises, shrinks slightly and fades away too,
+                // clearing the stage for the gallery entry to take over.
+                // ====================================================
                 .fromTo(
                     featureBlock,
                     { y: 0, scale: 1, autoAlpha: 1 },
@@ -454,6 +564,16 @@ export function useHeroSectionAnimations(enabled = true) {
                     PHASE_FEATURE_EXIT_START
                 );
 
+            // ========================================================
+            // Gallery entry (PHASE_GALLERY_ENTRY_START 0.60 -> 1) - the
+            // longest-running phase, overlapping backdrop hide, feature
+            // reveal/exit and the watermark's hold+exit. The next section
+            // (#grand-design) starts below the fold (see the initial
+            // gsap.set(gallery, ...) above, offset via
+            // galleryEntranceStartY/marginTop) and slides up to its
+            // natural resting position (y: 0) exactly as the hero's
+            // scroll distance runs out, handing off to it seamlessly.
+            // ========================================================
             if (gallery) {
                 tl.to(
                     gallery,
@@ -466,6 +586,9 @@ export function useHeroSectionAnimations(enabled = true) {
                 );
             }
 
+            // Dummy tween pinning the timeline's total duration to exactly
+            // 1, so every PHASE_* fraction above maps directly onto scroll
+            // progress (see the file-level comment).
             tl.to({}, { duration: 1 }, 0);
         },
         { scope: wrapRef, dependencies: [reduced, enabled], revertOnUpdate: true }
