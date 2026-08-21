@@ -114,6 +114,19 @@ export function useHeroSectionAnimations(enabled = true) {
                 return;
             }
 
+            const isCompactViewport = window.matchMedia("(max-width: 768px)").matches;
+            const glowHiddenFilter = isCompactViewport ? "blur(28px)" : "blur(88px)";
+            const glowVisibleFilter = isCompactViewport ? "blur(28px)" : "blur(34px)";
+            const glowExitFilter = isCompactViewport ? "blur(32px)" : "blur(52px)";
+            const backdropInitialFilter = isCompactViewport
+                ? "none"
+                : "blur(20px) brightness(0.68) saturate(0.84)";
+            const backdropVisibleFilter = isCompactViewport
+                ? "none"
+                : "blur(0px) brightness(1) saturate(1)";
+            const backdropExitFilter = isCompactViewport
+                ? "none"
+                : "blur(3px) brightness(0.82) saturate(0.92)";
             const ghostTopNeutral = () => {
                 const copyY = gsap.getProperty(copy, "y") as number;
                 return ghost.getBoundingClientRect().top - copyY;
@@ -182,13 +195,13 @@ export function useHeroSectionAnimations(enabled = true) {
                 autoAlpha: 0,
                 scale: 0.76,
                 yPercent: 8,
-                filter: "blur(88px)",
+                filter: glowHiddenFilter,
             });
             gsap.set(safariBackdrop, {
                 autoAlpha: 0,
                 scale: 1.09,
                 yPercent: 12,
-                filter: "blur(20px) brightness(0.68) saturate(0.84)",
+                filter: backdropInitialFilter,
             });
             gsap.set(safariBackdropVeil, { autoAlpha: 0, yPercent: 8 });
             gsap.set(featureBlock, { autoAlpha: 0, y: 24 });
@@ -260,12 +273,12 @@ export function useHeroSectionAnimations(enabled = true) {
                 )
                 .fromTo(
                     safariBackdropGlow,
-                    { autoAlpha: 0, scale: 0.76, yPercent: 8, filter: "blur(88px)" },
+                    { autoAlpha: 0, scale: 0.76, yPercent: 8, filter: glowHiddenFilter },
                     {
                         autoAlpha: 1,
                         scale: 1,
                         yPercent: 0,
-                        filter: "blur(34px)",
+                        filter: glowVisibleFilter,
                         duration: PHASE_BACKDROP_REVEAL_END - PHASE_BACKDROP_REVEAL_START,
                         ease: "power3.out",
                         immediateRender: false,
@@ -278,13 +291,13 @@ export function useHeroSectionAnimations(enabled = true) {
                         autoAlpha: 0,
                         scale: 1.09,
                         yPercent: 12,
-                        filter: "blur(20px) brightness(0.68) saturate(0.84)",
+                        filter: backdropInitialFilter,
                     },
                     {
                         autoAlpha: 1,
                         scale: 1,
                         yPercent: 0,
-                        filter: "blur(0px) brightness(1) saturate(1)",
+                        filter: backdropVisibleFilter,
                         duration: PHASE_BACKDROP_REVEAL_END - PHASE_BACKDROP_REVEAL_START,
                         ease: "power3.out",
                         immediateRender: false,
@@ -317,12 +330,12 @@ export function useHeroSectionAnimations(enabled = true) {
                 )
                 .fromTo(
                     safariBackdropGlow,
-                    { autoAlpha: 1, scale: 1, yPercent: 0, filter: "blur(34px)" },
+                    { autoAlpha: 1, scale: 1, yPercent: 0, filter: glowVisibleFilter },
                     {
                         autoAlpha: 0,
                         scale: 1.03,
                         yPercent: 12,
-                        filter: "blur(52px)",
+                        filter: glowExitFilter,
                         duration: PHASE_BACKDROP_GLOW_HIDE_END - PHASE_BACKDROP_HIDE_START,
                         ease: "power2.inOut",
                         immediateRender: false,
@@ -334,12 +347,12 @@ export function useHeroSectionAnimations(enabled = true) {
                     {
                         scale: 1,
                         yPercent: 0,
-                        filter: "blur(0px) brightness(1) saturate(1)",
+                        filter: backdropVisibleFilter,
                     },
                     {
                         scale: 0.992,
                         yPercent: 24,
-                        filter: "blur(3px) brightness(0.82) saturate(0.92)",
+                        filter: backdropExitFilter,
                         duration: PHASE_BACKDROP_HIDE_END - PHASE_BACKDROP_HIDE_START,
                         ease: "power3.in",
                         immediateRender: false,
